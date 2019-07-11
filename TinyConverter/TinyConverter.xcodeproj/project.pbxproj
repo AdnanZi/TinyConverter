@@ -14,6 +14,8 @@
 		84B0698522D633CC007F43D6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84B0698322D633CC007F43D6 /* LaunchScreen.storyboard */; };
 		84B0699422D648FF007F43D6 /* ConverterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B0699322D648FF007F43D6 /* ConverterViewModel.swift */; };
 		84B0699922D718A3007F43D6 /* PropertyBinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B0699822D718A3007F43D6 /* PropertyBinder.swift */; };
+		84B0699B22D72EDC007F43D6 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B0699A22D72EDC007F43D6 /* Store.swift */; };
+		84B0699E22D739B9007F43D6 /* ExchangeRates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B0699D22D739B9007F43D6 /* ExchangeRates.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +28,8 @@
 		84B0698622D633CC007F43D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		84B0699322D648FF007F43D6 /* ConverterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConverterViewModel.swift; sourceTree = "<group>"; };
 		84B0699822D718A3007F43D6 /* PropertyBinder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyBinder.swift; sourceTree = "<group>"; };
+		84B0699A22D72EDC007F43D6 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
+		84B0699D22D739B9007F43D6 /* ExchangeRates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeRates.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +86,8 @@
 		84B0699622D7184D007F43D6 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				84B0699A22D72EDC007F43D6 /* Store.swift */,
+				84B0699D22D739B9007F43D6 /* ExchangeRates.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -165,9 +171,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84B0699B22D72EDC007F43D6 /* Store.swift in Sources */,
 				84B0699922D718A3007F43D6 /* PropertyBinder.swift in Sources */,
 				84B0697D22D633CA007F43D6 /* ConverterViewController.swift in Sources */,
 				84B0697B22D633CA007F43D6 /* AppDelegate.swift in Sources */,
+				84B0699E22D739B9007F43D6 /* ExchangeRates.swift in Sources */,
 				84B0699422D648FF007F43D6 /* ConverterViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -41,5 +41,10 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key> <!-- This is needed because free subscription to fixer.io doesn't allow https access -->
+        <true/>
+    </dict>
 </dict>
 </plist>
