@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  ConverterViewController.swift
 //  TinyConverter
 //
 //  Created by Adnan Zildzic on 10.07.19.
@@ -15,13 +15,20 @@ class ConverterViewController: UIViewController {
 
     @IBOutlet weak var targetButton: UIButton!
     @IBOutlet weak var targetPicker: UIPickerView!
-    @IBOutlet weak var targetTextField: UITextField!
+    @IBOutlet weak var targetAmountTextField: UITextField!
 
     let viewModel = ConverterViewModel()
 
+    var observations = [NSKeyValueObservation]()
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
+        setupViews()
+        setupObservables()
+    }
+
+    fileprivate func setupViews() {
         basePicker.delegate = self
         basePicker.dataSource = self
         targetPicker.delegate = self
@@ -38,13 +45,26 @@ class ConverterViewController: UIViewController {
     @objc private func selectTargetCurrency() {
         targetPicker.isHidden = false
     }
+
+    fileprivate func setupObservables() {
+        observations = [
+            viewModel.bind(\.baseCurrency, to: baseButton, at: \.titleForNormalState),
+            viewModel.bind(\.targetCurrency, to: targetButton, at: \.titleForNormalState),
+        ]
+    }
 }
 
 extension ConverterViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         pickerView.isHidden = true
-        
-        // set button title and set selected currency in view model
+
+        let value = viewModel.symbols[row]
+
+        if pickerView == basePicker {
+            viewModel.baseCurrency = value
+        } else {
+            viewModel.targetCurrency = value
+        }
     }
 }
 
@@ -52,11 +72,11 @@ extension ConverterViewController: UIPickerViewDataSource {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
-    
+
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return viewModel.symbols.count
     }
-    
+
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return viewModel.symbols[row]
     }

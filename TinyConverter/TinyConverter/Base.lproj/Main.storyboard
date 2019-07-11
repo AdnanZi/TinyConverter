@@ -84,9 +84,9 @@
                         <outlet property="baseAmountTextField" destination="cdU-LU-gs4" id="09F-Me-6wh"/>
                         <outlet property="baseButton" destination="evz-Ok-UFC" id="jFU-Mj-ffR"/>
                         <outlet property="basePicker" destination="t3u-sV-34j" id="n5C-Qh-E3L"/>
+                        <outlet property="targetAmountTextField" destination="UdN-LA-3Zq" id="zrV-vu-mRv"/>
                         <outlet property="targetButton" destination="iU0-33-dD8" id="tEI-cq-2DR"/>
                         <outlet property="targetPicker" destination="sQV-HG-6ei" id="ZkM-Gb-V7k"/>
-                        <outlet property="targetTextField" destination="UdN-LA-3Zq" id="mSO-9B-WLh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
