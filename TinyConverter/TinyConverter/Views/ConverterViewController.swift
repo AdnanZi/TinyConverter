@@ -35,6 +35,9 @@ class ConverterViewController: UIViewController {
         targetPicker.delegate = self
         targetPicker.dataSource = self
 
+        baseAmountTextField.delegate = self
+        targetAmountTextField.delegate = self
+
         baseButton.addTarget(self, action: #selector(selectBaseCurrency), for: .touchUpInside)
         targetButton.addTarget(self, action: #selector(selectTargetCurrency), for: .touchUpInside)
     }
@@ -51,7 +54,9 @@ class ConverterViewController: UIViewController {
         observations = [
             viewModel.bind(\.baseCurrency, to: baseButton, at: \.titleForNormalState),
             viewModel.bind(\.targetCurrency, to: targetButton, at: \.titleForNormalState),
-            viewModel.bind(\.showSpinner, to: spinner, at: \.animating)
+            viewModel.bind(\.showSpinner, to: spinner, at: \.animating),
+            viewModel.bind(\.baseAmount, to: baseAmountTextField, at: \.text),
+            viewModel.bind(\.targetAmount, to: targetAmountTextField, at: \.text)
         ]
     }
 }
@@ -84,3 +89,30 @@ extension ConverterViewController: UIPickerViewDataSource {
     }
 }
 
+extension ConverterViewController: UITextFieldDelegate {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        var allowedCharacters = CharacterSet.decimalDigits
+        allowedCharacters.insert(".")
+        let characterSet = CharacterSet(charactersIn: string)
+        return allowedCharacters.isSuperset(of: characterSet)
+    }
+
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        guard let text = textField.text, text.count > 0 else {
+            return true
+        }
+
+        if textField == baseAmountTextField {
+            viewModel.baseAmountEntered = text
+        } else {
+            viewModel.targetAmountEntered = text
+        }
+
+        return true
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+}

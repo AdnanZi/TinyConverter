@@ -9,13 +9,45 @@ import Foundation
 
 class ConverterViewModel: NSObject {
     var symbols = [String]()
-    var exchangeRates = [String: Double]()
+    private var exchangeRates = [String: Double]()
 
-    @objc dynamic var baseCurrency: String? = "EUR"
-    @objc dynamic var targetCurrency: String? = "USD"
+    @objc dynamic var baseCurrency: String? = "EUR" {
+        didSet {
+            if (oldValue == baseCurrency) {
+                return
+            }
+
+            baseAmount = calculateTargetValue(baseValue: targetAmountEntered, baseCurrency: targetCurrency, targetCurrency: baseCurrency)
+            baseAmountEntered = baseAmount!
+        }
+    }
+
+    @objc dynamic var targetCurrency: String? = "USD" {
+        didSet {
+            if (oldValue == targetCurrency) {
+                return
+            }
+
+            targetAmount = calculateTargetValue(baseValue: baseAmountEntered, baseCurrency: baseCurrency, targetCurrency: targetCurrency)
+            targetAmountEntered = targetAmount!
+        }
+    }
+
+    @objc dynamic var baseAmount: String? = ""
+    var baseAmountEntered: String = "" {
+        didSet {
+            targetAmount = calculateTargetValue(baseValue: baseAmountEntered, baseCurrency: baseCurrency, targetCurrency: targetCurrency)
+        }
+    }
+
+    @objc dynamic var targetAmount: String? = ""
+    var targetAmountEntered: String = "" {
+        didSet {
+            baseAmount = calculateTargetValue(baseValue: targetAmountEntered, baseCurrency: targetCurrency, targetCurrency: baseCurrency)
+        }
+    }
+
     @objc dynamic var showSpinner = false;
-
-    let store = Store.shared
 
     override init() {
         super.init()
@@ -24,15 +56,15 @@ class ConverterViewModel: NSObject {
         NotificationCenter.default.addObserver(self, selector: #selector(handleUpdateDoneNotification(_:)), name: Store.updateDoneNotification, object: nil)
 
         if exchangeRates.isEmpty {
-            store.getDataFromServer()
+            Store.shared.getDataFromServer()
         }
     }
 
-    @objc func handleUpdateStartedNotification() {
+    @objc private func handleUpdateStartedNotification() {
         showSpinner = true
     }
 
-    @objc func handleUpdateDoneNotification(_ notification: Notification) {
+    @objc private func handleUpdateDoneNotification(_ notification: Notification) {
         DispatchQueue.main.async { [weak self] in
             guard let strongSelf = self else {
                 return
@@ -50,5 +82,17 @@ class ConverterViewModel: NSObject {
             strongSelf.baseCurrency = strongSelf.symbols.filter { $0 == "EUR" }.first ?? strongSelf.symbols[0]
             strongSelf.targetCurrency = strongSelf.symbols.filter { $0 == "USD" }.first ?? strongSelf.symbols[0]
         }
+    }
+
+    private func calculateTargetValue(baseValue: String?, baseCurrency: String?, targetCurrency: String?) -> String {
+        guard let baseValue = baseValue, let multiplier = Double(baseValue),
+            let baseCurrency = baseCurrency, let targetCurrency = targetCurrency,
+            let baseCurrencyValue = exchangeRates[baseCurrency], let targetCurrencyValue = exchangeRates[targetCurrency] else {
+            return "";
+        }
+
+        let targetValue = multiplier * (targetCurrencyValue/baseCurrencyValue)
+
+        return String(format: "%.2f", targetValue)
     }
 }
