@@ -18,8 +18,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2fO-ah-J4j">
+                                <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                                <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <items>
+                                    <navigationItem title="Tiny Currency Converter" id="ZMa-U0-j6h"/>
+                                </items>
+                            </navigationBar>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="F3q-bh-hh1" userLabel="Base Stack View">
-                                <rect key="frame" x="16" y="52" width="343" height="115.5"/>
+                                <rect key="frame" x="16" y="96" width="343" height="115.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Base Currency" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gjN-Hx-wsg" userLabel="Currency">
                                         <rect key="frame" x="0.0" y="0.0" width="343" height="20.5"/>
@@ -44,7 +51,7 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="ZZs-t6-fh7" userLabel="Target Stack View">
-                                <rect key="frame" x="16" y="199.5" width="343" height="115.5"/>
+                                <rect key="frame" x="16" y="243.5" width="343" height="115.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Target Currency" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SFW-Kn-rgc" userLabel="Currency">
                                         <rect key="frame" x="0.0" y="0.0" width="343" height="20.5"/>
@@ -73,10 +80,13 @@
                         <constraints>
                             <constraint firstItem="F3q-bh-hh1" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="16" id="54X-kZ-pym"/>
                             <constraint firstItem="ZZs-t6-fh7" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="7QQ-oZ-KJp"/>
+                            <constraint firstItem="2fO-ah-J4j" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="GHz-eP-gTc"/>
                             <constraint firstItem="ZZs-t6-fh7" firstAttribute="top" secondItem="F3q-bh-hh1" secondAttribute="bottom" constant="32" id="Go0-UK-Aza"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="F3q-bh-hh1" secondAttribute="trailing" constant="16" id="Ret-Kf-9Jh"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ZZs-t6-fh7" secondAttribute="trailing" constant="16" id="bgl-Ij-vPP"/>
-                            <constraint firstItem="F3q-bh-hh1" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="32" id="eLz-WR-hSz"/>
+                            <constraint firstItem="F3q-bh-hh1" firstAttribute="top" secondItem="2fO-ah-J4j" secondAttribute="bottom" constant="32" id="d30-yQ-V66"/>
+                            <constraint firstItem="2fO-ah-J4j" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="g2j-MW-a1H"/>
+                            <constraint firstItem="2fO-ah-J4j" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="jvW-Dk-y4G"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
