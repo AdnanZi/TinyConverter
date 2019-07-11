@@ -27,3 +27,18 @@ extension UIButton {
         }
     }
 }
+
+extension UIActivityIndicatorView {
+    var animating: Bool {
+        get {
+            return isAnimating
+        }
+        set {
+            if newValue {
+                startAnimating()
+            } else {
+                stopAnimating()
+            }
+        }
+    }
+}

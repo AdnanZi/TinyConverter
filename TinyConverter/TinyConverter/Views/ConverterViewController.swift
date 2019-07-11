@@ -17,8 +17,9 @@ class ConverterViewController: UIViewController {
     @IBOutlet weak var targetPicker: UIPickerView!
     @IBOutlet weak var targetAmountTextField: UITextField!
 
-    let viewModel = ConverterViewModel()
+    @IBOutlet weak var spinner: UIActivityIndicatorView!
 
+    let viewModel = ConverterViewModel()
     var observations = [NSKeyValueObservation]()
 
     override func viewDidLoad() {
@@ -50,6 +51,7 @@ class ConverterViewController: UIViewController {
         observations = [
             viewModel.bind(\.baseCurrency, to: baseButton, at: \.titleForNormalState),
             viewModel.bind(\.targetCurrency, to: targetButton, at: \.titleForNormalState),
+            viewModel.bind(\.showSpinner, to: spinner, at: \.animating)
         ]
     }
 }

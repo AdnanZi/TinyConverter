@@ -75,6 +75,11 @@
                                     </textField>
                                 </subviews>
                             </stackView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="ZVC-RH-VJN">
+                                <rect key="frame" x="171" y="317" width="37" height="37"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="color" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -94,6 +99,7 @@
                         <outlet property="baseAmountTextField" destination="cdU-LU-gs4" id="09F-Me-6wh"/>
                         <outlet property="baseButton" destination="evz-Ok-UFC" id="jFU-Mj-ffR"/>
                         <outlet property="basePicker" destination="t3u-sV-34j" id="n5C-Qh-E3L"/>
+                        <outlet property="spinner" destination="ZVC-RH-VJN" id="XZP-T9-hSt"/>
                         <outlet property="targetAmountTextField" destination="UdN-LA-3Zq" id="zrV-vu-mRv"/>
                         <outlet property="targetButton" destination="iU0-33-dD8" id="tEI-cq-2DR"/>
                         <outlet property="targetPicker" destination="sQV-HG-6ei" id="ZkM-Gb-V7k"/>

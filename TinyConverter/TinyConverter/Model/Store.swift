@@ -8,7 +8,10 @@
 
 import Foundation
 
-class Store: NSObject {
+class Store {
+    static let updateStartedNotification = Notification.Name("UpdateStarted")
+    static let updateDoneNotification = Notification.Name("UpdateDone")
+
     private let apiKey = "b53418f0cda7fd7c937f4fd39851d5d1"
     private let serverHost = "http://data.fixer.io/api/"
     private let latestEndpoint = "latest"
@@ -28,6 +31,10 @@ class Store: NSObject {
                 return
             }
 
+            guard let strongSelf = self else {
+                return
+            }
+
             var response: LatestRatesResponse? = nil
 
             do {
@@ -37,9 +44,13 @@ class Store: NSObject {
             }
 
             if let response = response, response.error == nil { // TODO: Handle errors
-                self?.exchangeRates = self?.parseRates(from: response)
+                strongSelf.exchangeRates = strongSelf.parseRates(from: response)
+
+                NotificationCenter.default.post(name: Store.updateDoneNotification, object: strongSelf.exchangeRates)
             }
         }
+
+        NotificationCenter.default.post(name: Store.updateStartedNotification, object: nil)
 
         task.resume()
     }
