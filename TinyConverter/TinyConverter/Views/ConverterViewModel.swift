@@ -17,7 +17,7 @@ class ConverterViewModel: NSObject {
                 return
             }
 
-            baseAmount = calculateTargetValue(baseValue: targetAmountEntered, baseCurrency: targetCurrency, targetCurrency: baseCurrency)
+            baseAmount = calcuateBaseAmount()
             baseAmountEntered = baseAmount!
         }
     }
@@ -28,7 +28,7 @@ class ConverterViewModel: NSObject {
                 return
             }
 
-            targetAmount = calculateTargetValue(baseValue: baseAmountEntered, baseCurrency: baseCurrency, targetCurrency: targetCurrency)
+            targetAmount = calculateTargetAmount()
             targetAmountEntered = targetAmount!
         }
     }
@@ -36,14 +36,14 @@ class ConverterViewModel: NSObject {
     @objc dynamic var baseAmount: String? = ""
     var baseAmountEntered: String = "" {
         didSet {
-            targetAmount = calculateTargetValue(baseValue: baseAmountEntered, baseCurrency: baseCurrency, targetCurrency: targetCurrency)
+            targetAmount = calculateTargetAmount()
         }
     }
 
     @objc dynamic var targetAmount: String? = ""
     var targetAmountEntered: String = "" {
         didSet {
-            baseAmount = calculateTargetValue(baseValue: targetAmountEntered, baseCurrency: targetCurrency, targetCurrency: baseCurrency)
+            baseAmount = calcuateBaseAmount()
         }
     }
 
@@ -94,5 +94,13 @@ class ConverterViewModel: NSObject {
         let targetValue = multiplier * (targetCurrencyValue/baseCurrencyValue)
 
         return String(format: "%.2f", targetValue)
+    }
+
+    private func calculateTargetAmount() -> String {
+        return calculateTargetValue(baseValue: baseAmountEntered, baseCurrency: baseCurrency, targetCurrency: targetCurrency)
+    }
+
+    private func calcuateBaseAmount() -> String {
+        return calculateTargetValue(baseValue: targetAmountEntered, baseCurrency: targetCurrency, targetCurrency: baseCurrency)
     }
 }
