@@ -21,14 +21,13 @@ class Store {
 
     static let shared = Store()
 
-    func fetchData() {
+    func fetchData(_ completionHandler: @escaping (ExchangeRates?) -> Void) {
         if let exchangeRates = getDataFromCache() {
-            NotificationCenter.default.post(name: Store.updateDoneNotification, object: exchangeRates)
-
+            completionHandler(exchangeRates)
             return
         }
 
-        getDataFromServer()
+        getDataFromServer(completionHandler: completionHandler)
     }
 
     func getDataFromCache() -> ExchangeRates? {
@@ -39,35 +38,40 @@ class Store {
         return try? JSONDecoder().decode(ExchangeRates.self, from: cachedData)
     }
 
-    func getDataFromServer() {
+    func getDataFromServer(completionHandler: @escaping (ExchangeRates?) -> Void) {
         guard let url = getUrl(for: latestEndpoint) else {
+            completionHandler(nil)
             return
         }
 
         let task = URLSession.shared.dataTask(with: url) { [weak self] (data, response, error) in
             guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200, let jsonData = data else {
                 // TODO: Handle errors
+                completionHandler(nil)
                 return
             }
 
             guard let strongSelf = self else {
+                completionHandler(nil)
                 return
             }
 
             let response = try? JSONDecoder().decode(LatestRatesResponse.self, from: jsonData)
 
-            if let response = response, response.error == nil { // TODO: Handle errors
-                let exchangeRates = strongSelf.parseRates(from: response)
-
-                if let exchangeRatesJson = try? JSONEncoder().encode(exchangeRates) {
-                    strongSelf.cacheData(exchangeRatesJson)
-                }
-
-                NotificationCenter.default.post(name: Store.updateDoneNotification, object: exchangeRates)
+            if response == nil || response!.error != nil {
+                // TODO: Handle errors
+                completionHandler(nil)
+                return
             }
-        }
 
-        NotificationCenter.default.post(name: Store.updateStartedNotification, object: nil)
+            let exchangeRates = strongSelf.parseRates(from: response!)
+
+            if let exchangeRatesJson = try? JSONEncoder().encode(exchangeRates) {
+                strongSelf.cacheData(exchangeRatesJson)
+            }
+
+            completionHandler(exchangeRates)
+        }
 
         task.resume()
     }

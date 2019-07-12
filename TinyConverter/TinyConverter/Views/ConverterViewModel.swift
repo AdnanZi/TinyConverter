@@ -52,29 +52,24 @@ class ConverterViewModel: NSObject {
     override init() {
         super.init()
 
-        NotificationCenter.default.addObserver(self, selector: #selector(handleUpdateStartedNotification), name: Store.updateStartedNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(handleUpdateDoneNotification(_:)), name: Store.updateDoneNotification, object: nil)
-
         if exchangeRates.isEmpty {
-            Store.shared.fetchData()
+            Store.shared.fetchData(dataFetchedHandler)
+            showSpinner = true
         }
     }
 
-    @objc private func handleUpdateStartedNotification() {
-        showSpinner = true
-    }
+    private func dataFetchedHandler(_ data: ExchangeRates?) {
+        guard let storedExchangeRates = data else {
+            // TODO: Handle error
+            return
+        }
 
-    @objc private func handleUpdateDoneNotification(_ notification: Notification) {
         DispatchQueue.main.async { [weak self] in
             guard let strongSelf = self else {
                 return
             }
 
             strongSelf.showSpinner = false
-
-            guard let storedExchangeRates = notification.object as? ExchangeRates else {
-                return
-            }
 
             strongSelf.exchangeRates = storedExchangeRates.rates
             strongSelf.symbols = [String](strongSelf.exchangeRates.keys).sorted { $0 < $1 }
