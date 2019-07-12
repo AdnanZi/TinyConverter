@@ -23,7 +23,7 @@ struct ErrorResponse: Codable {
     let info: String
 }
 
-struct ExchangeRates {
+struct ExchangeRates: Codable {
     let baseCurrency: String
     let date: Date
     let rates: [String: Double]

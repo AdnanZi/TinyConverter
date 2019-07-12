@@ -16,9 +16,28 @@ class Store {
     private let serverHost = "http://data.fixer.io/api/"
     private let latestEndpoint = "latest"
 
-    private var exchangeRates: ExchangeRates? = nil
+    private let libraryDirectory = try! FileManager.default.url(for: .libraryDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+    private let storeLocation = "rates.json"
 
     static let shared = Store()
+
+    func fetchData() {
+        if let exchangeRates = getDataFromCache() {
+            NotificationCenter.default.post(name: Store.updateDoneNotification, object: exchangeRates)
+
+            return
+        }
+
+        getDataFromServer()
+    }
+
+    func getDataFromCache() -> ExchangeRates? {
+        guard let cachedData = try? Data(contentsOf: libraryDirectory.appendingPathComponent(storeLocation)) else {
+            return nil
+        }
+
+        return try? JSONDecoder().decode(ExchangeRates.self, from: cachedData)
+    }
 
     func getDataFromServer() {
         guard let url = getUrl(for: latestEndpoint) else {
@@ -35,18 +54,16 @@ class Store {
                 return
             }
 
-            var response: LatestRatesResponse? = nil
-
-            do {
-                response = try JSONDecoder().decode(LatestRatesResponse.self, from: jsonData)
-            } catch {
-                print(error)
-            }
+            let response = try? JSONDecoder().decode(LatestRatesResponse.self, from: jsonData)
 
             if let response = response, response.error == nil { // TODO: Handle errors
-                strongSelf.exchangeRates = strongSelf.parseRates(from: response)
+                let exchangeRates = strongSelf.parseRates(from: response)
 
-                NotificationCenter.default.post(name: Store.updateDoneNotification, object: strongSelf.exchangeRates)
+                if let exchangeRatesJson = try? JSONEncoder().encode(exchangeRates) {
+                    strongSelf.cacheData(exchangeRatesJson)
+                }
+
+                NotificationCenter.default.post(name: Store.updateDoneNotification, object: exchangeRates)
             }
         }
 
@@ -73,5 +90,11 @@ class Store {
         }
 
         return ExchangeRates(baseCurrency: baseCurrency, date: date, rates: rates)
+    }
+
+    private func cacheData(_ jsonData: Data) {
+        let url = libraryDirectory.appendingPathComponent(storeLocation)
+
+        try? jsonData.write(to: url)
     }
 }

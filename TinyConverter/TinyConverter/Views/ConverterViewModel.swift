@@ -56,7 +56,7 @@ class ConverterViewModel: NSObject {
         NotificationCenter.default.addObserver(self, selector: #selector(handleUpdateDoneNotification(_:)), name: Store.updateDoneNotification, object: nil)
 
         if exchangeRates.isEmpty {
-            Store.shared.getDataFromServer()
+            Store.shared.fetchData()
         }
     }
 
