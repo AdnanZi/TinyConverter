@@ -9,9 +9,6 @@
 import Foundation
 
 class Store {
-    static let updateStartedNotification = Notification.Name("UpdateStarted")
-    static let updateDoneNotification = Notification.Name("UpdateDone")
-
     private let apiKey = "b53418f0cda7fd7c937f4fd39851d5d1"
     private let serverHost = "http://data.fixer.io/api/"
     private let latestEndpoint = "latest"
@@ -21,10 +18,14 @@ class Store {
 
     static let shared = Store()
 
-    func fetchData(_ completionHandler: @escaping (ExchangeRates?) -> Void) {
+    func fetchData(_ completionHandler: @escaping (ExchangeRates?, Bool?) -> Void) {
         if let exchangeRates = getDataFromCache() {
-            completionHandler(exchangeRates)
-            return
+            let currentDate = Date().currentDate
+
+            if exchangeRates.date == currentDate {
+                completionHandler(exchangeRates, nil)
+                return
+            }
         }
 
         getDataFromServer(completionHandler: completionHandler)
@@ -38,21 +39,21 @@ class Store {
         return try? JSONDecoder().decode(ExchangeRates.self, from: cachedData)
     }
 
-    func getDataFromServer(completionHandler: @escaping (ExchangeRates?) -> Void) {
+    func getDataFromServer(completionHandler: @escaping (ExchangeRates?, Bool?) -> Void) {
         guard let url = getUrl(for: latestEndpoint) else {
-            completionHandler(nil)
+            completionHandler(nil, nil)
             return
         }
 
         let task = URLSession.shared.dataTask(with: url) { [weak self] (data, response, error) in
             guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200, let jsonData = data else {
                 // TODO: Handle errors
-                completionHandler(nil)
+                completionHandler(nil, nil)
                 return
             }
 
             guard let strongSelf = self else {
-                completionHandler(nil)
+                completionHandler(nil, nil)
                 return
             }
 
@@ -60,7 +61,7 @@ class Store {
 
             if response == nil || response!.error != nil {
                 // TODO: Handle errors
-                completionHandler(nil)
+                completionHandler(nil, nil)
                 return
             }
 
@@ -70,7 +71,7 @@ class Store {
                 strongSelf.cacheData(exchangeRatesJson)
             }
 
-            completionHandler(exchangeRates)
+            completionHandler(exchangeRates, true)
         }
 
         task.resume()
@@ -87,7 +88,9 @@ class Store {
         }
 
         let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         dateFormatter.dateFormat = "yyyy-MM-dd"
+        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
 
         guard let date = dateFormatter.date(from: dateString) else {
             return nil
@@ -100,5 +103,15 @@ class Store {
         let url = libraryDirectory.appendingPathComponent(storeLocation)
 
         try? jsonData.write(to: url)
+    }
+}
+
+extension Date {
+    var currentDate: Date {
+        let timeZone = TimeZone(secondsFromGMT: 0)!
+        let timeIntervalWithTimeZone = self.timeIntervalSinceReferenceDate + Double(timeZone.secondsFromGMT())
+        let timeInterval = floor(timeIntervalWithTimeZone / 86400) * 86400
+
+        return Date(timeIntervalSinceReferenceDate: timeInterval)
     }
 }
