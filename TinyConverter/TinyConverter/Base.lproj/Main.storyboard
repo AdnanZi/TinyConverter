@@ -75,9 +75,8 @@
                                     </textField>
                                 </subviews>
                             </stackView>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="ZVC-RH-VJN">
-                                <rect key="frame" x="171" y="317" width="37" height="37"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="ZVC-RH-VJN">
+                                <rect key="frame" x="169" y="315" width="37" height="37"/>
                                 <color key="color" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </activityIndicatorView>
                         </subviews>
@@ -87,7 +86,9 @@
                             <constraint firstItem="ZZs-t6-fh7" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="7QQ-oZ-KJp"/>
                             <constraint firstItem="2fO-ah-J4j" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="GHz-eP-gTc"/>
                             <constraint firstItem="ZZs-t6-fh7" firstAttribute="top" secondItem="F3q-bh-hh1" secondAttribute="bottom" constant="32" id="Go0-UK-Aza"/>
+                            <constraint firstItem="ZVC-RH-VJN" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="OMI-Mn-B2w"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="F3q-bh-hh1" secondAttribute="trailing" constant="16" id="Ret-Kf-9Jh"/>
+                            <constraint firstItem="ZVC-RH-VJN" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="XLE-KA-deH"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ZZs-t6-fh7" secondAttribute="trailing" constant="16" id="bgl-Ij-vPP"/>
                             <constraint firstItem="F3q-bh-hh1" firstAttribute="top" secondItem="2fO-ah-J4j" secondAttribute="bottom" constant="32" id="d30-yQ-V66"/>
                             <constraint firstItem="2fO-ah-J4j" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="g2j-MW-a1H"/>
