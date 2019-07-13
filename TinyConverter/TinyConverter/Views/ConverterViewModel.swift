@@ -65,7 +65,7 @@ class ConverterViewModel: NSObject {
 
         let targetValue = multiplier * (targetCurrencyValue/baseCurrencyValue)
 
-        return String(format: "%.2f", targetValue)
+        return String(format: "%.2f", round(targetValue*100)/100)
     }
 
     private func calculateTargetAmount() -> String {
