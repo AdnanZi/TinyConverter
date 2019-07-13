@@ -53,7 +53,7 @@ class ConverterViewModel: NSObject {
         super.init()
 
         if exchangeRates.isEmpty {
-            Store.shared.fetchData { [weak self] data, _ in self?.dataFetchedHandler(data) }
+            Store.shared.fetchData(dataFetchedHandler)
 
             showSpinner = true
         }

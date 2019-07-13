@@ -18,20 +18,43 @@ class Store {
 
     static let shared = Store()
 
-    func fetchData(_ completionHandler: @escaping (ExchangeRates?, Bool?) -> Void) {
-        if let exchangeRates = getDataFromCache() {
+    func fetchData(_ completionHandler: @escaping (ExchangeRates?) -> Void) {
+        let exchangeRates = getDataFromCache()
+
+        if let exchangeRates = exchangeRates {
             let currentDate = Date().currentDate
 
             if exchangeRates.date == currentDate {
-                completionHandler(exchangeRates, nil)
+                completionHandler(exchangeRates)
                 return
             }
         }
 
-        getDataFromServer(completionHandler: completionHandler)
+        getDataFromServer { data in
+            guard let data = data else {
+                completionHandler(exchangeRates)
+                return
+            }
+
+            completionHandler(data)
+        }
     }
 
-    func getDataFromCache() -> ExchangeRates? {
+    func refreshData(_ completionHandler: @escaping (Bool) -> Void) {
+        if let exchangeRates = getDataFromCache() {
+            let currentDate = Date().currentDate
+
+            if exchangeRates.date == currentDate {
+                completionHandler(false)
+            } else {
+                getDataFromServer { data in
+                    completionHandler(data != nil ? true : false)
+                }
+            }
+        }
+    }
+
+    private func getDataFromCache() -> ExchangeRates? {
         guard let cachedData = try? Data(contentsOf: libraryDirectory.appendingPathComponent(storeLocation)) else {
             return nil
         }
@@ -39,21 +62,21 @@ class Store {
         return try? JSONDecoder().decode(ExchangeRates.self, from: cachedData)
     }
 
-    func getDataFromServer(completionHandler: @escaping (ExchangeRates?, Bool?) -> Void) {
+    private func getDataFromServer(completionHandler: @escaping (ExchangeRates?) -> Void) {
         guard let url = getUrl(for: latestEndpoint) else {
-            completionHandler(nil, nil)
+            completionHandler(nil)
             return
         }
 
         let task = URLSession.shared.dataTask(with: url) { [weak self] (data, response, error) in
             guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200, let jsonData = data else {
                 // TODO: Handle errors
-                completionHandler(nil, nil)
+                completionHandler(nil)
                 return
             }
 
             guard let strongSelf = self else {
-                completionHandler(nil, nil)
+                completionHandler(nil)
                 return
             }
 
@@ -61,7 +84,7 @@ class Store {
 
             if response == nil || response!.error != nil {
                 // TODO: Handle errors
-                completionHandler(nil, nil)
+                completionHandler(nil)
                 return
             }
 
@@ -71,7 +94,7 @@ class Store {
                 strongSelf.cacheData(exchangeRatesJson)
             }
 
-            completionHandler(exchangeRates, true)
+            completionHandler(exchangeRates)
         }
 
         task.resume()
