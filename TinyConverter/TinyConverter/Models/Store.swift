@@ -29,12 +29,15 @@ class ConverterStore: Store {
     }
 
     func fetchData(_ completionHandler: @escaping (ExchangeRates?, Error?) -> Void) {
+        NSLog("Fetching data...")
+
         let exchangeRates = getDataFromCache()
 
         if let exchangeRates = exchangeRates {
             let currentDate = Date().currentDate
 
             if exchangeRates.date == currentDate {
+                NSLog("Data retrieved from cache.")
                 completionHandler(exchangeRates, nil)
                 return
             }
@@ -51,6 +54,8 @@ class ConverterStore: Store {
     }
 
     func refreshData(_ completionHandler: @escaping (Bool) -> Void) {
+        NSLog("Refreshing data...")
+
         if let exchangeRates = getDataFromCache() {
             let currentDate = Date().currentDate
 
