@@ -11,10 +11,7 @@ class ConverterViewModel: NSObject {
     var symbols = [String]()
     private var exchangeRates = [String: Double]()
 
-    private let noConnectionAlertTitle = "No internet connection"
-    private let noConnectionAlertText = "Internet connection is not avilable or is bad. Exchange rates might be obsolete. Do you want to try again?"
-
-    @objc dynamic var baseCurrency: String? = "EUR" {
+    @objc dynamic var baseCurrency: String? = .eur {
         didSet {
             if (oldValue == baseCurrency) {
                 return
@@ -25,7 +22,7 @@ class ConverterViewModel: NSObject {
         }
     }
 
-    @objc dynamic var targetCurrency: String? = "USD" {
+    @objc dynamic var targetCurrency: String? = .usd {
         didSet {
             if (oldValue == targetCurrency) {
                 return
@@ -97,7 +94,7 @@ extension ConverterViewModel {
 
             guard let storedExchangeRates = data else {
                 if error == .noConnection {
-                    strongSelf.alert = Alert(alertTitle: strongSelf.noConnectionAlertTitle, alertText: strongSelf.noConnectionAlertText)
+                    strongSelf.alert = Alert(alertTitle: .noConnectionAlertTitle, alertText: .noConnectionAlertText)
                 }
 
                 return
@@ -106,8 +103,15 @@ extension ConverterViewModel {
             strongSelf.exchangeRates = storedExchangeRates.rates
             strongSelf.symbols = strongSelf.exchangeRates.keys.sorted { $0 < $1 }
 
-            strongSelf.baseCurrency = strongSelf.symbols.filter { $0 == "EUR" }.first ?? strongSelf.symbols[0]
-            strongSelf.targetCurrency = strongSelf.symbols.filter { $0 == "USD" }.first ?? strongSelf.symbols[0]
+            strongSelf.baseCurrency = strongSelf.symbols.filter { $0 == .eur }.first ?? strongSelf.symbols[0]
+            strongSelf.targetCurrency = strongSelf.symbols.filter { $0 == .usd }.first ?? strongSelf.symbols[0]
         }
     }
+}
+
+fileprivate extension String {
+    static let eur = "EUR"
+    static let usd = "USD"
+    static let noConnectionAlertTitle = "No internet connection"
+    static let noConnectionAlertText = "Internet connection is not avilable or is bad. Exchange rates might be obsolete. Do you want to try again?"
 }
