@@ -72,7 +72,7 @@ class ConverterViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] _ in self?.viewModel.fetchData() }))
 
-        self.present(alert, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)
     }
 
     @objc private func appDidBecomeActive() {

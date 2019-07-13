@@ -50,11 +50,33 @@ class ConverterViewModel: NSObject {
         }
     }
 
-    @objc dynamic var showSpinner = false;
+    @objc dynamic var showSpinner = false
     @objc dynamic var alert: Alert? = nil
 
+    private func calculateTargetValue(baseValue: String?, baseCurrency: String?, targetCurrency: String?) -> String {
+        guard let baseValue = baseValue, let multiplier = Double(baseValue),
+            let baseCurrency = baseCurrency, let targetCurrency = targetCurrency,
+            let baseCurrencyValue = exchangeRates[baseCurrency], let targetCurrencyValue = exchangeRates[targetCurrency] else {
+            return ""
+        }
+
+        let targetValue = multiplier * (targetCurrencyValue/baseCurrencyValue)
+
+        return String(format: "%.2f", targetValue)
+    }
+
+    private func calculateTargetAmount() -> String {
+        return calculateTargetValue(baseValue: baseAmountEntered, baseCurrency: baseCurrency, targetCurrency: targetCurrency)
+    }
+
+    private func calcuateBaseAmount() -> String {
+        return calculateTargetValue(baseValue: targetAmountEntered, baseCurrency: targetCurrency, targetCurrency: baseCurrency)
+    }
+}
+
+extension ConverterViewModel {
     func fetchData() {
-        Store.shared.fetchData(dataFetchedHandler)
+        Store.shared.fetchData(dataFetchedHandler) // TODO: Refactor reference
 
         showSpinner = true
     }
@@ -76,30 +98,10 @@ class ConverterViewModel: NSObject {
             }
 
             strongSelf.exchangeRates = storedExchangeRates.rates
-            strongSelf.symbols = [String](strongSelf.exchangeRates.keys).sorted { $0 < $1 }
+            strongSelf.symbols = strongSelf.exchangeRates.keys.sorted { $0 < $1 }
 
             strongSelf.baseCurrency = strongSelf.symbols.filter { $0 == "EUR" }.first ?? strongSelf.symbols[0]
             strongSelf.targetCurrency = strongSelf.symbols.filter { $0 == "USD" }.first ?? strongSelf.symbols[0]
         }
-    }
-
-    private func calculateTargetValue(baseValue: String?, baseCurrency: String?, targetCurrency: String?) -> String {
-        guard let baseValue = baseValue, let multiplier = Double(baseValue),
-            let baseCurrency = baseCurrency, let targetCurrency = targetCurrency,
-            let baseCurrencyValue = exchangeRates[baseCurrency], let targetCurrencyValue = exchangeRates[targetCurrency] else {
-            return "";
-        }
-
-        let targetValue = multiplier * (targetCurrencyValue/baseCurrencyValue)
-
-        return String(format: "%.2f", targetValue)
-    }
-
-    private func calculateTargetAmount() -> String {
-        return calculateTargetValue(baseValue: baseAmountEntered, baseCurrency: baseCurrency, targetCurrency: targetCurrency)
-    }
-
-    private func calcuateBaseAmount() -> String {
-        return calculateTargetValue(baseValue: targetAmountEntered, baseCurrency: targetCurrency, targetCurrency: baseCurrency)
     }
 }
