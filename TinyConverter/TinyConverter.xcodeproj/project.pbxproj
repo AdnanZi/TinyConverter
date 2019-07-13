@@ -18,6 +18,7 @@
 		84B0699E22D739B9007F43D6 /* ExchangeRates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B0699D22D739B9007F43D6 /* ExchangeRates.swift */; };
 		84BAF96622DA087B003AAD74 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BAF96522DA087B003AAD74 /* Error.swift */; };
 		84BAF96822DA10DE003AAD74 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BAF96722DA10DE003AAD74 /* Alert.swift */; };
+		84BAF96B22DA39F9003AAD74 /* ApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BAF96A22DA39F9003AAD74 /* ApiService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		84B0699D22D739B9007F43D6 /* ExchangeRates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeRates.swift; sourceTree = "<group>"; };
 		84BAF96522DA087B003AAD74 /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 		84BAF96722DA10DE003AAD74 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
+		84BAF96A22DA39F9003AAD74 /* ApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +71,7 @@
 				84B0699522D716CC007F43D6 /* Views */,
 				84B0699622D7184D007F43D6 /* Models */,
 				84B0699722D7187A007F43D6 /* Utils */,
+				84BAF96922DA39D5003AAD74 /* Services */,
 				84BAF96422DA085F003AAD74 /* Entities */,
 				84B0697A22D633CA007F43D6 /* AppDelegate.swift */,
 				84B0697E22D633CA007F43D6 /* Main.storyboard */,
@@ -112,6 +115,14 @@
 				84BAF96722DA10DE003AAD74 /* Alert.swift */,
 			);
 			path = Entities;
+			sourceTree = "<group>";
+		};
+		84BAF96922DA39D5003AAD74 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				84BAF96A22DA39F9003AAD74 /* ApiService.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -195,6 +206,7 @@
 				84B0697D22D633CA007F43D6 /* ConverterViewController.swift in Sources */,
 				84B0697B22D633CA007F43D6 /* AppDelegate.swift in Sources */,
 				84B0699E22D739B9007F43D6 /* ExchangeRates.swift in Sources */,
+				84BAF96B22DA39F9003AAD74 /* ApiService.swift in Sources */,
 				84BAF96622DA087B003AAD74 /* Error.swift in Sources */,
 				84BAF96822DA10DE003AAD74 /* Alert.swift in Sources */,
 				84B0699422D648FF007F43D6 /* ConverterViewModel.swift in Sources */,

@@ -13,15 +13,20 @@ protocol Store {
 }
 
 class ConverterStore: Store {
-    private let apiKey = "b53418f0cda7fd7c937f4fd39851d5d1"
-    private let serverHost = "http://data.fixer.io/api/"
-    private let latestEndpoint = "latest"
-    private let errorCodes = [NSURLErrorNotConnectedToInternet, NSURLErrorDataNotAllowed, NSURLErrorNetworkConnectionLost]
-
-    private let libraryDirectory = try! FileManager.default.url(for: .libraryDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-    private let storeLocation = "rates.json"
+    private let fileName: String
+    private let apiService: ApiService
 
     static let shared = ConverterStore()
+
+    private var storeLocation: URL {
+        let libraryDirectory = try! FileManager.default.url(for: .libraryDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+        return libraryDirectory.appendingPathComponent("\(fileName).json")
+    }
+
+    init(apiService: ApiService? = nil, fileName: String? = nil) {
+        self.apiService = apiService ?? FixerApiService()
+        self.fileName = fileName ?? "rates"
+    }
 
     func fetchData(_ completionHandler: @escaping (ExchangeRates?, Error?) -> Void) {
         let exchangeRates = getDataFromCache()
@@ -60,67 +65,45 @@ class ConverterStore: Store {
     }
 
     private func getDataFromCache() -> ExchangeRates? {
-        guard let cachedData = try? Data(contentsOf: libraryDirectory.appendingPathComponent(storeLocation)) else {
+        guard let cachedData = try? Data(contentsOf: storeLocation) else {
             return nil
         }
 
         return try? JSONDecoder().decode(ExchangeRates.self, from: cachedData)
     }
 
-    private func getDataFromServer(completionHandler: @escaping (ExchangeRates?, Error?) -> Void) {
-        let url = getUrl(for: latestEndpoint)
-
-        let task = URLSession.shared.dataTask(with: url) { [weak self] (data, response, error) in
-            guard let strongSelf = self else {
-                completionHandler(nil, nil)
-                return
-            }
-
-            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200, let jsonData = data else {
-                if let error = error {
-                    NSLog("Network data fetch done with error: \(error.localizedDescription).")
-
-                    if strongSelf.errorCodes.contains(error._code) {
-                        completionHandler(nil, .noConnection)
-                    } else {
-                        completionHandler(nil, .other)
-                    }
-                }
-
-                return
-            }
-
-            guard let response = try? JSONDecoder().decode(LatestRatesResponse.self, from: jsonData) else {
-                NSLog("Error while parsing json.")
-                completionHandler(nil, .other)
-                return
-            }
-
-            if let responseError = response.error {
-                NSLog("Error returned from API: \(responseError.info).")
-                completionHandler(nil, .apiError)
-                return
-            }
-
-            let exchangeRates = strongSelf.parseRates(from: response)
-
-            if let exchangeRatesJson = try? JSONEncoder().encode(exchangeRates) {
-                strongSelf.cacheData(exchangeRatesJson)
-            } else {
-                NSLog("Error while parsing json. Data not saved to cache.")
-            }
-
-            NSLog("Network data fetch done with success.")
-            completionHandler(exchangeRates, nil)
+    private func getDataFromServer(_ completionHandler: @escaping (ExchangeRates?, Error?) -> Void) {
+        apiService.getLatestExchangeRates { [weak self] apiResponse, error in
+            self?.handleApiResponse(apiResponse, error, completionHandler)
         }
-
-        NSLog("Started data fetch from \(url).")
-        task.resume()
     }
 
-    private func getUrl(for endpoint: String) -> URL {
-        let urlString = "\(serverHost)\(endpoint)?access_key=\(apiKey)"
-        return URL(string: urlString)!
+    private func handleApiResponse(_ response: LatestRatesResponse?, _ error: Error?, _ completionHandler: @escaping (ExchangeRates?, Error?) -> Void) {
+        if let error = error {
+            completionHandler(nil, error)
+            return
+        }
+
+        guard let response = response else {
+            completionHandler(nil, .other)
+            return
+        }
+
+        if let responseError = response.error {
+            NSLog("Error returned from API: \(responseError.info).")
+            completionHandler(nil, .apiError)
+            return
+        }
+
+        let exchangeRates = parseRates(from: response)
+
+        if let exchangeRatesJson = try? JSONEncoder().encode(exchangeRates) {
+            cacheData(exchangeRatesJson)
+        } else {
+            NSLog("Error while deserializing json form ExchangeRates. Data not saved to cache.")
+        }
+
+        completionHandler(exchangeRates, nil)
     }
 
     private func parseRates(from response: LatestRatesResponse) -> ExchangeRates? {
@@ -136,16 +119,14 @@ class ConverterStore: Store {
     }
 
     private func cacheData(_ jsonData: Data) {
-        let url = libraryDirectory.appendingPathComponent(storeLocation)
-
-        try? jsonData.write(to: url)
+        try? jsonData.write(to: storeLocation)
     }
 }
 
 fileprivate extension Date {
     var currentDate: Date {
         let timeZone = TimeZone(secondsFromGMT: 0)!
-        let timeIntervalWithTimeZone = self.timeIntervalSinceReferenceDate + Double(timeZone.secondsFromGMT())
+        let timeIntervalWithTimeZone = timeIntervalSinceReferenceDate + Double(timeZone.secondsFromGMT())
         let timeInterval = floor(timeIntervalWithTimeZone / 86400) * 86400
 
         return Date(timeIntervalSinceReferenceDate: timeInterval)

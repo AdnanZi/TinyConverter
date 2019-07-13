@@ -50,7 +50,7 @@ class ConverterViewModel: NSObject {
     @objc dynamic var showSpinner = false
     @objc dynamic var alert: Alert? = nil
 
-    let store: Store
+    private let store: Store
 
     init(store: Store? = nil) {
         self.store = store ?? ConverterStore.shared
