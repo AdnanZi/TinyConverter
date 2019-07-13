@@ -26,7 +26,7 @@
                                 </items>
                             </navigationBar>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="F3q-bh-hh1" userLabel="Base Stack View">
-                                <rect key="frame" x="16" y="96" width="343" height="115.5"/>
+                                <rect key="frame" x="16" y="96" width="343" height="103.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Base Currency" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gjN-Hx-wsg" userLabel="Currency">
                                         <rect key="frame" x="0.0" y="0.0" width="343" height="20.5"/>
@@ -34,16 +34,15 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="evz-Ok-UFC" userLabel="Select currency">
-                                        <rect key="frame" x="0.0" y="36.5" width="343" height="33"/>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="# EUR" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ufL-CO-dIb" userLabel="Select Currency">
+                                        <rect key="frame" x="0.0" y="36.5" width="343" height="21"/>
+                                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <state key="normal" title="# EUR"/>
-                                    </button>
-                                    <pickerView hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="t3u-sV-34j" userLabel="Currency Picker View">
-                                        <rect key="frame" x="0.0" y="77.5" width="343" height="0.0"/>
-                                    </pickerView>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Amount" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="cdU-LU-gs4" userLabel="Amount">
-                                        <rect key="frame" x="0.0" y="85.5" width="343" height="30"/>
+                                        <rect key="frame" x="0.0" y="73.5" width="343" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                         <textInputTraits key="textInputTraits" keyboardType="numbersAndPunctuation"/>
@@ -51,7 +50,7 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="ZZs-t6-fh7" userLabel="Target Stack View">
-                                <rect key="frame" x="16" y="243.5" width="343" height="115.5"/>
+                                <rect key="frame" x="16" y="231.5" width="343" height="103.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Target Currency" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SFW-Kn-rgc" userLabel="Currency">
                                         <rect key="frame" x="0.0" y="0.0" width="343" height="20.5"/>
@@ -59,16 +58,15 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iU0-33-dD8" userLabel="Select currency">
-                                        <rect key="frame" x="0.0" y="36.5" width="343" height="33"/>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="# USD" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1a5-rv-ANY" userLabel="Select Currency">
+                                        <rect key="frame" x="0.0" y="36.5" width="343" height="21"/>
+                                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <state key="normal" title="# USD"/>
-                                    </button>
-                                    <pickerView hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sQV-HG-6ei" userLabel="Currency Picker View">
-                                        <rect key="frame" x="0.0" y="77.5" width="343" height="0.0"/>
-                                    </pickerView>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Amount" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="UdN-LA-3Zq" userLabel="Amount">
-                                        <rect key="frame" x="0.0" y="85.5" width="343" height="30"/>
+                                        <rect key="frame" x="0.0" y="73.5" width="343" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                         <textInputTraits key="textInputTraits" keyboardType="numbersAndPunctuation"/>
@@ -98,12 +96,10 @@
                     </view>
                     <connections>
                         <outlet property="baseAmountTextField" destination="cdU-LU-gs4" id="09F-Me-6wh"/>
-                        <outlet property="baseButton" destination="evz-Ok-UFC" id="jFU-Mj-ffR"/>
-                        <outlet property="basePicker" destination="t3u-sV-34j" id="n5C-Qh-E3L"/>
+                        <outlet property="baseSymbolTextField" destination="ufL-CO-dIb" id="xwH-xr-YW6"/>
                         <outlet property="spinner" destination="ZVC-RH-VJN" id="XZP-T9-hSt"/>
                         <outlet property="targetAmountTextField" destination="UdN-LA-3Zq" id="zrV-vu-mRv"/>
-                        <outlet property="targetButton" destination="iU0-33-dD8" id="tEI-cq-2DR"/>
-                        <outlet property="targetPicker" destination="sQV-HG-6ei" id="ZkM-Gb-V7k"/>
+                        <outlet property="targetSymbolTextField" destination="1a5-rv-ANY" id="YxP-jK-huN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

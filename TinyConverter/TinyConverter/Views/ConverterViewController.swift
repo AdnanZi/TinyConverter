@@ -9,15 +9,16 @@
 import UIKit
 
 class ConverterViewController: UIViewController {
-    @IBOutlet weak var baseButton: UIButton!
-    @IBOutlet weak var basePicker: UIPickerView!
+    @IBOutlet weak var baseSymbolTextField: UITextField!
     @IBOutlet weak var baseAmountTextField: UITextField!
 
-    @IBOutlet weak var targetButton: UIButton!
-    @IBOutlet weak var targetPicker: UIPickerView!
+    @IBOutlet weak var targetSymbolTextField: UITextField!
     @IBOutlet weak var targetAmountTextField: UITextField!
 
     @IBOutlet weak var spinner: UIActivityIndicatorView!
+
+    let basePicker = UIPickerView()
+    let targetPicker = UIPickerView()
 
     let viewModel = ConverterViewModel()
     var observations = [NSKeyValueObservation]()
@@ -32,16 +33,16 @@ class ConverterViewController: UIViewController {
     }
 
     private func setupViews() {
-        basePicker.delegate = self
         basePicker.dataSource = self
-        targetPicker.delegate = self
+        basePicker.delegate = self
         targetPicker.dataSource = self
+        targetPicker.delegate = self
+
+        baseSymbolTextField.inputView = basePicker
+        targetSymbolTextField.inputView = targetPicker
 
         baseAmountTextField.delegate = self
         targetAmountTextField.delegate = self
-
-        baseButton.addTarget(self, action: #selector(selectBaseCurrency), for: .touchUpInside)
-        targetButton.addTarget(self, action: #selector(selectTargetCurrency), for: .touchUpInside)
     }
 
     @objc private func selectBaseCurrency() {
@@ -54,8 +55,8 @@ class ConverterViewController: UIViewController {
 
     private func setupObservables() {
         observations = [
-            viewModel.bind(\.baseCurrency, to: baseButton, at: \.titleForNormalState),
-            viewModel.bind(\.targetCurrency, to: targetButton, at: \.titleForNormalState),
+            viewModel.bind(\.baseCurrency, to: baseSymbolTextField, at: \.text),
+            viewModel.bind(\.targetCurrency, to: targetSymbolTextField, at: \.text),
             viewModel.bind(\.showSpinner, to: spinner, at: \.animating),
             viewModel.bind(\.baseAmount, to: baseAmountTextField, at: \.text),
             viewModel.bind(\.targetAmount, to: targetAmountTextField, at: \.text),
@@ -82,8 +83,6 @@ class ConverterViewController: UIViewController {
 
 extension ConverterViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        pickerView.isHidden = true
-
         let value = viewModel.symbols[row]
 
         if pickerView == basePicker {

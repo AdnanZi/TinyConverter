@@ -17,17 +17,6 @@ extension NSObjectProtocol where Self: NSObject {
     }
 }
 
-extension UIButton {
-    var titleForNormalState: String? {
-        get {
-            return title(for: .normal)
-        }
-        set {
-            setTitle(newValue, for: .normal)
-        }
-    }
-}
-
 extension UIActivityIndicatorView {
     var animating: Bool {
         get {
