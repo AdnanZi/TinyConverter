@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        Store.shared.refreshData() { refreshed in
+        ConverterStore.shared.refreshData() { refreshed in
             completionHandler(refreshed ? .newData : .noData)
         }
     }

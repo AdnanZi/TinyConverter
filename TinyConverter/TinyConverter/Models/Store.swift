@@ -8,7 +8,11 @@
 
 import Foundation
 
-class Store {
+protocol Store {
+    func fetchData(_ completionHandler: @escaping (ExchangeRates?, Error?) -> Void)
+}
+
+class ConverterStore: Store {
     private let apiKey = "b53418f0cda7fd7c937f4fd39851d5d1"
     private let serverHost = "http://data.fixer.io/api/"
     private let latestEndpoint = "latest"
@@ -17,7 +21,7 @@ class Store {
     private let libraryDirectory = try! FileManager.default.url(for: .libraryDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
     private let storeLocation = "rates.json"
 
-    static let shared = Store()
+    static let shared = ConverterStore()
 
     func fetchData(_ completionHandler: @escaping (ExchangeRates?, Error?) -> Void) {
         let exchangeRates = getDataFromCache()

@@ -53,6 +53,12 @@ class ConverterViewModel: NSObject {
     @objc dynamic var showSpinner = false
     @objc dynamic var alert: Alert? = nil
 
+    let store: Store
+
+    init(store: Store? = nil) {
+        self.store = store ?? ConverterStore.shared
+    }
+
     private func calculateTargetValue(baseValue: String?, baseCurrency: String?, targetCurrency: String?) -> String {
         guard let baseValue = baseValue, let multiplier = Double(baseValue),
             let baseCurrency = baseCurrency, let targetCurrency = targetCurrency,
@@ -76,7 +82,7 @@ class ConverterViewModel: NSObject {
 
 extension ConverterViewModel {
     func fetchData() {
-        Store.shared.fetchData(dataFetchedHandler) // TODO: Refactor reference
+        store.fetchData(dataFetchedHandler)
 
         showSpinner = true
     }
