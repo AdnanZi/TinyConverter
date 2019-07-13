@@ -117,7 +117,7 @@ extension ConverterViewController: UITextFieldDelegate {
     }
 
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        guard let text = textField.text, text.count > 0 else {
+        guard let text = textField.text else {
             return true
         }
 
