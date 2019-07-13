@@ -128,7 +128,7 @@ class ConverterStore: Store {
     }
 }
 
-fileprivate extension Date {
+extension Date {
     var currentDate: Date {
         let timeZone = TimeZone(secondsFromGMT: 0)!
         let timeIntervalWithTimeZone = timeIntervalSinceReferenceDate + Double(timeZone.secondsFromGMT())

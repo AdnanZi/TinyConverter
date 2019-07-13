@@ -19,7 +19,7 @@
 		84BAF96622DA087B003AAD74 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BAF96522DA087B003AAD74 /* Error.swift */; };
 		84BAF96822DA10DE003AAD74 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BAF96722DA10DE003AAD74 /* Alert.swift */; };
 		84BAF96B22DA39F9003AAD74 /* ApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BAF96A22DA39F9003AAD74 /* ApiService.swift */; };
-		84BAF97722DA4FB7003AAD74 /* TinyConverterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BAF97622DA4FB7003AAD74 /* TinyConverterTests.swift */; };
+		84BAF97722DA4FB7003AAD74 /* StoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BAF97622DA4FB7003AAD74 /* StoreTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,7 +48,7 @@
 		84BAF96722DA10DE003AAD74 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		84BAF96A22DA39F9003AAD74 /* ApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiService.swift; sourceTree = "<group>"; };
 		84BAF97422DA4FB6003AAD74 /* TinyConverterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TinyConverterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		84BAF97622DA4FB7003AAD74 /* TinyConverterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TinyConverterTests.swift; sourceTree = "<group>"; };
+		84BAF97622DA4FB7003AAD74 /* StoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreTests.swift; sourceTree = "<group>"; };
 		84BAF97822DA4FB7003AAD74 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -151,7 +151,7 @@
 		84BAF97522DA4FB7003AAD74 /* TinyConverterTests */ = {
 			isa = PBXGroup;
 			children = (
-				84BAF97622DA4FB7003AAD74 /* TinyConverterTests.swift */,
+				84BAF97622DA4FB7003AAD74 /* StoreTests.swift */,
 				84BAF97822DA4FB7003AAD74 /* Info.plist */,
 			);
 			path = TinyConverterTests;
@@ -279,7 +279,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				84BAF97722DA4FB7003AAD74 /* TinyConverterTests.swift in Sources */,
+				84BAF97722DA4FB7003AAD74 /* StoreTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
