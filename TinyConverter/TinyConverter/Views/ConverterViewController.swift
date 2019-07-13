@@ -45,14 +45,6 @@ class ConverterViewController: UIViewController {
         targetAmountTextField.delegate = self
     }
 
-    @objc private func selectBaseCurrency() {
-        basePicker.isHidden = false
-    }
-
-    @objc private func selectTargetCurrency() {
-        targetPicker.isHidden = false
-    }
-
     private func setupObservables() {
         observations = [
             viewModel.bind(\.baseCurrency, to: baseSymbolTextField, at: \.text),
