@@ -12,31 +12,32 @@ class Store {
     private let apiKey = "b53418f0cda7fd7c937f4fd39851d5d1"
     private let serverHost = "http://data.fixer.io/api/"
     private let latestEndpoint = "latest"
+    private let errorCodes = [NSURLErrorNotConnectedToInternet, NSURLErrorDataNotAllowed, NSURLErrorNetworkConnectionLost]
 
     private let libraryDirectory = try! FileManager.default.url(for: .libraryDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
     private let storeLocation = "rates.json"
 
     static let shared = Store()
 
-    func fetchData(_ completionHandler: @escaping (ExchangeRates?) -> Void) {
+    func fetchData(_ completionHandler: @escaping (ExchangeRates?, Error?) -> Void) {
         let exchangeRates = getDataFromCache()
 
         if let exchangeRates = exchangeRates {
             let currentDate = Date().currentDate
 
             if exchangeRates.date == currentDate {
-                completionHandler(exchangeRates)
+                completionHandler(exchangeRates, nil)
                 return
             }
         }
 
-        getDataFromServer { data in
+        getDataFromServer { data, error in
             guard let data = data else {
-                completionHandler(exchangeRates)
+                completionHandler(exchangeRates, error)
                 return
             }
 
-            completionHandler(data)
+            completionHandler(data, nil)
         }
     }
 
@@ -47,7 +48,7 @@ class Store {
             if exchangeRates.date == currentDate {
                 completionHandler(false)
             } else {
-                getDataFromServer { data in
+                getDataFromServer { data, _ in
                     completionHandler(data != nil ? true : false)
                 }
             }
@@ -62,47 +63,60 @@ class Store {
         return try? JSONDecoder().decode(ExchangeRates.self, from: cachedData)
     }
 
-    private func getDataFromServer(completionHandler: @escaping (ExchangeRates?) -> Void) {
-        guard let url = getUrl(for: latestEndpoint) else {
-            completionHandler(nil)
-            return
-        }
+    private func getDataFromServer(completionHandler: @escaping (ExchangeRates?, Error?) -> Void) {
+        let url = getUrl(for: latestEndpoint)
 
         let task = URLSession.shared.dataTask(with: url) { [weak self] (data, response, error) in
-            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200, let jsonData = data else {
-                // TODO: Handle errors
-                completionHandler(nil)
-                return
-            }
-
             guard let strongSelf = self else {
-                completionHandler(nil)
+                completionHandler(nil, nil)
                 return
             }
 
-            let response = try? JSONDecoder().decode(LatestRatesResponse.self, from: jsonData)
+            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200, let jsonData = data else {
+                if let error = error {
+                    NSLog("Network data fetch done with error: \(error.localizedDescription).")
 
-            if response == nil || response!.error != nil {
-                // TODO: Handle errors
-                completionHandler(nil)
+                    if strongSelf.errorCodes.contains(error._code) {
+                        completionHandler(nil, .noConnection)
+                    } else {
+                        completionHandler(nil, .other)
+                    }
+                }
+
                 return
             }
 
-            let exchangeRates = strongSelf.parseRates(from: response!)
+            guard let response = try? JSONDecoder().decode(LatestRatesResponse.self, from: jsonData) else {
+                NSLog("Error while parsing json.")
+                completionHandler(nil, .other)
+                return
+            }
+
+            if let responseError = response.error {
+                NSLog("Error returned from API: \(responseError.info).")
+                completionHandler(nil, .apiError)
+                return
+            }
+
+            let exchangeRates = strongSelf.parseRates(from: response)
 
             if let exchangeRatesJson = try? JSONEncoder().encode(exchangeRates) {
                 strongSelf.cacheData(exchangeRatesJson)
+            } else {
+                NSLog("Error while parsing json. Data not saved to cache.")
             }
 
-            completionHandler(exchangeRates)
+            NSLog("Network data fetch done with success.")
+            completionHandler(exchangeRates, nil)
         }
 
+        NSLog("Started data fetch from \(url).")
         task.resume()
     }
 
-    private func getUrl(for endpoint: String) -> URL? {
+    private func getUrl(for endpoint: String) -> URL {
         let urlString = "\(serverHost)\(endpoint)?access_key=\(apiKey)"
-        return URL(string: urlString)
+        return URL(string: urlString)!
     }
 
     private func parseRates(from response: LatestRatesResponse) -> ExchangeRates? {

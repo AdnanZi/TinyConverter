@@ -58,8 +58,21 @@ class ConverterViewController: UIViewController {
             viewModel.bind(\.targetCurrency, to: targetButton, at: \.titleForNormalState),
             viewModel.bind(\.showSpinner, to: spinner, at: \.animating),
             viewModel.bind(\.baseAmount, to: baseAmountTextField, at: \.text),
-            viewModel.bind(\.targetAmount, to: targetAmountTextField, at: \.text)
+            viewModel.bind(\.targetAmount, to: targetAmountTextField, at: \.text),
+            viewModel.observe(\.alert, options: [.new]) { [weak self] _, change in self?.showAlert(change.newValue!) }
         ]
+    }
+
+    private func showAlert(_ alertOptions: Alert?) {
+        guard let alertOptions = alertOptions else {
+            return
+        }
+
+        let alert = UIAlertController(title: alertOptions.alertTitle, message: alertOptions.alertText, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] _ in self?.viewModel.fetchData() }))
+
+        self.present(alert, animated: true, completion: nil)
     }
 
     @objc private func appDidBecomeActive() {

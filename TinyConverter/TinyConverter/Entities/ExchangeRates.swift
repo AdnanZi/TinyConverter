@@ -5,7 +5,6 @@
 //  Created by Adnan Zildzic on 11.07.19.
 //  Copyright © 2019 Adnan Zildzic. All rights reserved.
 //
-
 import Foundation
 
 struct LatestRatesResponse: Codable {

@@ -11,6 +11,9 @@ class ConverterViewModel: NSObject {
     var symbols = [String]()
     private var exchangeRates = [String: Double]()
 
+    private let noConnectionAlertTitle = "No internet connection"
+    private let noConnectionAlertText = "Internet connection is not avilable or is bad. Exchange rates might be obsolete. Do you want to try again?"
+
     @objc dynamic var baseCurrency: String? = "EUR" {
         didSet {
             if (oldValue == baseCurrency) {
@@ -48,6 +51,7 @@ class ConverterViewModel: NSObject {
     }
 
     @objc dynamic var showSpinner = false;
+    @objc dynamic var alert: Alert? = nil
 
     func fetchData() {
         Store.shared.fetchData(dataFetchedHandler)
@@ -55,18 +59,21 @@ class ConverterViewModel: NSObject {
         showSpinner = true
     }
 
-    private func dataFetchedHandler(_ data: ExchangeRates?) {
-        guard let storedExchangeRates = data else {
-            // TODO: Handle error
-            return
-        }
-
+    private func dataFetchedHandler(_ data: ExchangeRates?, _ error: Error?) {
         DispatchQueue.main.async { [weak self] in
             guard let strongSelf = self else {
                 return
             }
 
             strongSelf.showSpinner = false
+
+            guard let storedExchangeRates = data else {
+                if error == .noConnection {
+                    strongSelf.alert = Alert(alertTitle: strongSelf.noConnectionAlertTitle, alertText: strongSelf.noConnectionAlertText)
+                }
+
+                return
+            }
 
             strongSelf.exchangeRates = storedExchangeRates.rates
             strongSelf.symbols = [String](strongSelf.exchangeRates.keys).sorted { $0 < $1 }

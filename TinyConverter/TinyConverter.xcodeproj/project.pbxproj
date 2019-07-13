@@ -16,6 +16,8 @@
 		84B0699922D718A3007F43D6 /* ViewBinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B0699822D718A3007F43D6 /* ViewBinder.swift */; };
 		84B0699B22D72EDC007F43D6 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B0699A22D72EDC007F43D6 /* Store.swift */; };
 		84B0699E22D739B9007F43D6 /* ExchangeRates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B0699D22D739B9007F43D6 /* ExchangeRates.swift */; };
+		84BAF96622DA087B003AAD74 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BAF96522DA087B003AAD74 /* Error.swift */; };
+		84BAF96822DA10DE003AAD74 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BAF96722DA10DE003AAD74 /* Alert.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +32,8 @@
 		84B0699822D718A3007F43D6 /* ViewBinder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewBinder.swift; sourceTree = "<group>"; };
 		84B0699A22D72EDC007F43D6 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		84B0699D22D739B9007F43D6 /* ExchangeRates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeRates.swift; sourceTree = "<group>"; };
+		84BAF96522DA087B003AAD74 /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
+		84BAF96722DA10DE003AAD74 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,8 +67,9 @@
 			isa = PBXGroup;
 			children = (
 				84B0699522D716CC007F43D6 /* Views */,
-				84B0699622D7184D007F43D6 /* Model */,
-				84B0699722D7187A007F43D6 /* Utility */,
+				84B0699622D7184D007F43D6 /* Models */,
+				84B0699722D7187A007F43D6 /* Utils */,
+				84BAF96422DA085F003AAD74 /* Entities */,
 				84B0697A22D633CA007F43D6 /* AppDelegate.swift */,
 				84B0697E22D633CA007F43D6 /* Main.storyboard */,
 				84B0698122D633CC007F43D6 /* Assets.xcassets */,
@@ -83,21 +88,30 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		84B0699622D7184D007F43D6 /* Model */ = {
+		84B0699622D7184D007F43D6 /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				84B0699A22D72EDC007F43D6 /* Store.swift */,
-				84B0699D22D739B9007F43D6 /* ExchangeRates.swift */,
 			);
-			path = Model;
+			path = Models;
 			sourceTree = "<group>";
 		};
-		84B0699722D7187A007F43D6 /* Utility */ = {
+		84B0699722D7187A007F43D6 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
 				84B0699822D718A3007F43D6 /* ViewBinder.swift */,
 			);
-			path = Utility;
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		84BAF96422DA085F003AAD74 /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				84B0699D22D739B9007F43D6 /* ExchangeRates.swift */,
+				84BAF96522DA087B003AAD74 /* Error.swift */,
+				84BAF96722DA10DE003AAD74 /* Alert.swift */,
+			);
+			path = Entities;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -181,6 +195,8 @@
 				84B0697D22D633CA007F43D6 /* ConverterViewController.swift in Sources */,
 				84B0697B22D633CA007F43D6 /* AppDelegate.swift in Sources */,
 				84B0699E22D739B9007F43D6 /* ExchangeRates.swift in Sources */,
+				84BAF96622DA087B003AAD74 /* Error.swift in Sources */,
+				84BAF96822DA10DE003AAD74 /* Alert.swift in Sources */,
 				84B0699422D648FF007F43D6 /* ConverterViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
