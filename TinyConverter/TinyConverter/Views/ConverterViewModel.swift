@@ -49,14 +49,10 @@ class ConverterViewModel: NSObject {
 
     @objc dynamic var showSpinner = false;
 
-    override init() {
-        super.init()
+    func fetchData() {
+        Store.shared.fetchData(dataFetchedHandler)
 
-        if exchangeRates.isEmpty {
-            Store.shared.fetchData(dataFetchedHandler)
-
-            showSpinner = true
-        }
+        showSpinner = true
     }
 
     private func dataFetchedHandler(_ data: ExchangeRates?) {

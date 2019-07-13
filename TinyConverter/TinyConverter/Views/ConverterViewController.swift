@@ -27,9 +27,11 @@ class ConverterViewController: UIViewController {
 
         setupViews()
         setupObservables()
+
+        NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
     }
 
-    fileprivate func setupViews() {
+    private func setupViews() {
         basePicker.delegate = self
         basePicker.dataSource = self
         targetPicker.delegate = self
@@ -50,7 +52,7 @@ class ConverterViewController: UIViewController {
         targetPicker.isHidden = false
     }
 
-    fileprivate func setupObservables() {
+    private func setupObservables() {
         observations = [
             viewModel.bind(\.baseCurrency, to: baseButton, at: \.titleForNormalState),
             viewModel.bind(\.targetCurrency, to: targetButton, at: \.titleForNormalState),
@@ -58,6 +60,10 @@ class ConverterViewController: UIViewController {
             viewModel.bind(\.baseAmount, to: baseAmountTextField, at: \.text),
             viewModel.bind(\.targetAmount, to: targetAmountTextField, at: \.text)
         ]
+    }
+
+    @objc private func appDidBecomeActive() {
+        viewModel.fetchData()
     }
 }
 
