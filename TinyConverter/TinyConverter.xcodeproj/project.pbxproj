@@ -19,7 +19,18 @@
 		84BAF96622DA087B003AAD74 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BAF96522DA087B003AAD74 /* Error.swift */; };
 		84BAF96822DA10DE003AAD74 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BAF96722DA10DE003AAD74 /* Alert.swift */; };
 		84BAF96B22DA39F9003AAD74 /* ApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BAF96A22DA39F9003AAD74 /* ApiService.swift */; };
+		84BAF97722DA4FB7003AAD74 /* TinyConverterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BAF97622DA4FB7003AAD74 /* TinyConverterTests.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		84BAF97922DA4FB7003AAD74 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 84B0696F22D633CA007F43D6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 84B0697622D633CA007F43D6;
+			remoteInfo = TinyConverter;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		84B0697722D633CA007F43D6 /* TinyConverter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TinyConverter.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -36,10 +47,20 @@
 		84BAF96522DA087B003AAD74 /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 		84BAF96722DA10DE003AAD74 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		84BAF96A22DA39F9003AAD74 /* ApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiService.swift; sourceTree = "<group>"; };
+		84BAF97422DA4FB6003AAD74 /* TinyConverterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TinyConverterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		84BAF97622DA4FB7003AAD74 /* TinyConverterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TinyConverterTests.swift; sourceTree = "<group>"; };
+		84BAF97822DA4FB7003AAD74 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		84B0697422D633CA007F43D6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		84BAF97122DA4FB6003AAD74 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -53,6 +74,7 @@
 			isa = PBXGroup;
 			children = (
 				84B0697922D633CA007F43D6 /* TinyConverter */,
+				84BAF97522DA4FB7003AAD74 /* TinyConverterTests */,
 				84B0697822D633CA007F43D6 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -61,6 +83,7 @@
 			isa = PBXGroup;
 			children = (
 				84B0697722D633CA007F43D6 /* TinyConverter.app */,
+				84BAF97422DA4FB6003AAD74 /* TinyConverterTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -125,6 +148,15 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
+		84BAF97522DA4FB7003AAD74 /* TinyConverterTests */ = {
+			isa = PBXGroup;
+			children = (
+				84BAF97622DA4FB7003AAD74 /* TinyConverterTests.swift */,
+				84BAF97822DA4FB7003AAD74 /* Info.plist */,
+			);
+			path = TinyConverterTests;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -145,6 +177,24 @@
 			productReference = 84B0697722D633CA007F43D6 /* TinyConverter.app */;
 			productType = "com.apple.product-type.application";
 		};
+		84BAF97322DA4FB6003AAD74 /* TinyConverterTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 84BAF97B22DA4FB7003AAD74 /* Build configuration list for PBXNativeTarget "TinyConverterTests" */;
+			buildPhases = (
+				84BAF97022DA4FB6003AAD74 /* Sources */,
+				84BAF97122DA4FB6003AAD74 /* Frameworks */,
+				84BAF97222DA4FB6003AAD74 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				84BAF97A22DA4FB7003AAD74 /* PBXTargetDependency */,
+			);
+			name = TinyConverterTests;
+			productName = TinyConverterTests;
+			productReference = 84BAF97422DA4FB6003AAD74 /* TinyConverterTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -163,6 +213,10 @@
 							};
 						};
 					};
+					84BAF97322DA4FB6003AAD74 = {
+						CreatedOnToolsVersion = 10.2.1;
+						TestTargetID = 84B0697622D633CA007F43D6;
+					};
 				};
 			};
 			buildConfigurationList = 84B0697222D633CA007F43D6 /* Build configuration list for PBXProject "TinyConverter" */;
@@ -179,6 +233,7 @@
 			projectRoot = "";
 			targets = (
 				84B0697622D633CA007F43D6 /* TinyConverter */,
+				84BAF97322DA4FB6003AAD74 /* TinyConverterTests */,
 			);
 		};
 /* End PBXProject section */
@@ -191,6 +246,13 @@
 				84B0698522D633CC007F43D6 /* LaunchScreen.storyboard in Resources */,
 				84B0698222D633CC007F43D6 /* Assets.xcassets in Resources */,
 				84B0698022D633CA007F43D6 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		84BAF97222DA4FB6003AAD74 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -213,7 +275,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		84BAF97022DA4FB6003AAD74 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				84BAF97722DA4FB7003AAD74 /* TinyConverterTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		84BAF97A22DA4FB7003AAD74 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 84B0697622D633CA007F43D6 /* TinyConverter */;
+			targetProxy = 84BAF97922DA4FB7003AAD74 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		84B0697E22D633CA007F43D6 /* Main.storyboard */ = {
@@ -389,6 +467,46 @@
 			};
 			name = Release;
 		};
+		84BAF97C22DA4FB7003AAD74 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = BDZYLC5NBU;
+				INFOPLIST_FILE = TinyConverterTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.company.adnan.TinyConverterTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TinyConverter.app/TinyConverter";
+			};
+			name = Debug;
+		};
+		84BAF97D22DA4FB7003AAD74 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = BDZYLC5NBU;
+				INFOPLIST_FILE = TinyConverterTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.company.adnan.TinyConverterTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TinyConverter.app/TinyConverter";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -406,6 +524,15 @@
 			buildConfigurations = (
 				84B0698A22D633CC007F43D6 /* Debug */,
 				84B0698B22D633CC007F43D6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		84BAF97B22DA4FB7003AAD74 /* Build configuration list for PBXNativeTarget "TinyConverterTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				84BAF97C22DA4FB7003AAD74 /* Debug */,
+				84BAF97D22DA4FB7003AAD74 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
