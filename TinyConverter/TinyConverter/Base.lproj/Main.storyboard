@@ -34,7 +34,7 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="# EUR" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ufL-CO-dIb" userLabel="Select Currency">
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="# EUR" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ufL-CO-dIb" userLabel="Select Currency" customClass="SymbolTextField" customModule="TinyConverter" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="36.5" width="343" height="21"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -96,7 +96,7 @@
                     </view>
                     <connections>
                         <outlet property="baseAmountTextField" destination="cdU-LU-gs4" id="09F-Me-6wh"/>
-                        <outlet property="baseSymbolTextField" destination="ufL-CO-dIb" id="xwH-xr-YW6"/>
+                        <outlet property="baseSymbolTextField" destination="ufL-CO-dIb" id="Sbe-h7-jVW"/>
                         <outlet property="spinner" destination="ZVC-RH-VJN" id="XZP-T9-hSt"/>
                         <outlet property="targetAmountTextField" destination="UdN-LA-3Zq" id="zrV-vu-mRv"/>
                         <outlet property="targetSymbolTextField" destination="1a5-rv-ANY" id="YxP-jK-huN"/>

@@ -9,7 +9,8 @@
 import UIKit
 
 class ConverterViewController: UIViewController {
-    @IBOutlet weak var baseSymbolTextField: UITextField!
+
+    @IBOutlet weak var baseSymbolTextField: SymbolTextField!
     @IBOutlet weak var baseAmountTextField: UITextField!
 
     @IBOutlet weak var targetSymbolTextField: UITextField!
@@ -17,7 +18,6 @@ class ConverterViewController: UIViewController {
 
     @IBOutlet weak var spinner: UIActivityIndicatorView!
 
-    let basePicker = UIPickerView()
     let targetPicker = UIPickerView()
 
     let viewModel = ConverterViewModel()
@@ -33,12 +33,13 @@ class ConverterViewController: UIViewController {
     }
 
     private func setupViews() {
+        let basePicker = baseSymbolTextField.symbolPickerView
         basePicker.dataSource = self
         basePicker.delegate = self
+
         targetPicker.dataSource = self
         targetPicker.delegate = self
 
-        baseSymbolTextField.inputView = basePicker
         targetSymbolTextField.inputView = targetPicker
 
         baseAmountTextField.delegate = self
@@ -77,7 +78,7 @@ extension ConverterViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         let value = viewModel.symbols[row]
 
-        if pickerView == basePicker {
+        if pickerView == baseSymbolTextField.symbolPickerView {
             viewModel.baseCurrency = value
         } else {
             viewModel.targetCurrency = value
