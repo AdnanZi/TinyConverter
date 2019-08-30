@@ -13,7 +13,7 @@ class ConverterViewController: UIViewController {
     @IBOutlet weak var baseSymbolTextField: SymbolTextField!
     @IBOutlet weak var baseAmountTextField: UITextField!
 
-    @IBOutlet weak var targetSymbolTextField: UITextField!
+    @IBOutlet weak var targetSymbolTextField: SymbolTextField!
     @IBOutlet weak var targetAmountTextField: UITextField!
 
     @IBOutlet weak var spinner: UIActivityIndicatorView!
@@ -37,10 +37,9 @@ class ConverterViewController: UIViewController {
         basePicker.dataSource = self
         basePicker.delegate = self
 
+        let targetPicker = targetSymbolTextField.symbolPickerView
         targetPicker.dataSource = self
         targetPicker.delegate = self
-
-        targetSymbolTextField.inputView = targetPicker
 
         baseAmountTextField.delegate = self
         targetAmountTextField.delegate = self
