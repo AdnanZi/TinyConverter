@@ -18,6 +18,8 @@ class ConverterViewController: UIViewController {
 
     @IBOutlet weak var spinner: UIActivityIndicatorView!
 
+    @IBOutlet weak var lastUpdateDateLabel: UILabel!
+
     let targetPicker = UIPickerView()
 
     let viewModel = ConverterViewModel()
@@ -52,6 +54,7 @@ class ConverterViewController: UIViewController {
             viewModel.bind(\.showSpinner, to: spinner, at: \.animating),
             viewModel.bind(\.baseAmount, to: baseAmountTextField, at: \.text),
             viewModel.bind(\.targetAmount, to: targetAmountTextField, at: \.text),
+            viewModel.bind(\.latestUpdateDate, to: lastUpdateDateLabel, at: \.text),
             viewModel.observe(\.alert, options: [.new]) { [weak self] _, change in self?.showAlert(change.newValue!) }
         ]
     }

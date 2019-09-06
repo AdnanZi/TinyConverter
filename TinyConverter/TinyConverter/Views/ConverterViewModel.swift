@@ -10,6 +10,7 @@ import Foundation
 class ConverterViewModel: NSObject {
     var symbols = [String]()
     private var exchangeRates = [String: Double]()
+    @objc dynamic var latestUpdateDate: String? = ""
 
     @objc dynamic var baseCurrency: String? = .eur {
         didSet {
@@ -102,6 +103,7 @@ extension ConverterViewModel {
 
             strongSelf.exchangeRates = storedExchangeRates.rates
             strongSelf.symbols = strongSelf.exchangeRates.keys.sorted { $0 < $1 }
+            strongSelf.latestUpdateDate = storedExchangeRates.date.dateString
 
             strongSelf.baseCurrency = strongSelf.symbols.filter { $0 == .eur }.first ?? strongSelf.symbols[0]
             strongSelf.targetCurrency = strongSelf.symbols.filter { $0 == .usd }.first ?? strongSelf.symbols[0]

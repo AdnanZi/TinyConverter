@@ -127,22 +127,3 @@ class ConverterStore: Store {
         try? jsonData.write(to: storeLocation)
     }
 }
-
-extension Date {
-    var currentDate: Date {
-        let timeZone = TimeZone(secondsFromGMT: 0)!
-        let timeIntervalWithTimeZone = timeIntervalSinceReferenceDate + Double(timeZone.secondsFromGMT())
-        let timeInterval = floor(timeIntervalWithTimeZone / 86400) * 86400
-
-        return Date(timeIntervalSinceReferenceDate: timeInterval)
-    }
-
-    static func dateFromApiString(_ dateString: String) -> Date? {
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-
-        return dateFormatter.date(from: dateString)
-    }
-}

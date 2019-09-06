@@ -77,11 +77,32 @@
                                 <rect key="frame" x="169" y="315" width="37" height="37"/>
                                 <color key="color" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </activityIndicatorView>
+                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S1x-oD-e8Y">
+                                <rect key="frame" x="68.5" y="385" width="238" height="20.5"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Last Update: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6EL-FK-Qwo" userLabel="Last Update Date Title">
+                                        <rect key="frame" x="0.0" y="0.0" width="102.5" height="20.5"/>
+                                        <color key="backgroundColor" red="0.80000000000000004" green="0.83137254900000002" blue="0.85490196080000003" alpha="1" colorSpace="calibratedRGB"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="#LastUpdateTime" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BXu-KA-pBm" userLabel="Last Update Date Value">
+                                        <rect key="frame" x="102.5" y="0.0" width="135.5" height="20.5"/>
+                                        <color key="backgroundColor" red="0.80000000000000004" green="0.83137254900000002" blue="0.85490196080000003" alpha="1" colorSpace="calibratedRGB"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="0.80000000000000004" green="0.83137254900000002" blue="0.85490196080000003" alpha="1" colorSpace="calibratedRGB"/>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="F3q-bh-hh1" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="16" id="54X-kZ-pym"/>
                             <constraint firstItem="ZZs-t6-fh7" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="7QQ-oZ-KJp"/>
+                            <constraint firstItem="S1x-oD-e8Y" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="A8l-D8-WTO"/>
                             <constraint firstItem="2fO-ah-J4j" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="GHz-eP-gTc"/>
                             <constraint firstItem="ZZs-t6-fh7" firstAttribute="top" secondItem="F3q-bh-hh1" secondAttribute="bottom" constant="32" id="Go0-UK-Aza"/>
                             <constraint firstItem="ZVC-RH-VJN" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="OMI-Mn-B2w"/>
@@ -89,6 +110,7 @@
                             <constraint firstItem="ZVC-RH-VJN" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="XLE-KA-deH"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ZZs-t6-fh7" secondAttribute="trailing" constant="16" id="bgl-Ij-vPP"/>
                             <constraint firstItem="F3q-bh-hh1" firstAttribute="top" secondItem="2fO-ah-J4j" secondAttribute="bottom" constant="32" id="d30-yQ-V66"/>
+                            <constraint firstItem="S1x-oD-e8Y" firstAttribute="top" secondItem="ZZs-t6-fh7" secondAttribute="bottom" constant="50" id="dVv-XC-zSk"/>
                             <constraint firstItem="2fO-ah-J4j" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="g2j-MW-a1H"/>
                             <constraint firstItem="2fO-ah-J4j" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="jvW-Dk-y4G"/>
                         </constraints>
@@ -97,6 +119,7 @@
                     <connections>
                         <outlet property="baseAmountTextField" destination="cdU-LU-gs4" id="09F-Me-6wh"/>
                         <outlet property="baseSymbolTextField" destination="ufL-CO-dIb" id="Sbe-h7-jVW"/>
+                        <outlet property="lastUpdateDateLabel" destination="BXu-KA-pBm" id="a1O-nr-nhS"/>
                         <outlet property="spinner" destination="ZVC-RH-VJN" id="XZP-T9-hSt"/>
                         <outlet property="targetAmountTextField" destination="UdN-LA-3Zq" id="zrV-vu-mRv"/>
                         <outlet property="targetSymbolTextField" destination="1a5-rv-ANY" id="YxP-jK-huN"/>

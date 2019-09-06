@@ -23,7 +23,7 @@ class SymbolTextField: UITextField {
     }
 
     private func setup() {
-        inputView = symbolPickerView // bug: preselected symbol isn't preselected in picker
+        inputView = symbolPickerView
 
         let flexButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(closePicker))
