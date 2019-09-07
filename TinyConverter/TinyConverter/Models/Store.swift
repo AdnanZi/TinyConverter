@@ -9,6 +9,7 @@ import Foundation
 
 protocol Store {
     func fetchData(_ completionHandler: @escaping (ExchangeRates?, Error?) -> Void)
+    func refreshData(_ completionHandler: @escaping (Bool) -> Void)
 }
 
 class ConverterStore: Store {
