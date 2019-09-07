@@ -5,7 +5,6 @@
 //  Created by Adnan Zildzic on 11.07.19.
 //  Copyright © 2019 Adnan Zildzic. All rights reserved.
 //
-
 import Foundation
 
 protocol Store {
@@ -15,18 +14,19 @@ protocol Store {
 class ConverterStore: Store {
     private let apiService: ApiService
     private let cacheService: CacheService
+    private let cacheFileName = "rates"
 
     static let shared = ConverterStore()
 
     init(apiService: ApiService? = nil, cacheService: CacheService? = nil) {
         self.apiService = apiService ?? FixerApiService()
-        self.cacheService = cacheService ?? CacheServiceImpl(fileName: "rates")
+        self.cacheService = cacheService ?? CacheServiceImpl()
     }
 
     func fetchData(_ completionHandler: @escaping (ExchangeRates?, Error?) -> Void) {
         NSLog("Fetching data...")
 
-        let exchangeRates: ExchangeRates? = cacheService.getDataFromCache()
+        let exchangeRates: ExchangeRates? = cacheService.getData(from: cacheFileName)
 
         if let exchangeRates = exchangeRates {
             let currentDate = Date().currentDate
@@ -51,7 +51,7 @@ class ConverterStore: Store {
     func refreshData(_ completionHandler: @escaping (Bool) -> Void) {
         NSLog("Refreshing data...")
 
-        if let exchangeRates: ExchangeRates = cacheService.getDataFromCache() {
+        if let exchangeRates: ExchangeRates = cacheService.getData(from: cacheFileName) {
             let currentDate = Date().currentDate
 
             if exchangeRates.date == currentDate {
@@ -90,7 +90,7 @@ class ConverterStore: Store {
         let exchangeRates = parseRates(from: response)
 
         if let exchangeRatesJson = try? JSONEncoder().encode(exchangeRates) {
-            cacheService.cacheData(exchangeRatesJson)
+            cacheService.cacheData(exchangeRatesJson, to: cacheFileName)
         } else {
             NSLog("Error while deserializing json form ExchangeRates. Data not saved to cache.")
         }

@@ -237,9 +237,9 @@ class MockCacheService<T: Decodable>: CacheService {
         self.cachedItem = cachedItem
     }
 
-    func getDataFromCache<T: Decodable>() -> T? {
+    func getData<T>(from fileName: String) -> T? where T : Decodable {
         return cachedItem as! T?
     }
 
-    func cacheData(_ jsonData: Data) { }
+    func cacheData(_ jsonData: Data, to fileName: String) { }
 }
