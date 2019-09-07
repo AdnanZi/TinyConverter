@@ -13,25 +13,20 @@ protocol Store {
 }
 
 class ConverterStore: Store {
-    private let fileName: String
     private let apiService: ApiService
+    private let cacheService: CacheService
 
     static let shared = ConverterStore()
 
-    private var storeLocation: URL {
-        let libraryDirectory = try! FileManager.default.url(for: .libraryDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-        return libraryDirectory.appendingPathComponent("\(fileName).json")
-    }
-
-    init(apiService: ApiService? = nil, fileName: String? = nil) {
+    init(apiService: ApiService? = nil, cacheService: CacheService? = nil) {
         self.apiService = apiService ?? FixerApiService()
-        self.fileName = fileName ?? "rates"
+        self.cacheService = cacheService ?? CacheServiceImpl(fileName: "rates")
     }
 
     func fetchData(_ completionHandler: @escaping (ExchangeRates?, Error?) -> Void) {
         NSLog("Fetching data...")
 
-        let exchangeRates = getDataFromCache()
+        let exchangeRates: ExchangeRates? = cacheService.getDataFromCache()
 
         if let exchangeRates = exchangeRates {
             let currentDate = Date().currentDate
@@ -56,7 +51,7 @@ class ConverterStore: Store {
     func refreshData(_ completionHandler: @escaping (Bool) -> Void) {
         NSLog("Refreshing data...")
 
-        if let exchangeRates = getDataFromCache() {
+        if let exchangeRates: ExchangeRates = cacheService.getDataFromCache() {
             let currentDate = Date().currentDate
 
             if exchangeRates.date == currentDate {
@@ -67,14 +62,6 @@ class ConverterStore: Store {
                 }
             }
         }
-    }
-
-    private func getDataFromCache() -> ExchangeRates? {
-        guard let cachedData = try? Data(contentsOf: storeLocation) else {
-            return nil
-        }
-
-        return try? JSONDecoder().decode(ExchangeRates.self, from: cachedData)
     }
 
     private func getDataFromServer(_ completionHandler: @escaping (ExchangeRates?, Error?) -> Void) {
@@ -103,7 +90,7 @@ class ConverterStore: Store {
         let exchangeRates = parseRates(from: response)
 
         if let exchangeRatesJson = try? JSONEncoder().encode(exchangeRates) {
-            cacheData(exchangeRatesJson)
+            cacheService.cacheData(exchangeRatesJson)
         } else {
             NSLog("Error while deserializing json form ExchangeRates. Data not saved to cache.")
         }
@@ -121,9 +108,5 @@ class ConverterStore: Store {
         }
 
         return ExchangeRates(baseCurrency: baseCurrency, date: date, rates: rates)
-    }
-
-    private func cacheData(_ jsonData: Data) {
-        try? jsonData.write(to: storeLocation)
     }
 }
