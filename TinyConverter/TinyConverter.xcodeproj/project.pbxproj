@@ -22,6 +22,7 @@
 		84BAF96B22DA39F9003AAD74 /* ApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BAF96A22DA39F9003AAD74 /* ApiService.swift */; };
 		84BAF97722DA4FB7003AAD74 /* StoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BAF97622DA4FB7003AAD74 /* StoreTests.swift */; };
 		84D4D2B62322A3FF00773306 /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D4D2B52322A3FF00773306 /* Date+.swift */; };
+		84D4D2BA2323DAEF00773306 /* Symbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D4D2B92323DAEF00773306 /* Symbols.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +55,7 @@
 		84BAF97622DA4FB7003AAD74 /* StoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreTests.swift; sourceTree = "<group>"; };
 		84BAF97822DA4FB7003AAD74 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		84D4D2B52322A3FF00773306 /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
+		84D4D2B92323DAEF00773306 /* Symbols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Symbols.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,6 +152,7 @@
 				84B0699D22D739B9007F43D6 /* ExchangeRates.swift */,
 				84BAF96522DA087B003AAD74 /* Error.swift */,
 				84BAF96722DA10DE003AAD74 /* Alert.swift */,
+				84D4D2B92323DAEF00773306 /* Symbols.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -286,6 +289,7 @@
 				84B0699E22D739B9007F43D6 /* ExchangeRates.swift in Sources */,
 				84BAF96B22DA39F9003AAD74 /* ApiService.swift in Sources */,
 				84BAF96622DA087B003AAD74 /* Error.swift in Sources */,
+				84D4D2BA2323DAEF00773306 /* Symbols.swift in Sources */,
 				84BAF96822DA10DE003AAD74 /* Alert.swift in Sources */,
 				84B0699422D648FF007F43D6 /* ConverterViewModel.swift in Sources */,
 			);

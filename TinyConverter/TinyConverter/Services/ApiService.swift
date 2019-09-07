@@ -8,6 +8,7 @@
 import Foundation
 
 protocol ApiService {
+    func getSymbols(completionHandler: @escaping (SymbolsResponse?, Error?) -> Void)
     func getLatestExchangeRates(completionHandler: @escaping (LatestRatesResponse?, Error?) -> Void)
 }
 
@@ -15,11 +16,20 @@ class FixerApiService: ApiService {
     private let apiKey = "b53418f0cda7fd7c937f4fd39851d5d1"
     private let serverHost = "http://data.fixer.io/api/"
     private let latestEndpoint = "latest"
+    private let symbolsEndpoint = "symbols"
 
     private let connectionErrorCodes = [NSURLErrorNotConnectedToInternet, NSURLErrorDataNotAllowed, NSURLErrorNetworkConnectionLost]
 
+    func getSymbols(completionHandler: @escaping (SymbolsResponse?, Error?) -> Void) {
+        request(for: symbolsEndpoint, completionHandler: completionHandler)
+    }
+
     func getLatestExchangeRates(completionHandler: @escaping (LatestRatesResponse?, Error?) -> Void) {
-        let url = getUrl(for: latestEndpoint)
+        request(for: latestEndpoint, completionHandler: completionHandler)
+    }
+
+    private func request<T: Decodable>(for endpoint: String, completionHandler: @escaping (T?, Error?) -> Void) {
+        let url = getUrl(for: endpoint)
 
         let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
             guard let strongSelf = self else {
@@ -41,17 +51,17 @@ class FixerApiService: ApiService {
                 return
             }
 
-            guard let response = try? JSONDecoder().decode(LatestRatesResponse.self, from: jsonData) else {
-                NSLog("Error while deserializing json to LatestRatesResponse.")
+            guard let response = try? JSONDecoder().decode(T.self, from: jsonData) else {
+                NSLog("Error while deserializing json to \(T.self)")
                 completionHandler(nil, .other)
                 return
             }
 
-            NSLog("Network data fetch done with success.")
+            NSLog("Network data fetch done with success, endpoint: \(endpoint).")
             completionHandler(response, nil)
         }
 
-        NSLog("Started data fetch...")
+        NSLog("Started data fetch from endpoint: \(endpoint)")
         task.resume()
     }
 

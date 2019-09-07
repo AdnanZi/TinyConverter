@@ -16,12 +16,6 @@ struct LatestRatesResponse: Codable {
     let rates: [String: Double]?
 }
 
-struct ErrorResponse: Codable {
-    let code: Int
-    let type: String
-    let info: String
-}
-
 struct ExchangeRates: Codable {
     let baseCurrency: String
     let date: Date
