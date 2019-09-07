@@ -15,7 +15,7 @@ protocol Store {
 class ConverterStore: Store {
     private let apiService: ApiService
     private let cacheService: CacheService
-    private let cacheFileName = "rates"
+    private let ratesFileName = "rates"
 
     static let shared = ConverterStore()
 
@@ -27,7 +27,7 @@ class ConverterStore: Store {
     func fetchData(_ completionHandler: @escaping (ExchangeRates?, Error?) -> Void) {
         NSLog("Fetching data...")
 
-        let exchangeRates: ExchangeRates? = cacheService.getData(from: cacheFileName)
+        let exchangeRates: ExchangeRates? = cacheService.getData(from: ratesFileName)
 
         if let exchangeRates = exchangeRates {
             let currentDate = Date().currentDate
@@ -52,7 +52,7 @@ class ConverterStore: Store {
     func refreshData(_ completionHandler: @escaping (Bool) -> Void) {
         NSLog("Refreshing data...")
 
-        if let exchangeRates: ExchangeRates = cacheService.getData(from: cacheFileName) {
+        if let exchangeRates: ExchangeRates = cacheService.getData(from: ratesFileName) {
             let currentDate = Date().currentDate
 
             if exchangeRates.date == currentDate {
@@ -66,41 +66,81 @@ class ConverterStore: Store {
     }
 
     private func getDataFromServer(_ completionHandler: @escaping (ExchangeRates?, Error?) -> Void) {
-        apiService.getLatestExchangeRates { [weak self] apiResponse, error in
-            self?.handleApiResponse(apiResponse, error, completionHandler)
+        getSymbolsFromServer { [weak self] symbolsResponse, error in
+            guard let strongSelf = self else {
+                completionHandler(nil, nil)
+                return
+            }
+
+            if let error = error {
+                completionHandler(nil, error)
+                return
+            }
+
+            strongSelf.getExchangeRatesFromServer { ratesResponse, error in
+                if let error = error {
+                    completionHandler(nil, error)
+                    return
+                }
+
+                let exchangeRates = strongSelf.parseRates(ratesResponse: ratesResponse!, symbolsResponse: symbolsResponse!)
+
+                if let exchangeRatesJson = try? JSONEncoder().encode(exchangeRates) {
+                    strongSelf.cacheService.cacheData(exchangeRatesJson, to: strongSelf.ratesFileName)
+                } else {
+                    NSLog("Error while deserializing json form ExchangeRates. Data not saved to cache.")
+                }
+
+                completionHandler(exchangeRates, nil)
+            }
         }
     }
 
-    private func handleApiResponse(_ response: LatestRatesResponse?, _ error: Error?, _ completionHandler: @escaping (ExchangeRates?, Error?) -> Void) {
+    private func getSymbolsFromServer(_ completionHandler: @escaping (SymbolsResponse?, Error?) -> Void) {
+        apiService.getSymbols { [weak self] apiResponse, error in
+            guard let strongSelf = self else { return }
+
+            if let error = strongSelf.validateResponse(apiResponse, error) {
+                completionHandler(nil, error)
+                return
+            }
+
+            completionHandler(apiResponse!, nil)
+        }
+    }
+
+    private func getExchangeRatesFromServer(_ completionHandler: @escaping (LatestRatesResponse?, Error?) -> Void) {
+        apiService.getLatestExchangeRates { [weak self] apiResponse, error in
+            guard let strongSelf = self else { return }
+
+            if let error = strongSelf.validateResponse(apiResponse, error) {
+                completionHandler(nil, error)
+                return
+            }
+
+            completionHandler(apiResponse!, nil)
+        }
+    }
+
+    private func validateResponse(_ response: Response?, _ error: Error?) -> Error? {
         if let error = error {
-            completionHandler(nil, error)
-            return
+            return error
         }
 
         guard let response = response else {
-            completionHandler(nil, .other)
-            return
+            return .other
         }
 
         if let responseError = response.error {
             NSLog("Error returned from API: \(responseError.info).")
-            completionHandler(nil, .apiError)
-            return
+            return .apiError
         }
 
-        let exchangeRates = parseRates(from: response)
-
-        if let exchangeRatesJson = try? JSONEncoder().encode(exchangeRates) {
-            cacheService.cacheData(exchangeRatesJson, to: cacheFileName)
-        } else {
-            NSLog("Error while deserializing json form ExchangeRates. Data not saved to cache.")
-        }
-
-        completionHandler(exchangeRates, nil)
+        return nil
     }
 
-    private func parseRates(from response: LatestRatesResponse) -> ExchangeRates? {
-        guard let baseCurrency = response.base, let dateString = response.date, let rates = response.rates else {
+    private func parseRates(ratesResponse: LatestRatesResponse, symbolsResponse: SymbolsResponse) -> ExchangeRates? {
+        guard let baseCurrency = ratesResponse.base, let dateString = ratesResponse.date, let rates = ratesResponse.rates, let symbols = symbolsResponse.symbols else {
             return nil
         }
 
@@ -108,6 +148,8 @@ class ConverterStore: Store {
             return nil
         }
 
-        return ExchangeRates(baseCurrency: baseCurrency, date: date, rates: rates)
+        let fullRates = rates.map { key, value in ExchangeRate(code: key, name: symbols[key]!, value: value) }
+
+        return ExchangeRates(baseCurrency: baseCurrency, date: date, rates: fullRates)
     }
 }

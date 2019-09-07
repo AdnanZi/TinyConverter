@@ -94,7 +94,7 @@ class StoreTests: XCTestCase {
 
     func testFetchDataFromServer_ApiError() {
         // Arrange
-        let exchangeRatesErrorResponse = LatestRatesResponse(success: false, error: ErrorResponse(code: 0, type: "some", info: "some error"), timestamp: nil, base: nil, date: nil, rates: nil)
+        let exchangeRatesErrorResponse = LatestRatesResponse(success: false, error: ApiError(code: 0, type: "some", info: "some error"), timestamp: nil, base: nil, date: nil, rates: nil)
 
         let apiService = MockApiService(exchangeRatesErrorResponse, nil)
 
