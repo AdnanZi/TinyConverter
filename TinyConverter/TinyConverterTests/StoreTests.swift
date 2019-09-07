@@ -250,6 +250,10 @@ class MockApiService: ApiService {
         self.error = error
     }
 
+    func getSymbols(completionHandler: @escaping (SymbolsResponse?, Error?) -> Void) {
+        completionHandler(nil, nil) // TODO: Implement this
+    }
+
     func getLatestExchangeRates(completionHandler: @escaping (LatestRatesResponse?, Error?) -> Void) {
         completionHandler(response, error)
     }
