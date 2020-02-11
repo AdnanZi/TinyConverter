@@ -8,8 +8,7 @@
 import Foundation
 
 class ConverterViewModel: NSObject {
-    var symbols = [String]()
-    private var exchangeRates = [String: Double]()
+    private(set) var exchangeRates = [ExchangeRate]()
     @objc dynamic var latestUpdateDate: String? = ""
 
     @objc dynamic var baseCurrency: String? = .eur {
@@ -60,7 +59,7 @@ class ConverterViewModel: NSObject {
     private func calculateTargetValue(baseValue: String?, baseCurrency: String?, targetCurrency: String?) -> String {
         guard let baseValue = baseValue, let multiplier = Double(baseValue),
             let baseCurrency = baseCurrency, let targetCurrency = targetCurrency,
-            let baseCurrencyValue = exchangeRates[baseCurrency], let targetCurrencyValue = exchangeRates[targetCurrency] else {
+            let baseCurrencyValue = exchangeRates.first(where: { $0.code == baseCurrency })?.value, let targetCurrencyValue = exchangeRates.first(where: { $0.code == targetCurrency })?.value else {
             return ""
         }
 
@@ -101,12 +100,11 @@ extension ConverterViewModel {
                 return
             }
 
-            strongSelf.exchangeRates = storedExchangeRates.rates
-            strongSelf.symbols = strongSelf.exchangeRates.keys.sorted { $0 < $1 }
+            strongSelf.exchangeRates = storedExchangeRates.rates.sorted { $0.code < $1.code }
             strongSelf.latestUpdateDate = storedExchangeRates.date.dateString
 
-            strongSelf.baseCurrency = strongSelf.symbols.filter { $0 == .eur }.first ?? strongSelf.symbols[0]
-            strongSelf.targetCurrency = strongSelf.symbols.filter { $0 == .usd }.first ?? strongSelf.symbols[0]
+            strongSelf.baseCurrency = strongSelf.exchangeRates.first { $0.code == .eur }?.code ?? strongSelf.exchangeRates.first!.code
+            strongSelf.targetCurrency = strongSelf.exchangeRates.first { $0.code == .usd }?.code ?? strongSelf.exchangeRates.first!.code
         }
     }
 }

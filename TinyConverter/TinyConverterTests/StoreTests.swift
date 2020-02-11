@@ -23,22 +23,11 @@ class StoreTests: XCTestCase {
 
     let exchangeRatesOld = ExchangeRates(baseCurrency: "EUR", date: Calendar.current.date(byAdding: .day, value: -2, to: Date())!, rates: ["AED": 4.14602, "AFN": 90.643209, "ALL": 122.248234, "AMD": 538.053473, "ANG": 2.009294, "AOA": 390.467138, "ARS": 46.877482, "AUD": 1.607685, "AWG": 2.031752, "EUR": 1, "USD": 1.128751])
 
-    var fileName = ""
-
-    override func setUp() {
-        fileName = UUID().uuidString
-    }
-
-    override func tearDown() {
-        let url = libraryDirectory.appendingPathComponent("\(fileName).json")
-        try? FileManager.default.removeItem(at: url)
-    }
-
     func testFetchDataFromServer_NoError() {
         // Arrange
         let apiService = MockApiService(exchangeRatesResponse, nil)
 
-        let store = ConverterStore(apiService: apiService, fileName: fileName)
+        let store = ConverterStore(apiService: apiService, cacheService: MockCacheService<ExchangeRates>())
 
         let expectation = self.expectation(description: "NoError")
         var resultError: Error?
@@ -60,7 +49,7 @@ class StoreTests: XCTestCase {
         // Arrange
         let apiService = MockApiService(exchangeRatesResponse, nil)
 
-        let store = ConverterStore(apiService: apiService, fileName: fileName)
+        let store = ConverterStore(apiService: apiService, cacheService: MockCacheService<ExchangeRates>())
 
         let expectation = self.expectation(description: "Result")
         var resultData: ExchangeRates?
@@ -85,7 +74,7 @@ class StoreTests: XCTestCase {
         // Arrange
         let apiService = MockApiService(nil, .noConnection)
 
-        let store = ConverterStore(apiService: apiService, fileName: fileName)
+        let store = ConverterStore(apiService: apiService, cacheService: MockCacheService<ExchangeRates>())
 
         let expectation = self.expectation(description: "ConnError")
         var resultError: Error?
@@ -105,11 +94,11 @@ class StoreTests: XCTestCase {
 
     func testFetchDataFromServer_ApiError() {
         // Arrange
-        let exchangeRatesErrorResponse = LatestRatesResponse(success: false, error: ErrorResponse(code: 0, type: "some", info: "some error"), timestamp: nil, base: nil, date: nil, rates: nil)
+        let exchangeRatesErrorResponse = LatestRatesResponse(success: false, error: ApiError(code: 0, type: "some", info: "some error"), timestamp: nil, base: nil, date: nil, rates: nil)
 
         let apiService = MockApiService(exchangeRatesErrorResponse, nil)
 
-        let store = ConverterStore(apiService: apiService, fileName: fileName)
+        let store = ConverterStore(apiService: apiService, cacheService: MockCacheService<ExchangeRates>())
 
         let expectation = self.expectation(description: "ApiError")
         var resultError: Error?
@@ -129,11 +118,10 @@ class StoreTests: XCTestCase {
 
     func testFetchDataFromServer_ErrorButReturnedFromCache() {
         // Arrange
-        let (fileName, url) = saveToFile(object: exchangeRatesOld)
-
         let apiService = MockApiService(nil, nil)
+        let cacheService = MockCacheService(cachedItem: exchangeRatesOld)
 
-        let store = ConverterStore(apiService: apiService, fileName: fileName)
+        let store = ConverterStore(apiService: apiService, cacheService: cacheService)
 
         let expectation = self.expectation(description: "ErrorCache")
         var resultData: ExchangeRates?
@@ -146,7 +134,6 @@ class StoreTests: XCTestCase {
         }
 
         waitForExpectations(timeout: 2, handler: nil)
-        try? FileManager.default.removeItem(at: url)
 
         // Assert
         XCTAssertNotNil(resultData)
@@ -154,11 +141,10 @@ class StoreTests: XCTestCase {
 
     func testFetchDataFromCache() {
         // Arrange
-        let (fileName, url) = saveToFile(object: exchangeRates)
-
         let apiService = MockApiService(nil, nil)
+        let cacheService = MockCacheService(cachedItem: exchangeRates)
 
-        let store = ConverterStore(apiService: apiService, fileName: fileName)
+        let store = ConverterStore(apiService: apiService, cacheService: cacheService)
 
         let expectation = self.expectation(description: "Cache")
         var resultData: ExchangeRates?
@@ -171,7 +157,6 @@ class StoreTests: XCTestCase {
         }
 
         waitForExpectations(timeout: 2, handler: nil)
-        try? FileManager.default.removeItem(at: url)
 
         // Assert
         XCTAssertNotNil(resultData)
@@ -182,11 +167,10 @@ class StoreTests: XCTestCase {
 
     func testRefreshDataNotRefreshed() {
         // Arrange
-        let (fileName, url) = saveToFile(object: exchangeRates)
-
         let apiService = MockApiService(nil, nil)
+        let cacheService = MockCacheService(cachedItem: exchangeRates)
 
-        let store = ConverterStore(apiService: apiService, fileName: fileName)
+        let store = ConverterStore(apiService: apiService, cacheService: cacheService)
 
         let expectation = self.expectation(description: "NotRefreshed")
         var refreshedResult: Bool?
@@ -199,7 +183,6 @@ class StoreTests: XCTestCase {
         }
 
         waitForExpectations(timeout: 2, handler: nil)
-        try? FileManager.default.removeItem(at: url)
 
         // Assert
         XCTAssertFalse(refreshedResult!)
@@ -207,11 +190,10 @@ class StoreTests: XCTestCase {
 
     func testRefreshDataRefreshed() {
         // Arrange
-        let (fileName, url) = saveToFile(object: exchangeRatesOld)
-
         let apiService = MockApiService(exchangeRatesResponse, nil)
+        let cacheService = MockCacheService(cachedItem: exchangeRatesOld)
 
-        let store = ConverterStore(apiService: apiService, fileName: fileName)
+        let store = ConverterStore(apiService: apiService, cacheService: cacheService)
 
         let expectation = self.expectation(description: "Refreshed")
         var refreshedResult: Bool?
@@ -224,20 +206,9 @@ class StoreTests: XCTestCase {
         }
 
         waitForExpectations(timeout: 2, handler: nil)
-        try? FileManager.default.removeItem(at: url)
 
         // Assert
         XCTAssertTrue(refreshedResult!)
-    }
-
-    private func saveToFile(object: ExchangeRates) -> (String, URL) {
-        let fileName = UUID().uuidString
-        let url = libraryDirectory.appendingPathComponent("\(fileName).json")
-
-        let jsonData = try! JSONEncoder().encode(object)
-        try! jsonData.write(to: url)
-
-        return (fileName, url)
     }
 }
 
@@ -250,7 +221,25 @@ class MockApiService: ApiService {
         self.error = error
     }
 
+    func getSymbols(completionHandler: @escaping (SymbolsResponse?, Error?) -> Void) {
+        completionHandler(nil, nil) // TODO: Implement this
+    }
+
     func getLatestExchangeRates(completionHandler: @escaping (LatestRatesResponse?, Error?) -> Void) {
         completionHandler(response, error)
     }
+}
+
+class MockCacheService<T: Decodable>: CacheService {
+    private let cachedItem: T?
+
+    init(cachedItem: T? = nil) {
+        self.cachedItem = cachedItem
+    }
+
+    func getData<T>(from fileName: String) -> T? where T : Decodable {
+        return cachedItem as! T?
+    }
+
+    func cacheData(_ jsonData: Data, to fileName: String) { }
 }

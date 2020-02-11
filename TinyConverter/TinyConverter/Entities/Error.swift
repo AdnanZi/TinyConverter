@@ -10,3 +10,9 @@ enum Error {
     case apiError
     case other
 }
+
+struct ErrorResponse: Codable {
+    let code: Int
+    let type: String
+    let info: String
+}

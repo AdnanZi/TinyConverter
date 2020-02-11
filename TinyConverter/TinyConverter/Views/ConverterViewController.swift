@@ -78,7 +78,7 @@ class ConverterViewController: UIViewController {
 
 extension ConverterViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        let value = viewModel.symbols[row]
+        let value = viewModel.exchangeRates[row].code
 
         if pickerView == baseSymbolTextField.symbolPickerView {
             viewModel.baseCurrency = value
@@ -94,11 +94,11 @@ extension ConverterViewController: UIPickerViewDataSource {
     }
 
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return viewModel.symbols.count
+        return viewModel.exchangeRates.count
     }
 
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return viewModel.symbols[row]
+        return viewModel.exchangeRates[row].name
     }
 }
 
