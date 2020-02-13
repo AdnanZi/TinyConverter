@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8407D25923882EEA006E9274 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8407D25823882EEA006E9274 /* Coordinator.swift */; };
 		8445BA1C22E2296F00CA0A29 /* SymbolTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8445BA1B22E2296F00CA0A29 /* SymbolTextField.swift */; };
 		84B0697B22D633CA007F43D6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B0697A22D633CA007F43D6 /* AppDelegate.swift */; };
 		84B0697D22D633CA007F43D6 /* ConverterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B0697C22D633CA007F43D6 /* ConverterViewController.swift */; };
@@ -21,6 +22,8 @@
 		84BAF96822DA10DE003AAD74 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BAF96722DA10DE003AAD74 /* Alert.swift */; };
 		84BAF96B22DA39F9003AAD74 /* ApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BAF96A22DA39F9003AAD74 /* ApiService.swift */; };
 		84BAF97722DA4FB7003AAD74 /* StoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BAF97622DA4FB7003AAD74 /* StoreTests.swift */; };
+		84CAC66023F56BAC00102AD7 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CAC65F23F56BAC00102AD7 /* SettingsTableViewController.swift */; };
+		84CAC66223F56BC200102AD7 /* UpdateIntervalTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CAC66123F56BC200102AD7 /* UpdateIntervalTableViewController.swift */; };
 		84D4D2B62322A3FF00773306 /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D4D2B52322A3FF00773306 /* Date+.swift */; };
 		84D4D2BA2323DAEF00773306 /* SymbolsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D4D2B92323DAEF00773306 /* SymbolsResponse.swift */; };
 		84D4D2BC2323DF5500773306 /* CacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D4D2BB2323DF5500773306 /* CacheService.swift */; };
@@ -39,6 +42,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8407D25823882EEA006E9274 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		8445BA1B22E2296F00CA0A29 /* SymbolTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolTextField.swift; sourceTree = "<group>"; };
 		84B0697722D633CA007F43D6 /* TinyConverter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TinyConverter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84B0697A22D633CA007F43D6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -57,6 +61,8 @@
 		84BAF97422DA4FB6003AAD74 /* TinyConverterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TinyConverterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		84BAF97622DA4FB7003AAD74 /* StoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreTests.swift; sourceTree = "<group>"; };
 		84BAF97822DA4FB7003AAD74 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		84CAC65F23F56BAC00102AD7 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
+		84CAC66123F56BC200102AD7 /* UpdateIntervalTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateIntervalTableViewController.swift; sourceTree = "<group>"; };
 		84D4D2B52322A3FF00773306 /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
 		84D4D2B92323DAEF00773306 /* SymbolsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolsResponse.swift; sourceTree = "<group>"; };
 		84D4D2BB2323DF5500773306 /* CacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheService.swift; sourceTree = "<group>"; };
@@ -117,6 +123,7 @@
 				84BAF96922DA39D5003AAD74 /* Services */,
 				84BAF96422DA085F003AAD74 /* Entities */,
 				84B0697A22D633CA007F43D6 /* AppDelegate.swift */,
+				8407D25823882EEA006E9274 /* Coordinator.swift */,
 				84B0697E22D633CA007F43D6 /* Main.storyboard */,
 				84B0698122D633CC007F43D6 /* Assets.xcassets */,
 				84B0698322D633CC007F43D6 /* LaunchScreen.storyboard */,
@@ -128,6 +135,7 @@
 		84B0699522D716CC007F43D6 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				84CAC66323F56BC800102AD7 /* Settings */,
 				8445BA1822E2292200CA0A29 /* Components */,
 				84B0697C22D633CA007F43D6 /* ConverterViewController.swift */,
 				84B0699322D648FF007F43D6 /* ConverterViewModel.swift */,
@@ -179,6 +187,15 @@
 				84BAF97822DA4FB7003AAD74 /* Info.plist */,
 			);
 			path = TinyConverterTests;
+			sourceTree = "<group>";
+		};
+		84CAC66323F56BC800102AD7 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				84CAC65F23F56BAC00102AD7 /* SettingsTableViewController.swift */,
+				84CAC66123F56BC200102AD7 /* UpdateIntervalTableViewController.swift */,
+			);
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		84D4D2BF232436BC00773306 /* Api */ = {
@@ -297,11 +314,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8407D25923882EEA006E9274 /* Coordinator.swift in Sources */,
 				84D4D2B62322A3FF00773306 /* Date+.swift in Sources */,
 				84D4D2BC2323DF5500773306 /* CacheService.swift in Sources */,
 				84B0699B22D72EDC007F43D6 /* Store.swift in Sources */,
 				8445BA1C22E2296F00CA0A29 /* SymbolTextField.swift in Sources */,
+				84CAC66223F56BC200102AD7 /* UpdateIntervalTableViewController.swift in Sources */,
 				84B0699922D718A3007F43D6 /* ViewBinder.swift in Sources */,
+				84CAC66023F56BAC00102AD7 /* SettingsTableViewController.swift in Sources */,
 				84B0697D22D633CA007F43D6 /* ConverterViewController.swift in Sources */,
 				84D4D2BE2323F50700773306 /* Response.swift in Sources */,
 				84B0697B22D633CA007F43D6 /* AppDelegate.swift in Sources */,

@@ -8,8 +8,11 @@
 
 import UIKit
 
-class ConverterViewController: UIViewController {
+@objc protocol ConverterViewControllerDelegate: class {
+    func navigateToSettings()
+}
 
+class ConverterViewController: UIViewController {
     @IBOutlet weak var baseSymbolTextField: SymbolTextField!
     @IBOutlet weak var baseAmountTextField: UITextField!
 
@@ -20,7 +23,7 @@ class ConverterViewController: UIViewController {
 
     @IBOutlet weak var lastUpdateDateLabel: UILabel!
 
-    let targetPicker = UIPickerView()
+    weak var delegate: ConverterViewControllerDelegate? = nil
 
     let viewModel = ConverterViewModel()
     var observations = [NSKeyValueObservation]()
