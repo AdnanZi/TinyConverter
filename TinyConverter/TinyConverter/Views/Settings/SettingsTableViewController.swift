@@ -8,8 +8,12 @@
 
 import UIKit
 
-class SettingsViewController: UITableViewController {
+protocol SettingsViewControllerDelegate: class {
+    func selectUpdateInterval()
+}
 
+class SettingsViewController: UITableViewController {
+    weak var delegate: SettingsViewControllerDelegate? = nil
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -20,8 +24,15 @@ class SettingsViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
 
-//    // MARK: - Table view data source
-//
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.row == 2 {
+            delegate?.selectUpdateInterval()
+            tableView.deselectRow(at: indexPath, animated: false)
+        }
+    }
+
+    // MARK: - Table view data source
+
 //    override func numberOfSections(in tableView: UITableView) -> Int {
 //        // #warning Incomplete implementation, return the number of sections
 //        return 1
@@ -58,7 +69,7 @@ class SettingsViewController: UITableViewController {
 //            tableView.deleteRows(at: [indexPath], with: .fade)
 //        } else if editingStyle == .insert {
 //            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-//        }    
+//        }
 //    }
 //    */
 //

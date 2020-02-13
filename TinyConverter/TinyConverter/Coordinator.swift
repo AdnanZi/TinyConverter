@@ -27,14 +27,16 @@ final class Coordinator {
 
 extension Coordinator: ConverterViewControllerDelegate {
     func navigateToSettings() {
-        let settingsVC = storyboard.instantiateSettingsViewController()
+        let settingsVC = storyboard.instantiateViewController(withIdentifier: "settingsViewController") as! SettingsViewController
+        settingsVC.delegate = self
+
         rootViewController.pushViewController(settingsVC, animated: true)
     }
 }
 
-extension UIStoryboard {
-    func instantiateSettingsViewController() -> SettingsViewController {
-        let settingsVC = instantiateViewController(withIdentifier: "settingsViewController") as! SettingsViewController
-        return settingsVC
+extension Coordinator: SettingsViewControllerDelegate {
+    func selectUpdateInterval() {
+        let updateIntervalVC = storyboard.instantiateViewController(withIdentifier: "updateIntervalViewController")
+        rootViewController.pushViewController(updateIntervalVC, animated: true)
     }
 }
