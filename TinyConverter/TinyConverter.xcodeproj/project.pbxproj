@@ -22,8 +22,11 @@
 		84BAF96822DA10DE003AAD74 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BAF96722DA10DE003AAD74 /* Alert.swift */; };
 		84BAF96B22DA39F9003AAD74 /* ApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BAF96A22DA39F9003AAD74 /* ApiService.swift */; };
 		84BAF97722DA4FB7003AAD74 /* StoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BAF97622DA4FB7003AAD74 /* StoreTests.swift */; };
-		84CAC66023F56BAC00102AD7 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CAC65F23F56BAC00102AD7 /* SettingsTableViewController.swift */; };
-		84CAC66223F56BC200102AD7 /* UpdateIntervalTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CAC66123F56BC200102AD7 /* UpdateIntervalTableViewController.swift */; };
+		84CAC66023F56BAC00102AD7 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CAC65F23F56BAC00102AD7 /* SettingsViewController.swift */; };
+		84CAC66223F56BC200102AD7 /* UpdateIntervalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CAC66123F56BC200102AD7 /* UpdateIntervalViewController.swift */; };
+		84CB6FA723F6CDCE004115E3 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CB6FA623F6CDCE004115E3 /* Configuration.swift */; };
+		84CB6FA923F6D204004115E3 /* UpdateIntervalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CB6FA823F6D204004115E3 /* UpdateIntervalViewModel.swift */; };
+		84CB6FAB23F6FDB9004115E3 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CB6FAA23F6FDB9004115E3 /* SettingsViewModel.swift */; };
 		84D4D2B62322A3FF00773306 /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D4D2B52322A3FF00773306 /* Date+.swift */; };
 		84D4D2BA2323DAEF00773306 /* SymbolsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D4D2B92323DAEF00773306 /* SymbolsResponse.swift */; };
 		84D4D2BC2323DF5500773306 /* CacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D4D2BB2323DF5500773306 /* CacheService.swift */; };
@@ -61,8 +64,11 @@
 		84BAF97422DA4FB6003AAD74 /* TinyConverterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TinyConverterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		84BAF97622DA4FB7003AAD74 /* StoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreTests.swift; sourceTree = "<group>"; };
 		84BAF97822DA4FB7003AAD74 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		84CAC65F23F56BAC00102AD7 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
-		84CAC66123F56BC200102AD7 /* UpdateIntervalTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateIntervalTableViewController.swift; sourceTree = "<group>"; };
+		84CAC65F23F56BAC00102AD7 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		84CAC66123F56BC200102AD7 /* UpdateIntervalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateIntervalViewController.swift; sourceTree = "<group>"; };
+		84CB6FA623F6CDCE004115E3 /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
+		84CB6FA823F6D204004115E3 /* UpdateIntervalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateIntervalViewModel.swift; sourceTree = "<group>"; };
+		84CB6FAA23F6FDB9004115E3 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		84D4D2B52322A3FF00773306 /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
 		84D4D2B92323DAEF00773306 /* SymbolsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolsResponse.swift; sourceTree = "<group>"; };
 		84D4D2BB2323DF5500773306 /* CacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheService.swift; sourceTree = "<group>"; };
@@ -135,8 +141,8 @@
 		84B0699522D716CC007F43D6 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				84CAC66323F56BC800102AD7 /* Settings */,
 				8445BA1822E2292200CA0A29 /* Components */,
+				84CAC66323F56BC800102AD7 /* Settings */,
 				84B0697C22D633CA007F43D6 /* ConverterViewController.swift */,
 				84B0699322D648FF007F43D6 /* ConverterViewModel.swift */,
 			);
@@ -147,6 +153,7 @@
 			isa = PBXGroup;
 			children = (
 				84B0699A22D72EDC007F43D6 /* Store.swift */,
+				84CB6FA623F6CDCE004115E3 /* Configuration.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -192,8 +199,10 @@
 		84CAC66323F56BC800102AD7 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				84CAC65F23F56BAC00102AD7 /* SettingsTableViewController.swift */,
-				84CAC66123F56BC200102AD7 /* UpdateIntervalTableViewController.swift */,
+				84CAC65F23F56BAC00102AD7 /* SettingsViewController.swift */,
+				84CB6FAA23F6FDB9004115E3 /* SettingsViewModel.swift */,
+				84CAC66123F56BC200102AD7 /* UpdateIntervalViewController.swift */,
+				84CB6FA823F6D204004115E3 /* UpdateIntervalViewModel.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -314,14 +323,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84CB6FA923F6D204004115E3 /* UpdateIntervalViewModel.swift in Sources */,
 				8407D25923882EEA006E9274 /* Coordinator.swift in Sources */,
 				84D4D2B62322A3FF00773306 /* Date+.swift in Sources */,
 				84D4D2BC2323DF5500773306 /* CacheService.swift in Sources */,
 				84B0699B22D72EDC007F43D6 /* Store.swift in Sources */,
 				8445BA1C22E2296F00CA0A29 /* SymbolTextField.swift in Sources */,
-				84CAC66223F56BC200102AD7 /* UpdateIntervalTableViewController.swift in Sources */,
+				84CAC66223F56BC200102AD7 /* UpdateIntervalViewController.swift in Sources */,
+				84CB6FA723F6CDCE004115E3 /* Configuration.swift in Sources */,
 				84B0699922D718A3007F43D6 /* ViewBinder.swift in Sources */,
-				84CAC66023F56BAC00102AD7 /* SettingsTableViewController.swift in Sources */,
+				84CAC66023F56BAC00102AD7 /* SettingsViewController.swift in Sources */,
 				84B0697D22D633CA007F43D6 /* ConverterViewController.swift in Sources */,
 				84D4D2BE2323F50700773306 /* Response.swift in Sources */,
 				84B0697B22D633CA007F43D6 /* AppDelegate.swift in Sources */,
@@ -332,6 +343,7 @@
 				84BAF96822DA10DE003AAD74 /* Alert.swift in Sources */,
 				84D4D2C12324371600773306 /* ExchangeRates.swift in Sources */,
 				84B0699422D648FF007F43D6 /* ConverterViewModel.swift in Sources */,
+				84CB6FAB23F6FDB9004115E3 /* SettingsViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

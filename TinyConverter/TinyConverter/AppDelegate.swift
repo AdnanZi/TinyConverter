@@ -12,16 +12,24 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var coordinator: Coordinator? = nil
+    let configuration = StandardConfiguration.shared
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         coordinator = Coordinator(window!.rootViewController as! UINavigationController)
 
-        UIApplication.shared.setMinimumBackgroundFetchInterval(7200)
+        configuration.registerDefaults()
+
+        if configuration.automaticUpdates {
+            let updateInterval = TimeInterval(configuration.updateInterval * 3600)
+            UIApplication.shared.setMinimumBackgroundFetchInterval(updateInterval)
+        }
 
         return true
     }
 
     func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        if !configuration.automaticUpdates { return }
+
         ConverterStore.shared.refreshData() { refreshed in
             completionHandler(refreshed ? .newData : .noData)
         }
