@@ -18,8 +18,8 @@ class UpdateIntervalViewModel {
         return configuration.updateInterval
     }
 
-    init(configuration: Configuration) {
-        self.configuration = configuration
+    init(configuration: Configuration? = nil) {
+        self.configuration = configuration ?? StandardConfiguration.shared
     }
 
     func setUpdateInterval(_ updateInterval: Int) {

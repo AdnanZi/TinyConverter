@@ -8,7 +8,7 @@
 import UIKit
 
 class UpdateIntervalViewController: UITableViewController {
-    var viewModel: UpdateIntervalViewModel? = nil
+    var viewModel = UpdateIntervalViewModel()
 
     // MARK: - Table view data source
 
@@ -17,13 +17,11 @@ class UpdateIntervalViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel!.updateIntervals.count
+        return viewModel.updateIntervals.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "intervalCell", for: indexPath)
-
-        guard let viewModel = viewModel else { return cell }
 
         let cellValue = viewModel.updateIntervals[indexPath.row]
         cell.textLabel?.text = "\(String(cellValue)) hours"
@@ -37,8 +35,6 @@ class UpdateIntervalViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-
-        guard let viewModel = viewModel else { return }
 
         guard let selectedRow = viewModel.updateIntervals.firstIndex(of: viewModel.selectedInterval) else { return }
         let selectedCellIndexPath = IndexPath(row: selectedRow, section: 0)
