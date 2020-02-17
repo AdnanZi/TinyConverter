@@ -8,7 +8,7 @@
 import Foundation
 
 protocol Store {
-    func fetchData(_ completionHandler: @escaping (ExchangeRates?, Error?) -> Void)
+    func fetchData(_ forceUpdate: Bool, _ completionHandler: @escaping (ExchangeRates?, Error?) -> Void)
     func refreshData(_ completionHandler: @escaping (Bool) -> Void)
 }
 
@@ -24,7 +24,7 @@ class ConverterStore: Store {
         self.cacheService = cacheService ?? CacheServiceImpl()
     }
 
-    func fetchData(_ completionHandler: @escaping (ExchangeRates?, Error?) -> Void) {
+    func fetchData(_ forceUpdate: Bool, _ completionHandler: @escaping (ExchangeRates?, Error?) -> Void) {
         NSLog("Fetching data...")
 
         let exchangeRates: ExchangeRates? = cacheService.getData(from: ratesFileName)
@@ -32,7 +32,7 @@ class ConverterStore: Store {
         if let exchangeRates = exchangeRates {
             let currentDate = Date().currentDate
 
-            if exchangeRates.date == currentDate {
+            if exchangeRates.date == currentDate && !forceUpdate {
                 NSLog("Data retrieved from cache.")
                 completionHandler(exchangeRates, nil)
                 return

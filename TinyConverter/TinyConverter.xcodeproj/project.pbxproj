@@ -153,6 +153,7 @@
 			isa = PBXGroup;
 			children = (
 				84B0699A22D72EDC007F43D6 /* Store.swift */,
+				84D4D2C02324371600773306 /* ExchangeRates.swift */,
 				84CB6FA623F6CDCE004115E3 /* Configuration.swift */,
 			);
 			path = Models;
@@ -171,7 +172,6 @@
 			isa = PBXGroup;
 			children = (
 				84D4D2BF232436BC00773306 /* Api */,
-				84D4D2C02324371600773306 /* ExchangeRates.swift */,
 				84BAF96522DA087B003AAD74 /* Error.swift */,
 				84BAF96722DA10DE003AAD74 /* Alert.swift */,
 			);

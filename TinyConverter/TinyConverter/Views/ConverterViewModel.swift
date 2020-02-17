@@ -51,9 +51,11 @@ class ConverterViewModel: NSObject {
     @objc dynamic var alert: Alert? = nil
 
     private let store: Store
+    private let configuration: Configuration
 
-    init(store: Store? = nil) {
+    init(store: Store? = nil, configuration: Configuration? = nil) {
         self.store = store ?? ConverterStore.shared
+        self.configuration = configuration ?? StandardConfiguration.shared
     }
 
     private func calculateTargetValue(baseValue: String?, baseCurrency: String?, targetCurrency: String?) -> String {
@@ -79,7 +81,7 @@ class ConverterViewModel: NSObject {
 
 extension ConverterViewModel {
     func fetchData() {
-        store.fetchData(dataFetchedHandler)
+        store.fetchData(configuration.updateOnStart, dataFetchedHandler)
 
         showSpinner = true
     }
