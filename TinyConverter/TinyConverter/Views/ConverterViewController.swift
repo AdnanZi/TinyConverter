@@ -5,7 +5,6 @@
 //  Created by Adnan Zildzic on 10.07.19.
 //  Copyright © 2019 Adnan Zildzic. All rights reserved.
 //
-
 import UIKit
 
 @objc protocol ConverterViewControllerDelegate: class {

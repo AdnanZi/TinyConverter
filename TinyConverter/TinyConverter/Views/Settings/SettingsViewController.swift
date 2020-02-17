@@ -5,7 +5,6 @@
 //  Created by Adnan Zildzic on 13.02.20.
 //  Copyright © 2020 Adnan Zildzic. All rights reserved.
 //
-
 import UIKit
 
 protocol SettingsViewControllerDelegate: class {

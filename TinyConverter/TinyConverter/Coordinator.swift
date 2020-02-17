@@ -5,7 +5,6 @@
 //  Created by Adnan Zildzic on 22.11.19.
 //  Copyright © 2019 Adnan Zildzic. All rights reserved.
 //
-
 import UIKit
 
 final class Coordinator {

@@ -33,7 +33,7 @@ class StoreTests: XCTestCase {
         var resultError: Error?
 
         // Act
-        store.fetchData { _, error in
+        store.fetchData(false) { _, error in
             resultError = error
 
             expectation.fulfill()
@@ -55,7 +55,7 @@ class StoreTests: XCTestCase {
         var resultData: ExchangeRates?
 
         // Act
-        store.fetchData { data, _ in
+        store.fetchData(false) { data, _ in
             resultData = data
 
             expectation.fulfill()
@@ -80,7 +80,7 @@ class StoreTests: XCTestCase {
         var resultError: Error?
 
         // Act
-        store.fetchData { _, error in
+        store.fetchData(false) { _, error in
             resultError = error
 
             expectation.fulfill()
@@ -104,7 +104,7 @@ class StoreTests: XCTestCase {
         var resultError: Error?
 
         // Act
-        store.fetchData { _, error in
+        store.fetchData(false) { _, error in
             resultError = error
 
             expectation.fulfill()
@@ -127,7 +127,7 @@ class StoreTests: XCTestCase {
         var resultData: ExchangeRates?
 
         // Act
-        store.fetchData { data, _ in
+        store.fetchData(false) { data, _ in
             resultData = data
 
             expectation.fulfill()
@@ -150,7 +150,7 @@ class StoreTests: XCTestCase {
         var resultData: ExchangeRates?
 
         // Act
-        store.fetchData { data, _ in
+        store.fetchData(false) { data, _ in
             resultData = data
 
             expectation.fulfill()
