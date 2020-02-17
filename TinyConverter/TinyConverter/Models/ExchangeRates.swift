@@ -8,7 +8,7 @@
 import Foundation
 
 struct ExchangeRates: Codable {
-    let baseCurrency: String
+    let baseCurrency: String // TODO: Remove, not used
     let date: Date
     let rates: [ExchangeRate]
 }

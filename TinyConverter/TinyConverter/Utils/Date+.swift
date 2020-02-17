@@ -5,7 +5,6 @@
 //  Created by Adnan Zildzic on 06.09.19.
 //  Copyright © 2019 Adnan Zildzic. All rights reserved.
 //
-
 import Foundation
 
 extension Date {
