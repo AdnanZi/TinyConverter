@@ -26,6 +26,7 @@ class StandardConfiguration: Configuration {
             return defaults.bool(forKey: .updateOnStartKey)
         }
         set {
+            if newValue == updateOnStart { return }
             defaults.set(newValue, forKey: .updateOnStartKey)
         }
     }
@@ -35,7 +36,10 @@ class StandardConfiguration: Configuration {
             defaults.bool(forKey: .automaticUpdatesKey)
         }
         set {
+            if newValue == automaticUpdates { return }
+
             defaults.set(newValue, forKey: .automaticUpdatesKey)
+            triggerAutomaticUpdateToggledNotification()
         }
     }
 
@@ -45,6 +49,7 @@ class StandardConfiguration: Configuration {
         }
         set {
             defaults.set(newValue, forKey: .updateIntervalKey)
+            triggerAutomaticUpdateToggledNotification()
         }
     }
 
@@ -57,10 +62,18 @@ class StandardConfiguration: Configuration {
 
         defaults.register(defaults: initialDefaults)
     }
+
+    private func triggerAutomaticUpdateToggledNotification() {
+        NotificationCenter.default.post(name: Notification.automaticUpdatesToggledNotification, object: nil)
+    }
 }
 
 fileprivate extension String {
     static let updateIntervalKey = "updateInterval"
     static let updateOnStartKey = "updateOnStart"
     static let automaticUpdatesKey = "automaticUpdates"
+}
+
+extension Notification {
+    static var automaticUpdatesToggledNotification: Name { return Name("AutomaticUpdatesToggled") }
 }

@@ -5,7 +5,7 @@
 //  Created by Adnan Zildzic on 14.02.20.
 //  Copyright © 2020 Adnan Zildzic. All rights reserved.
 //
-import UIKit
+import Foundation
 
 class UpdateIntervalViewModel {
     private var configuration: Configuration

@@ -18,19 +18,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         configuration.registerDefaults()
 
-        if configuration.automaticUpdates {
-            let updateInterval = TimeInterval(configuration.updateInterval * 3600)
-            UIApplication.shared.setMinimumBackgroundFetchInterval(updateInterval)
-        }
+        toggleMinimumBackgroundFetchInterval()
+
+        NotificationCenter.default.addObserver(self, selector: #selector(toggleMinimumBackgroundFetchInterval), name: Notification.automaticUpdatesToggledNotification, object: nil)
 
         return true
     }
 
     func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        if !configuration.automaticUpdates { return }
-
         ConverterStore.shared.refreshData() { refreshed in
             completionHandler(refreshed ? .newData : .noData)
+        }
+    }
+
+    @objc func toggleMinimumBackgroundFetchInterval() {
+        if configuration.automaticUpdates {
+            let updateInterval = TimeInterval(configuration.updateInterval * 3600)
+            UIApplication.shared.setMinimumBackgroundFetchInterval(updateInterval)
+        } else {
+            UIApplication.shared.setMinimumBackgroundFetchInterval(UIApplication.backgroundFetchIntervalNever)
         }
     }
 }
