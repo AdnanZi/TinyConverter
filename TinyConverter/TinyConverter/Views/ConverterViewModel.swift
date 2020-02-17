@@ -113,5 +113,5 @@ fileprivate extension String {
     static let eur = "EUR"
     static let usd = "USD"
     static let noConnectionAlertTitle = "No internet connection"
-    static let noConnectionAlertText = "Internet connection is not avilable or is bad. Exchange rates might be obsolete. Do you want to try again?"
+    static let noConnectionAlertText = "Internet connection is not available or is bad. Exchange rates might be obsolete. Do you want to try again?"
 }
