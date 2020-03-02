@@ -22,6 +22,12 @@ extension Date {
         return dateFormatter.string(from: self)
     }
 
+    var dateStringApi: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        return dateFormatter.string(from: self)
+    }
+
     static func dateFromApiString(_ dateString: String) -> Date? {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
