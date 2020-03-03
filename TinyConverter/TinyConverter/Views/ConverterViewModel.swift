@@ -53,9 +53,9 @@ class ConverterViewModel: NSObject {
     private let store: Store
     private let configuration: Configuration
 
-    init(store: Store? = nil, configuration: Configuration? = nil) {
-        self.store = store ?? ConverterStore.shared
-        self.configuration = configuration ?? StandardConfiguration.shared
+    init(store: Store, configuration: Configuration) {
+        self.store = store
+        self.configuration = configuration
     }
 
     private func calculateTargetValue(baseValue: String?, baseCurrency: String?, targetCurrency: String?) -> String {

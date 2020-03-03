@@ -19,8 +19,6 @@ protocol Configuration {
 class StandardConfiguration: Configuration {
     private let defaults = UserDefaults.standard
 
-    static let shared = StandardConfiguration()
-
     var updateOnStart: Bool {
         get {
             return defaults.bool(forKey: .updateOnStartKey)

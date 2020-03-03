@@ -6,10 +6,11 @@
 //  Copyright © 2019 Adnan Zildzic. All rights reserved.
 //
 import UIKit
+import SwinjectStoryboard
 
 final class Coordinator {
     let rootViewController: UINavigationController
-    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+    let storyboard = SwinjectStoryboard.create(name: "Main", bundle: nil)
 
     init(_ rootViewController: UINavigationController) {
         self.rootViewController = rootViewController

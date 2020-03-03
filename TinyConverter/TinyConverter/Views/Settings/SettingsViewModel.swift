@@ -24,8 +24,8 @@ class SettingsViewModel: NSObject {
 
     private var configuration: Configuration
 
-    init(configuration: Configuration? = nil) {
-        self.configuration = configuration ?? StandardConfiguration.shared
+    init(configuration: Configuration) {
+        self.configuration = configuration
 
         super.init()
 

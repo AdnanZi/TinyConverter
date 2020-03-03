@@ -12,7 +12,7 @@ protocol CacheService {
     func cacheData(_ jsonData: Data, to fileName: String)
 }
 
-class CacheServiceImpl: CacheService {
+class FileCacheService: CacheService {
     func getData<T: Decodable>(from fileName: String) -> T? {
         guard let cachedData = try? Data(contentsOf: storeLocation(fileName)) else {
             return nil

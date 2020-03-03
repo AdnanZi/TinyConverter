@@ -6,12 +6,17 @@
 //  Copyright © 2019 Adnan Zildzic. All rights reserved.
 //
 import UIKit
+import SwinjectStoryboard
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var coordinator: Coordinator? = nil
-    let configuration = StandardConfiguration.shared
+
+    let container = SwinjectStoryboard.defaultContainer
+    var configuration: Configuration {
+        return container.resolve(Configuration.self)!
+    }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         coordinator = Coordinator(window!.rootViewController as! UINavigationController)
@@ -26,7 +31,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        ConverterStore.shared.refreshData() { refreshed in
+        guard let store = container.resolve(Store.self) else {
+            completionHandler(.noData)
+            return
+        }
+
+        store.refreshData() { refreshed in
             completionHandler(refreshed ? .newData : .noData)
         }
     }

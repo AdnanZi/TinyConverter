@@ -24,7 +24,7 @@ class ConverterViewController: UIViewController {
 
     weak var delegate: ConverterViewControllerDelegate? = nil
 
-    let viewModel = ConverterViewModel()
+    var viewModel: ConverterViewModel? = nil
     var observations = [NSKeyValueObservation]()
 
     override func viewDidLoad() {
@@ -50,6 +50,8 @@ class ConverterViewController: UIViewController {
     }
 
     private func setupObservables() {
+        guard let viewModel = viewModel else { return }
+
         observations = [
             viewModel.bind(\.baseCurrency, to: baseSymbolTextField, at: \.text),
             viewModel.bind(\.targetCurrency, to: targetSymbolTextField, at: \.text),
@@ -68,18 +70,20 @@ class ConverterViewController: UIViewController {
 
         let alert = UIAlertController(title: alertOptions.alertTitle, message: alertOptions.alertText, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] _ in self?.viewModel.fetchData() }))
+        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] _ in self?.viewModel?.fetchData() }))
 
         present(alert, animated: true, completion: nil)
     }
 
     @objc private func appDidBecomeActive() {
-        viewModel.fetchData()
+        viewModel?.fetchData()
     }
 }
 
 extension ConverterViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        guard let viewModel = viewModel else { return }
+
         let value = viewModel.exchangeRates[row].code
 
         if pickerView == baseSymbolTextField.symbolPickerView {
@@ -96,11 +100,11 @@ extension ConverterViewController: UIPickerViewDataSource {
     }
 
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return viewModel.exchangeRates.count
+        return viewModel?.exchangeRates.count ?? 0
     }
 
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return viewModel.exchangeRates[row].name
+        return viewModel?.exchangeRates[row].name
     }
 }
 
@@ -113,6 +117,8 @@ extension ConverterViewController: UITextFieldDelegate {
     }
 
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        guard let viewModel = viewModel else { return true }
+
         guard let text = textField.text else {
             return true
         }

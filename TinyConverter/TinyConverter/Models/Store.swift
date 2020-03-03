@@ -17,11 +17,9 @@ class ConverterStore: Store {
     private let cacheService: CacheService
     private let ratesFileName = "rates"
 
-    static let shared = ConverterStore()
-
-    init(apiService: ApiService? = nil, cacheService: CacheService? = nil) {
-        self.apiService = apiService ?? FixerApiService()
-        self.cacheService = cacheService ?? CacheServiceImpl()
+    init(apiService: ApiService, cacheService: CacheService) {
+        self.apiService = apiService
+        self.cacheService = cacheService
     }
 
     func fetchData(_ forceUpdate: Bool, _ completionHandler: @escaping (ExchangeRates?, Error?) -> Void) {
