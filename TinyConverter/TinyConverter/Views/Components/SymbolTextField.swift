@@ -9,7 +9,7 @@
 import UIKit
 
 class SymbolTextField: UITextField {
-    let symbolPickerView = UIPickerView()
+    var symbolPickerView: UIPickerView!
     private var doneButton: UIBarButtonItem!
 
     override init(frame: CGRect) {
@@ -23,6 +23,10 @@ class SymbolTextField: UITextField {
     }
 
     private func setup() {
+        let isIPad = traitCollection.verticalSizeClass == .regular && traitCollection.horizontalSizeClass == .regular
+
+        symbolPickerView = UIPickerView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: isIPad ? 300 : 180))
+
         inputView = symbolPickerView
 
         let flexButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)

@@ -37,11 +37,11 @@ class ConverterViewController: UIViewController {
     }
 
     private func setupViews() {
-        let basePicker = baseSymbolTextField.symbolPickerView
+        let basePicker = baseSymbolTextField.symbolPickerView!
         basePicker.dataSource = self
         basePicker.delegate = self
 
-        let targetPicker = targetSymbolTextField.symbolPickerView
+        let targetPicker = targetSymbolTextField.symbolPickerView!
         targetPicker.dataSource = self
         targetPicker.delegate = self
 
