@@ -10,7 +10,7 @@ import Combine
 
 protocol CacheService {
     func getData<T:Decodable>(from fileName: String) -> AnyPublisher<T?, Never>
-    func cacheData(_ jsonData: Data, to fileName: String) -> AnyPublisher<Never, Never>
+    func cacheData(_ jsonData: Data, to fileName: String) -> AnyPublisher<Void, Never>
 
     // MARK: Obsolete
     func getData<T: Decodable>(from fileName: String) -> T?
@@ -26,8 +26,9 @@ class FileCacheService: CacheService {
             .eraseToAnyPublisher()
     }
 
-    func cacheData(_ jsonData: Data, to fileName: String) -> AnyPublisher<Never, Never> {
-        Just(try? jsonData.write(to: storeLocation(fileName)))
+    func cacheData(_ jsonData: Data, to fileName: String) -> AnyPublisher<Void, Never> {
+        Just(try! jsonData.write(to: storeLocation(fileName)))
+            .replaceError(with: ())
             .ignoreOutput()
             .eraseToAnyPublisher()
     }

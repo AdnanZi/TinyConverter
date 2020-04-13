@@ -345,4 +345,12 @@ class MockCacheService<T: Decodable>: CacheService {
     }
 
     func cacheData(_ jsonData: Data, to fileName: String) { }
+
+    func getData<T>(from fileName: String) -> AnyPublisher<T?, Never> where T : Decodable {
+        return Just(cachedItem as! T?).eraseToAnyPublisher()
+    }
+
+    func cacheData(_ jsonData: Data, to fileName: String) -> AnyPublisher<Void, Never> {
+        return Result.Publisher(()).eraseToAnyPublisher()
+    }
 }
