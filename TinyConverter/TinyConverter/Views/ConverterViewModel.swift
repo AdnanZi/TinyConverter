@@ -86,7 +86,7 @@ extension ConverterViewModel {
         showSpinner = true
     }
 
-    private func dataFetchedHandler(_ data: ExchangeRates?, _ error: Error?) {
+    private func dataFetchedHandler(_ data: ExchangeRates?, _ error: ApiError?) {
         DispatchQueue.main.async { [weak self] in
             guard let strongSelf = self else {
                 return

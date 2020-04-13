@@ -8,7 +8,7 @@
 import Foundation
 
 protocol Store {
-    func fetchData(_ forceUpdate: Bool, _ completionHandler: @escaping (ExchangeRates?, Error?) -> Void)
+    func fetchData(_ forceUpdate: Bool, _ completionHandler: @escaping (ExchangeRates?, ApiError?) -> Void)
     func refreshData(_ completionHandler: @escaping (Bool) -> Void)
 }
 
@@ -22,7 +22,7 @@ class ConverterStore: Store {
         self.cacheService = cacheService
     }
 
-    func fetchData(_ forceUpdate: Bool, _ completionHandler: @escaping (ExchangeRates?, Error?) -> Void) {
+    func fetchData(_ forceUpdate: Bool, _ completionHandler: @escaping (ExchangeRates?, ApiError?) -> Void) {
         NSLog("Fetching data...")
 
         let exchangeRates: ExchangeRates? = cacheService.getData(from: ratesFileName)
@@ -63,7 +63,7 @@ class ConverterStore: Store {
         }
     }
 
-    private func getDataFromServer(_ completionHandler: @escaping (ExchangeRates?, Error?) -> Void) {
+    private func getDataFromServer(_ completionHandler: @escaping (ExchangeRates?, ApiError?) -> Void) {
         getSymbolsFromServer { [weak self] symbolsResponse, error in
             guard let strongSelf = self else {
                 completionHandler(nil, nil)
@@ -94,7 +94,7 @@ class ConverterStore: Store {
         }
     }
 
-    private func getSymbolsFromServer(_ completionHandler: @escaping (SymbolsResponse?, Error?) -> Void) {
+    private func getSymbolsFromServer(_ completionHandler: @escaping (SymbolsResponse?, ApiError?) -> Void) {
         apiService.getSymbols { [weak self] apiResponse, error in
             guard let strongSelf = self else { return }
 
@@ -107,7 +107,7 @@ class ConverterStore: Store {
         }
     }
 
-    private func getExchangeRatesFromServer(_ completionHandler: @escaping (LatestRatesResponse?, Error?) -> Void) {
+    private func getExchangeRatesFromServer(_ completionHandler: @escaping (LatestRatesResponse?, ApiError?) -> Void) {
         apiService.getLatestExchangeRates { [weak self] apiResponse, error in
             guard let strongSelf = self else { return }
 
@@ -120,7 +120,7 @@ class ConverterStore: Store {
         }
     }
 
-    private func validateResponse(_ response: Response?, _ error: Error?) -> Error? {
+    private func validateResponse(_ response: Response?, _ error: ApiError?) -> ApiError? {
         if let error = error {
             return error
         }
