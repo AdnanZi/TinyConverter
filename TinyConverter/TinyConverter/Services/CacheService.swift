@@ -14,7 +14,7 @@ protocol CacheService {
 
     // MARK: Obsolete
     func getData<T: Decodable>(from fileName: String) -> T?
-    func cacheData(_ jsonData: Data, to fileName: String)
+    func cacheData1(_ jsonData: Data, to fileName: String)
 }
 
 class FileCacheService: CacheService {
@@ -47,7 +47,7 @@ class FileCacheService: CacheService {
         return try? JSONDecoder().decode(T.self, from: cachedData)
     }
 
-    func cacheData(_ jsonData: Data, to fileName: String) {
+    func cacheData1(_ jsonData: Data, to fileName: String) {
         try? jsonData.write(to: storeLocation(fileName))
     }
 }

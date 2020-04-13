@@ -6,6 +6,7 @@
 //  Copyright © 2019 Adnan Zildzic. All rights reserved.
 //
 import Foundation
+import Combine
 
 protocol Store {
     func fetchData(_ forceUpdate: Bool, _ completionHandler: @escaping (ExchangeRates?, ApiError?) -> Void)
@@ -63,6 +64,30 @@ class ConverterStore: Store {
         }
     }
 
+    private func getDataFromServer() -> AnyPublisher<ExchangeRates, ApiError> {
+        let symbols = getSymbolsFromServer()
+        let rates = getExchangeRatesFromServer()
+
+        let exchangeRates = rates.combineLatest(symbols)
+            .tryMap { self.parseRates(ratesResponse: $0, symbolsResponse: $1)! }
+            .mapError { _ in ApiError.other }
+            .share()
+
+        let ratesToCache = exchangeRates
+            .encode(encoder: JSONEncoder())
+            .mapError { _ in ApiError.other }
+            .map { self.cacheService.cacheData($0, to: self.ratesFileName) }
+            .map { _ in }
+
+        let ratesToReturn = exchangeRates.map { $0 }
+
+        return ratesToCache
+            .combineLatest(ratesToReturn)
+            .map { _, rates in rates }
+            .eraseToAnyPublisher()
+    }
+
+    //  MARK: Obsolete
     private func getDataFromServer(_ completionHandler: @escaping (ExchangeRates?, ApiError?) -> Void) {
         getSymbolsFromServer { [weak self] symbolsResponse, error in
             guard let strongSelf = self else {
@@ -84,7 +109,7 @@ class ConverterStore: Store {
                 let exchangeRates = strongSelf.parseRates(ratesResponse: ratesResponse!, symbolsResponse: symbolsResponse!)
 
                 if let exchangeRatesJson = try? JSONEncoder().encode(exchangeRates) {
-                    let _: () = strongSelf.cacheService.cacheData(exchangeRatesJson, to: strongSelf.ratesFileName)
+                    strongSelf.cacheService.cacheData1(exchangeRatesJson, to: strongSelf.ratesFileName)
                 } else {
                     NSLog("Error while deserializing json form ExchangeRates. Data not saved to cache.")
                 }
@@ -94,6 +119,47 @@ class ConverterStore: Store {
         }
     }
 
+    private func getSymbolsFromServer() -> AnyPublisher<SymbolsResponse, ApiError> {
+        return apiService.getSymbols()
+            .flatMap { self.validateResponse($0) }
+            .eraseToAnyPublisher()
+    }
+
+    private func getExchangeRatesFromServer() -> AnyPublisher<LatestRatesResponse, ApiError> {
+        return apiService.getLatestExchangeRates()
+            .flatMap { self.validateResponse($0) }
+            .eraseToAnyPublisher()
+    }
+
+    private func validateResponse<T: Response>(_ response: T) -> AnyPublisher<T, ApiError> {
+        return Just(response)
+            .tryMap { response in
+                if let responseError = response.error {
+                    NSLog("Error returned from API: \(responseError.info).")
+                    throw ApiError.apiError
+                }
+
+                return response
+            }
+            .mapError { $0 as! ApiError }
+            .eraseToAnyPublisher()
+    }
+
+    private func parseRates(ratesResponse: LatestRatesResponse, symbolsResponse: SymbolsResponse) -> ExchangeRates? {
+        guard let baseCurrency = ratesResponse.base, let dateString = ratesResponse.date, let rates = ratesResponse.rates, let symbols = symbolsResponse.symbols else {
+            return nil
+        }
+
+        guard let date = Date.dateFromApiString(dateString) else {
+            return nil
+        }
+
+        let fullRates = rates.map { key, value in ExchangeRate(code: key, name: symbols[key]!, value: value) }
+
+        return ExchangeRates(baseCurrency: baseCurrency, date: date, rates: fullRates)
+    }
+
+    // MARK: Obsolete
     private func getSymbolsFromServer(_ completionHandler: @escaping (SymbolsResponse?, ApiError?) -> Void) {
         apiService.getSymbols { [weak self] apiResponse, error in
             guard let strongSelf = self else { return }
@@ -107,6 +173,7 @@ class ConverterStore: Store {
         }
     }
 
+    // MARK: Obsolete
     private func getExchangeRatesFromServer(_ completionHandler: @escaping (LatestRatesResponse?, ApiError?) -> Void) {
         apiService.getLatestExchangeRates { [weak self] apiResponse, error in
             guard let strongSelf = self else { return }
@@ -120,6 +187,7 @@ class ConverterStore: Store {
         }
     }
 
+    // MARK: Obsolete
     private func validateResponse(_ response: Response?, _ error: ApiError?) -> ApiError? {
         if let error = error {
             return error
@@ -135,19 +203,5 @@ class ConverterStore: Store {
         }
 
         return nil
-    }
-
-    private func parseRates(ratesResponse: LatestRatesResponse, symbolsResponse: SymbolsResponse) -> ExchangeRates? {
-        guard let baseCurrency = ratesResponse.base, let dateString = ratesResponse.date, let rates = ratesResponse.rates, let symbols = symbolsResponse.symbols else {
-            return nil
-        }
-
-        guard let date = Date.dateFromApiString(dateString) else {
-            return nil
-        }
-
-        let fullRates = rates.map { key, value in ExchangeRate(code: key, name: symbols[key]!, value: value) }
-
-        return ExchangeRates(baseCurrency: baseCurrency, date: date, rates: fullRates)
     }
 }
