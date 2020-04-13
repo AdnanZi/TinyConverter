@@ -8,6 +8,7 @@
 
 import XCTest
 @testable import TinyConverter
+import Combine
 
 class StoreTests: XCTestCase {
     let libraryDirectory = try! FileManager.default.url(for: .libraryDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
@@ -97,7 +98,7 @@ class StoreTests: XCTestCase {
         let store = ConverterStore(apiService: apiService, cacheService: MockCacheService<ExchangeRates>())
 
         let expectation = self.expectation(description: "ConnError")
-        var resultError: Error?
+        var resultError: ApiError?
 
         // Act
         store.fetchData(false) { _, error in
@@ -121,7 +122,7 @@ class StoreTests: XCTestCase {
         let store = ConverterStore(apiService: apiService, cacheService: MockCacheService<ExchangeRates>())
 
         let expectation = self.expectation(description: "ApiError")
-        var resultError: Error?
+        var resultError: ApiError?
 
         // Act
         store.fetchData(false) { _, error in
@@ -143,7 +144,7 @@ class StoreTests: XCTestCase {
         let store = ConverterStore(apiService: apiService, cacheService: MockCacheService<ExchangeRates>())
 
         let expectation = self.expectation(description: "OtherError")
-        var resultError: Error?
+        var resultError: ApiError?
 
         // Act
         store.fetchData(false) { _, error in
@@ -165,7 +166,7 @@ class StoreTests: XCTestCase {
         let store = ConverterStore(apiService: apiService, cacheService: MockCacheService<ExchangeRates>())
 
         let expectation = self.expectation(description: "OtqqherError2")
-        var resultError: Error?
+        var resultError: ApiError?
 
         // Act
         store.fetchData(false) { _, error in
@@ -307,20 +308,28 @@ class StoreTests: XCTestCase {
 class MockApiService: ApiService {
     let symbolsResponse: SymbolsResponse?
     let ratesResponse: LatestRatesResponse?
-    let error: Error?
+    let error: ApiError?
 
-    init(_ symbolsResponse: SymbolsResponse?, _ ratesResponse: LatestRatesResponse?, _ error: Error?) {
+    init(_ symbolsResponse: SymbolsResponse?, _ ratesResponse: LatestRatesResponse?, _ error: ApiError?) {
         self.symbolsResponse = symbolsResponse
         self.ratesResponse = ratesResponse
         self.error = error
     }
 
-    func getSymbols(completionHandler: @escaping (SymbolsResponse?, Error?) -> Void) {
+    func getSymbols(completionHandler: @escaping (SymbolsResponse?, ApiError?) -> Void) {
         completionHandler(symbolsResponse, error)
     }
 
-    func getLatestExchangeRates(completionHandler: @escaping (LatestRatesResponse?, Error?) -> Void) {
+    func getLatestExchangeRates(completionHandler: @escaping (LatestRatesResponse?, ApiError?) -> Void) {
         completionHandler(ratesResponse, error)
+    }
+
+    func getSymbols() -> AnyPublisher<SymbolsResponse, ApiError> {
+        return Just(symbolsResponse!).mapError { _ in ApiError.other }.eraseToAnyPublisher()
+    }
+
+    func getLatestExchangeRates() -> AnyPublisher<LatestRatesResponse, ApiError> {
+        return Just(ratesResponse!).mapError { _ in ApiError.other }.eraseToAnyPublisher()
     }
 }
 
