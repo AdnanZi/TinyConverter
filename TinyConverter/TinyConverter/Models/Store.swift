@@ -84,7 +84,7 @@ class ConverterStore: Store {
                 let exchangeRates = strongSelf.parseRates(ratesResponse: ratesResponse!, symbolsResponse: symbolsResponse!)
 
                 if let exchangeRatesJson = try? JSONEncoder().encode(exchangeRates) {
-                    strongSelf.cacheService.cacheData(exchangeRatesJson, to: strongSelf.ratesFileName)
+                    let _: () = strongSelf.cacheService.cacheData(exchangeRatesJson, to: strongSelf.ratesFileName)
                 } else {
                     NSLog("Error while deserializing json form ExchangeRates. Data not saved to cache.")
                 }
