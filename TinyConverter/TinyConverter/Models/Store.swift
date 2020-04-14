@@ -9,6 +9,9 @@ import Foundation
 import Combine
 
 protocol Store {
+    func fetchData(_ forceUpdate: Bool) -> AnyPublisher<ExchangeRates, ApiError>
+    func refreshData() -> AnyPublisher<Bool, Never>
+    // MARK: Obsolete
     func fetchData(_ forceUpdate: Bool, _ completionHandler: @escaping (ExchangeRates?, ApiError?) -> Void)
     func refreshData(_ completionHandler: @escaping (Bool) -> Void)
 }
@@ -23,6 +26,47 @@ class ConverterStore: Store {
         self.cacheService = cacheService
     }
 
+    func fetchData(_ forceUpdate: Bool) -> AnyPublisher<ExchangeRates, ApiError> {
+        let getData: (String) -> AnyPublisher<ExchangeRates?, Never> = cacheService.getData
+
+        return getData(ratesFileName)
+            .setFailureType(to: ApiError.self)
+            .flatMap { exchangeRates -> AnyPublisher<ExchangeRates, ApiError> in
+                if let exchangeRates = exchangeRates {
+                    let currentDate = Date().currentDate
+
+                    if exchangeRates.date == currentDate && !forceUpdate {
+                        NSLog("Data retrieved from cache.")
+                        return Just(exchangeRates).setFailureType(to: ApiError.self).eraseToAnyPublisher()
+                    }
+                }
+
+                return self.getDataFromServer()
+        }
+        .handleEvents(receiveSubscription: { _ in NSLog("Fetching data...") })
+        .eraseToAnyPublisher()
+    }
+
+    func refreshData() -> AnyPublisher<Bool, Never> {
+        let getData: (String) -> AnyPublisher<ExchangeRates?, Never> = cacheService.getData
+
+        return getData(ratesFileName)
+            .flatMap { exchangeRates -> AnyPublisher<Bool, Never> in
+                if let exchangeRates = exchangeRates {
+                    let currentDate = Date().currentDate
+
+                    if exchangeRates.date == currentDate {
+                        return Just(false).setFailureType(to: Never.self).eraseToAnyPublisher()
+                    }
+                }
+
+                return self.getDataFromServer().map { _ in true }.catch { _ in Just(false) }.setFailureType(to: Never.self).eraseToAnyPublisher()
+        }
+        .handleEvents(receiveSubscription: { _ in NSLog("Refreshing data...") })
+        .eraseToAnyPublisher()
+    }
+
+    // MARK: Obsolete
     func fetchData(_ forceUpdate: Bool, _ completionHandler: @escaping (ExchangeRates?, ApiError?) -> Void) {
         NSLog("Fetching data...")
 
@@ -48,6 +92,7 @@ class ConverterStore: Store {
         }
     }
 
+    // MARK: Obsolete
     func refreshData(_ completionHandler: @escaping (Bool) -> Void) {
         NSLog("Refreshing data...")
 
