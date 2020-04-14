@@ -13,7 +13,7 @@ protocol CacheService {
     func cacheData(_ jsonData: Data, to fileName: String) -> AnyPublisher<Void, Never>
 
     // MARK: Obsolete
-    func getData<T: Decodable>(from fileName: String) -> T?
+    func getData1<T: Decodable>(from fileName: String) -> T?
     func cacheData1(_ jsonData: Data, to fileName: String)
 }
 
@@ -39,7 +39,7 @@ class FileCacheService: CacheService {
     }
 
     // MARK: Obsolete
-    func getData<T: Decodable>(from fileName: String) -> T? {
+    func getData1<T: Decodable>(from fileName: String) -> T? {
         guard let cachedData = try? Data(contentsOf: storeLocation(fileName)) else {
             return nil
         }

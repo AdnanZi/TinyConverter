@@ -26,7 +26,7 @@ class ConverterStore: Store {
     func fetchData(_ forceUpdate: Bool, _ completionHandler: @escaping (ExchangeRates?, ApiError?) -> Void) {
         NSLog("Fetching data...")
 
-        let exchangeRates: ExchangeRates? = cacheService.getData(from: ratesFileName)
+        let exchangeRates: ExchangeRates? = cacheService.getData1(from: ratesFileName)
 
         if let exchangeRates = exchangeRates {
             let currentDate = Date().currentDate
@@ -51,7 +51,7 @@ class ConverterStore: Store {
     func refreshData(_ completionHandler: @escaping (Bool) -> Void) {
         NSLog("Refreshing data...")
 
-        if let exchangeRates: ExchangeRates = cacheService.getData(from: ratesFileName) {
+        if let exchangeRates: ExchangeRates = cacheService.getData1(from: ratesFileName) {
             let currentDate = Date().currentDate
 
             if exchangeRates.date == currentDate {
@@ -75,9 +75,8 @@ class ConverterStore: Store {
 
         let ratesToCache = exchangeRates
             .encode(encoder: JSONEncoder())
+            .flatMap { self.cacheService.cacheData($0, to: self.ratesFileName).setFailureType(to: Error.self) }
             .mapError { _ in ApiError.other }
-            .map { self.cacheService.cacheData($0, to: self.ratesFileName) }
-            .map { _ in }
 
         let ratesToReturn = exchangeRates.map { $0 }
 

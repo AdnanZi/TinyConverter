@@ -340,7 +340,7 @@ class MockCacheService<T: Decodable>: CacheService {
         self.cachedItem = cachedItem
     }
 
-    func getData<T>(from fileName: String) -> T? where T : Decodable {
+    func getData1<T>(from fileName: String) -> T? where T : Decodable {
         return cachedItem as! T?
     }
 
