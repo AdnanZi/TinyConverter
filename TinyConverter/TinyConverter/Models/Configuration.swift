@@ -11,7 +11,7 @@ protocol Configuration {
     var updateOnStart: Bool { get set }
     var automaticUpdates: Bool { get set }
     var updateInterval: Int { get set }
-    static var updateIntervals: [Int] { get }
+    var updateIntervals: [Int] { get }
 }
 
 class StandardConfiguration: Configuration {
@@ -32,7 +32,11 @@ class StandardConfiguration: Configuration {
         }
     }
 
-    static var updateIntervals = [2, 6, 24, 48]
+    var updateIntervals: [Int] {
+        return Self.updateIntervals
+    }
+
+    private static let updateIntervals = [2, 6, 24, 48]
 
     private func triggerAutomaticUpdateToggledNotification() {
         NotificationCenter.default.post(name: Notification.automaticUpdatesToggledNotification, object: nil)

@@ -11,7 +11,7 @@ class UpdateIntervalViewModel {
     private var configuration: Configuration
 
     var updateIntervals: [Int] {
-        return StandardConfiguration.updateIntervals
+        return configuration.updateIntervals
     }
 
     var selectedInterval: Int {
@@ -23,7 +23,7 @@ class UpdateIntervalViewModel {
     }
 
     func setUpdateInterval(_ updateInterval: Int) {
-        if !StandardConfiguration.updateIntervals.contains(updateInterval) {
+        if !configuration.updateIntervals.contains(updateInterval) {
             return
         }
 
