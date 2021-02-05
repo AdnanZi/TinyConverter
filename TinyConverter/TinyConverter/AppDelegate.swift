@@ -21,8 +21,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         coordinator = Coordinator(window!.rootViewController as! UINavigationController)
 
-        configuration.registerDefaults()
-
         toggleMinimumBackgroundFetchInterval()
 
         NotificationCenter.default.addObserver(self, selector: #selector(toggleMinimumBackgroundFetchInterval), name: Notification.automaticUpdatesToggledNotification, object: nil)
