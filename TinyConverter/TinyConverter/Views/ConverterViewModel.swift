@@ -86,27 +86,26 @@ extension ConverterViewModel {
         showSpinner = true
     }
 
-    private func dataFetchedHandler(_ data: ExchangeRates?, _ error: Error?) {
+    private func dataFetchedHandler(_ result: Result<ExchangeRates, Error>) {
         DispatchQueue.main.async { [weak self] in
-            guard let strongSelf = self else {
+            guard let self = self else {
                 return
             }
 
-            strongSelf.showSpinner = false
+            self.showSpinner = false
 
-            guard let storedExchangeRates = data else {
+            switch result {
+            case .success(let storedExchangeRates):
+                self.exchangeRates = storedExchangeRates.rates.sorted { $0.code < $1.code }
+                self.latestUpdateDate = storedExchangeRates.date.dateString
+
+                self.baseCurrency = self.exchangeRates.first { $0.code == .eur }?.code ?? self.exchangeRates.first!.code
+                self.targetCurrency = self.exchangeRates.first { $0.code == .usd }?.code ?? self.exchangeRates.first!.code
+            case .failure(let error):
                 if error == .noConnection {
-                    strongSelf.alert = Alert(alertTitle: .noConnectionAlertTitle, alertText: .noConnectionAlertText)
+                    self.alert = Alert(alertTitle: .noConnectionAlertTitle, alertText: .noConnectionAlertText)
                 }
-
-                return
             }
-
-            strongSelf.exchangeRates = storedExchangeRates.rates.sorted { $0.code < $1.code }
-            strongSelf.latestUpdateDate = storedExchangeRates.date.dateString
-
-            strongSelf.baseCurrency = strongSelf.exchangeRates.first { $0.code == .eur }?.code ?? strongSelf.exchangeRates.first!.code
-            strongSelf.targetCurrency = strongSelf.exchangeRates.first { $0.code == .usd }?.code ?? strongSelf.exchangeRates.first!.code
         }
     }
 }

@@ -8,8 +8,8 @@
 import Foundation
 
 protocol ApiService {
-    func getSymbols(completionHandler: @escaping (SymbolsResponse?, Error?) -> Void)
-    func getLatestExchangeRates(completionHandler: @escaping (LatestRatesResponse?, Error?) -> Void)
+    func getSymbols(completionHandler: @escaping (Result<SymbolsResponse, Error>) -> Void)
+    func getLatestExchangeRates(completionHandler: @escaping (Result<LatestRatesResponse, Error>) -> Void)
 }
 
 class FixerApiService: ApiService {
@@ -20,20 +20,20 @@ class FixerApiService: ApiService {
 
     private let connectionErrorCodes = [NSURLErrorNotConnectedToInternet, NSURLErrorDataNotAllowed, NSURLErrorNetworkConnectionLost]
 
-    func getSymbols(completionHandler: @escaping (SymbolsResponse?, Error?) -> Void) {
+    func getSymbols(completionHandler: @escaping (Result<SymbolsResponse, Error>) -> Void) {
         request(for: symbolsEndpoint, completionHandler: completionHandler)
     }
 
-    func getLatestExchangeRates(completionHandler: @escaping (LatestRatesResponse?, Error?) -> Void) {
+    func getLatestExchangeRates(completionHandler: @escaping (Result<LatestRatesResponse, Error>) -> Void) {
         request(for: latestEndpoint, completionHandler: completionHandler)
     }
 
-    private func request<T: Decodable>(for endpoint: String, completionHandler: @escaping (T?, Error?) -> Void) {
+    private func request<T: Decodable>(for endpoint: String, completionHandler: @escaping (Result<T, Error>) -> Void) {
         let url = getUrl(for: endpoint)
 
         let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-            guard let strongSelf = self else {
-                completionHandler(nil, nil)
+            guard let self = self else {
+                completionHandler(.failure(.other))
                 return
             }
 
@@ -41,24 +41,24 @@ class FixerApiService: ApiService {
                 if let error = error {
                     NSLog("Network data fetch done with error: \(error.localizedDescription).")
 
-                    if strongSelf.connectionErrorCodes.contains(error._code) {
-                        completionHandler(nil, .noConnection)
+                    if self.connectionErrorCodes.contains(error._code) {
+                        completionHandler(.failure(.noConnection))
                         return
                     }
                 }
 
-                completionHandler(nil, .other)
+                completionHandler(.failure(.other))
                 return
             }
 
             guard let response = try? JSONDecoder().decode(T.self, from: jsonData) else {
                 NSLog("Error while deserializing json to \(T.self)")
-                completionHandler(nil, .other)
+                completionHandler(.failure(.other))
                 return
             }
 
             NSLog("Network data fetch done with success, endpoint: \(endpoint).")
-            completionHandler(response, nil)
+            completionHandler(.success(response))
         }
 
         NSLog("Started data fetch from endpoint: \(endpoint)")
