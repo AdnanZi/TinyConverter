@@ -36,6 +36,12 @@ class ConverterViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        fetchData()
+    }
+
     private func setupViews() {
         let basePicker = baseSymbolTextField.symbolPickerView!
         basePicker.dataSource = self
@@ -76,6 +82,10 @@ class ConverterViewController: UIViewController {
     }
 
     @objc private func appDidBecomeActive() {
+        fetchData()
+    }
+
+    private func fetchData() {
         viewModel?.fetchData()
     }
 }
