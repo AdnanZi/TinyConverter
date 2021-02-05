@@ -32,10 +32,10 @@ class SettingsViewController: UITableViewController {
             viewModel.bind(\.automaticUpdates, to: autoUpdatesSwitch, at: \.isOn),
             viewModel.bind(\.updateInterval, to: updateIntervalValueLabel, at: \.text),
             viewModel.observe(\.automaticUpdates, options: [.initial, .new]) { [weak self] _, _ in
-                guard let strongSelf = self else { return }
+                guard let self = self else { return }
 
-                strongSelf.updateIntervalCell.isUserInteractionEnabled = strongSelf.autoUpdatesSwitch.isOn
-                strongSelf.updateIntervalCell.accessoryType = strongSelf.autoUpdatesSwitch.isOn ? .disclosureIndicator : .none
+                self.updateIntervalCell.isUserInteractionEnabled = self.autoUpdatesSwitch.isOn
+                self.updateIntervalCell.accessoryType = self.autoUpdatesSwitch.isOn ? .disclosureIndicator : .none
             }
         ]
     }
