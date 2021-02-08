@@ -95,6 +95,12 @@ class ConverterStore: Store {
             case .failure(let error):
                 completionHandler(.failure(error))
             case .success(let ratesResponse):
+                if let responseError = ratesResponse.error {
+                    NSLog("Error returned from API: \(responseError.info).")
+                    completionHandler(.failure(.apiError))
+                    return
+                 }
+
                 guard let exchangeRates = self.parseRates(ratesResponse: ratesResponse, symbolsResponse: symbolsResponse) else {
                     completionHandler(.failure(.other))
                     return
