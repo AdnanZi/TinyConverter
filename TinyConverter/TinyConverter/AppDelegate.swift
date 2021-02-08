@@ -11,15 +11,16 @@ import SwinjectStoryboard
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
-    var coordinator: Coordinator? = nil
+    var coordinator: Coordinator?
 
-    let container = SwinjectStoryboard.defaultContainer
+    let container = SwinjectStoryboard.container
     var configuration: Configuration {
         return container.resolve(Configuration.self)!
     }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        coordinator = Coordinator(window!.rootViewController as! UINavigationController)
+        window = UIWindow(frame: UIScreen.main.bounds)
+        coordinator = Coordinator(window!)
 
         toggleMinimumBackgroundFetchInterval()
 

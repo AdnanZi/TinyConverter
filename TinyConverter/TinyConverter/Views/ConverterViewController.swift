@@ -22,7 +22,7 @@ class ConverterViewController: UIViewController {
 
     @IBOutlet weak var lastUpdateDateLabel: UILabel!
 
-    weak var delegate: ConverterViewControllerDelegate? = nil
+    weak var delegate: ConverterViewControllerDelegate!
 
     var viewModel: ConverterViewModel!
     var observations = [NSKeyValueObservation]()

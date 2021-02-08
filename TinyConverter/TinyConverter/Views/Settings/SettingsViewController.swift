@@ -17,7 +17,7 @@ class SettingsViewController: UITableViewController {
     @IBOutlet weak var updateIntervalValueLabel: UILabel!
     @IBOutlet weak var updateIntervalCell: UITableViewCell!
 
-    weak var delegate: SettingsViewControllerDelegate? = nil
+    weak var delegate: SettingsViewControllerDelegate!
 
     var viewModel: SettingsViewModel!
     var observations = [NSKeyValueObservation]()
@@ -46,7 +46,7 @@ class SettingsViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 2 {
-            delegate?.selectUpdateInterval()
+            delegate.selectUpdateInterval()
             tableView.deselectRow(at: indexPath, animated: false)
         }
     }

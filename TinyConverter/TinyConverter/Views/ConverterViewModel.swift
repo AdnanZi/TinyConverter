@@ -48,7 +48,7 @@ class ConverterViewModel: NSObject {
     }
 
     @objc dynamic var showSpinner = false
-    @objc dynamic var alert: Alert? = nil
+    @objc dynamic var alert: Alert?
 
     private let store: Store
     private let configuration: Configuration
