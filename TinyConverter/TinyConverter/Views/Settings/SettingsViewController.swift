@@ -19,13 +19,11 @@ class SettingsViewController: UITableViewController {
 
     weak var delegate: SettingsViewControllerDelegate? = nil
 
-    var viewModel: SettingsViewModel? = nil
+    var viewModel: SettingsViewModel!
     var observations = [NSKeyValueObservation]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        guard let viewModel = viewModel else { return }
 
         observations = [
             viewModel.bind(\.updateOnStart, to: updateOnStartSwitch, at: \.isOn),
@@ -43,7 +41,7 @@ class SettingsViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        viewModel?.refreshUpdateInterval()
+        viewModel.refreshUpdateInterval()
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -54,10 +52,10 @@ class SettingsViewController: UITableViewController {
     }
 
     @IBAction func updateOnStartToggled(_ sender: UISwitch) {
-        viewModel?.updateOnStart = sender.isOn
+        viewModel.updateOnStart = sender.isOn
     }
 
     @IBAction func autoUpdatesToggled(_ sender: UISwitch) {
-        viewModel?.automaticUpdates = sender.isOn
+        viewModel.automaticUpdates = sender.isOn
     }
 }
