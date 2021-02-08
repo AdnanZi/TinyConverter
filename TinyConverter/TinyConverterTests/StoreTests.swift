@@ -51,7 +51,7 @@ class StoreTests: XCTestCase {
         let store = ConverterStore(apiService: apiService, cacheService: MockCacheService<ExchangeRates>())
 
         let expectation = self.expectation(description: "NoError")
-        var resultError: Error?
+        var resultError: ApiError?
 
         // Act
         store.fetchData(false) { _, error in

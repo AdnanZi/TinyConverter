@@ -12,54 +12,31 @@ protocol Configuration {
     var automaticUpdates: Bool { get set }
     var updateInterval: Int { get set }
     var updateIntervals: [Int] { get }
-
-    func registerDefaults()
 }
 
 class StandardConfiguration: Configuration {
-    private let defaults = UserDefaults.standard
+    @Config(key: .updateOnStartKey, defaultValue: true)
+    var updateOnStart: Bool
 
-    var updateOnStart: Bool {
-        get {
-            return defaults.bool(forKey: .updateOnStartKey)
-        }
-        set {
-            if newValue == updateOnStart { return }
-            defaults.set(newValue, forKey: .updateOnStartKey)
-        }
-    }
-
+    @Config(key: .automaticUpdatesKey, defaultValue: true)
     var automaticUpdates: Bool {
-        get {
-            defaults.bool(forKey: .automaticUpdatesKey)
-        }
-        set {
-            if newValue == automaticUpdates { return }
-
-            defaults.set(newValue, forKey: .automaticUpdatesKey)
+        didSet {
             triggerAutomaticUpdateToggledNotification()
         }
     }
 
+    @Config(key: .updateIntervalKey, defaultValue: updateIntervals[0])
     var updateInterval: Int {
-        get {
-            defaults.integer(forKey: .updateIntervalKey)
-        }
-        set {
-            defaults.set(newValue, forKey: .updateIntervalKey)
+        didSet {
             triggerAutomaticUpdateToggledNotification()
         }
     }
 
     var updateIntervals: [Int] {
-        return [2, 6, 24, 48]
+        return Self.updateIntervals
     }
 
-    func registerDefaults() {
-        let initialDefaults: [ String: Any ] = [ .updateIntervalKey: updateIntervals[0], .updateOnStartKey: true, .automaticUpdatesKey: true ]
-
-        defaults.register(defaults: initialDefaults)
-    }
+    private static let updateIntervals = [2, 6, 24, 48]
 
     private func triggerAutomaticUpdateToggledNotification() {
         NotificationCenter.default.post(name: Notification.automaticUpdatesToggledNotification, object: nil)
@@ -74,4 +51,24 @@ fileprivate extension String {
 
 extension Notification {
     static var automaticUpdatesToggledNotification: Name { return Name("AutomaticUpdatesToggled") }
+}
+
+@propertyWrapper struct Config<T> {
+    private let defaults = UserDefaults.standard
+    private let key: String
+    private var defaultValue: T
+
+    init(key: String, defaultValue: T) {
+        self.key = key
+        self.defaultValue = defaultValue
+    }
+
+    var wrappedValue: T {
+        get {
+            defaults.object(forKey: key) as? T ?? defaultValue
+        }
+        set {
+            defaults.setValue(newValue, forKey: key)
+        }
+    }
 }

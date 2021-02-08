@@ -8,7 +8,7 @@
 import UIKit
 
 class UpdateIntervalViewController: UITableViewController {
-    var viewModel: UpdateIntervalViewModel? = nil
+    var viewModel: UpdateIntervalViewModel!
 
     // MARK: - Table view data source
 
@@ -17,12 +17,10 @@ class UpdateIntervalViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel?.updateIntervals.count ?? 0
+        return viewModel.updateIntervals.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let viewModel = viewModel else { return UITableViewCell() }
-
         let cell = tableView.dequeueReusableCell(withIdentifier: "intervalCell", for: indexPath)
 
         let cellValue = viewModel.updateIntervals[indexPath.row]
@@ -36,8 +34,6 @@ class UpdateIntervalViewController: UITableViewController {
     // MARK: - Table view delegate
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let viewModel = viewModel else { return }
-
         tableView.deselectRow(at: indexPath, animated: true)
 
         guard let selectedRow = viewModel.updateIntervals.firstIndex(of: viewModel.selectedInterval) else { return }

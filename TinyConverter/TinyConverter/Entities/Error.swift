@@ -1,10 +1,11 @@
 //
-//  Error.swift
+//  ApiError.swift
 //  TinyConverter
 //
 //  Created by Adnan Zildzic on 13.07.19.
 //  Copyright © 2019 Adnan Zildzic. All rights reserved.
 //
+
 enum ApiError: Error {
     case noConnection
     case apiError

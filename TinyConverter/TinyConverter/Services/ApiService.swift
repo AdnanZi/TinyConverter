@@ -13,8 +13,8 @@ protocol ApiService {
     func getLatestExchangeRates() -> AnyPublisher<LatestRatesResponse, ApiError>
 
     // MARK: Obsolete
-    func getSymbols(completionHandler: @escaping (SymbolsResponse?, ApiError?) -> Void)
-    func getLatestExchangeRates(completionHandler: @escaping (LatestRatesResponse?, ApiError?) -> Void)
+    func getSymbols(completionHandler: @escaping (Result<SymbolsResponse, ApiError>) -> Void)
+    func getLatestExchangeRates(completionHandler: @escaping (Result<LatestRatesResponse, ApiError>) -> Void)
 }
 
 class FixerApiService: ApiService {
@@ -22,6 +22,8 @@ class FixerApiService: ApiService {
     private let serverHost = "http://data.fixer.io/api/"
     private let latestEndpoint = "latest"
     private let symbolsEndpoint = "symbols"
+
+    private let connectionErrorCodes = [NSURLErrorNotConnectedToInternet, NSURLErrorDataNotAllowed, NSURLErrorNetworkConnectionLost]
 
     func getSymbols() -> AnyPublisher<SymbolsResponse, ApiError> {
         return request(for: symbolsEndpoint)
@@ -49,7 +51,7 @@ class FixerApiService: ApiService {
                 }
 
                 if error is DecodingError {
-                    NSLog("Error while deserializing json to \(T.self)")
+                    NSLog("ApiError while deserializing json to \(T.self)")
                 }
 
                 if error is URLError {
@@ -68,43 +70,45 @@ class FixerApiService: ApiService {
         return URL(string: urlString)!
     }
 
-    // MARK: Obsolete
-    func getSymbols(completionHandler: @escaping (SymbolsResponse?, ApiError?) -> Void) {
+    func getSymbols(completionHandler: @escaping (Result<SymbolsResponse, ApiError>) -> Void) {
         request(for: symbolsEndpoint, completionHandler: completionHandler)
     }
 
-    func getLatestExchangeRates(completionHandler: @escaping (LatestRatesResponse?, ApiError?) -> Void) {
+    func getLatestExchangeRates(completionHandler: @escaping (Result<LatestRatesResponse, ApiError>) -> Void) {
         request(for: latestEndpoint, completionHandler: completionHandler)
     }
 
-    private func request<T: Decodable>(for endpoint: String, completionHandler: @escaping (T?, ApiError?) -> Void) {
+    private func request<T: Decodable>(for endpoint: String, completionHandler: @escaping (Result<T, ApiError>) -> Void) {
         let url = getUrl(for: endpoint)
 
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+        let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+            guard let self = self else {
+                completionHandler(.failure(.other))
+                return
+            }
+
             guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200, let jsonData = data else {
                 if let error = error {
                     NSLog("Network data fetch done with error: \(error.localizedDescription).")
 
-                    let connectionErrorCodes = [NSURLErrorNotConnectedToInternet, NSURLErrorDataNotAllowed, NSURLErrorNetworkConnectionLost]
-
-                    if connectionErrorCodes.contains(error._code) {
-                        completionHandler(nil, .noConnection)
+                    if self.connectionErrorCodes.contains(error._code) {
+                        completionHandler(.failure(.noConnection))
                         return
                     }
                 }
 
-                completionHandler(nil, .other)
+                completionHandler(.failure(.other))
                 return
             }
 
             guard let response = try? JSONDecoder().decode(T.self, from: jsonData) else {
-                NSLog("Error while deserializing json to \(T.self)")
-                completionHandler(nil, .other)
+                NSLog("ApiError while deserializing json to \(T.self)")
+                completionHandler(.failure(.other))
                 return
             }
 
             NSLog("Network data fetch done with success, endpoint: \(endpoint).")
-            completionHandler(response, nil)
+            completionHandler(.success(response))
         }
 
         NSLog("Started data fetch from endpoint: \(endpoint)")

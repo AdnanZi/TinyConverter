@@ -12,15 +12,18 @@ final class Coordinator {
     let rootViewController: UINavigationController
     let storyboard = SwinjectStoryboard.create(name: "Main", bundle: nil)
 
-    init(_ rootViewController: UINavigationController) {
-        self.rootViewController = rootViewController
+    init(_ window: UIWindow) {
+        let converterVC = storyboard.instantiateViewController(withIdentifier: "converterViewController") as! ConverterViewController
+        rootViewController = UINavigationController(rootViewController: converterVC)
 
-        let converterVC = rootViewController.topViewController as! ConverterViewController
+        window.rootViewController = rootViewController
+        window.makeKeyAndVisible()
+
         converterVC.delegate = self
 
         guard let rightBarButton = converterVC.navigationItem.rightBarButtonItem else { return }
         rightBarButton.title = "\u{2699}"
-        rightBarButton.action = #selector(converterVC.delegate?.navigateToSettings)
+        rightBarButton.action = #selector(converterVC.delegate.navigateToSettings)
         rightBarButton.target = self
     }
 }
