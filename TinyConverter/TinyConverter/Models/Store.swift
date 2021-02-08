@@ -172,7 +172,7 @@ class ConverterStore: Store {
                 if let exchangeRatesJson = try? JSONEncoder().encode(exchangeRates) {
                     self.cacheService.cacheData1(exchangeRatesJson, to: self.ratesFileName)
                 } else {
-                    NSLog("ApiError while deserializing json form ExchangeRates. Data not saved to cache.")
+                    NSLog("Error while deserializing json form ExchangeRates. Data not saved to cache.")
                 }
 
                 completionHandler(.success(exchangeRates))

@@ -49,7 +49,7 @@ class FixerApiService: ApiService {
                 }
 
                 if error is DecodingError {
-                    NSLog("ApiError while deserializing json to \(T.self)")
+                    NSLog("Error while deserializing json to \(T.self)")
                 }
 
                 if error is URLError {
@@ -67,6 +67,8 @@ class FixerApiService: ApiService {
         let urlString = "\(serverHost)\(endpoint)?access_key=\(apiKey)"
         return URL(string: urlString)!
     }
+
+    // MARK: Obsolete
 
     func getSymbols(completionHandler: @escaping (Result<SymbolsResponse, ApiError>) -> Void) {
         request(for: symbolsEndpoint, completionHandler: completionHandler)
@@ -100,7 +102,7 @@ class FixerApiService: ApiService {
             }
 
             guard let response = try? JSONDecoder().decode(T.self, from: jsonData) else {
-                NSLog("ApiError while deserializing json to \(T.self)")
+                NSLog("Error while deserializing json to \(T.self)")
                 completionHandler(.failure(.other))
                 return
             }
