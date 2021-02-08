@@ -43,10 +43,8 @@ class FixerApiService: ApiService {
                 return data
             }
             .decode(type: T.self, decoder: JSONDecoder())
-            .mapError { error in
-                let connectionErrorCodes = [NSURLErrorNotConnectedToInternet, NSURLErrorDataNotAllowed, NSURLErrorNetworkConnectionLost]
-
-                if connectionErrorCodes.contains(error._code) {
+            .mapError { [weak self] error in
+                if let self = self, self.connectionErrorCodes.contains(error._code) {
                     return .noConnection
                 }
 
