@@ -56,11 +56,11 @@ class ConverterStore: Store {
                     let currentDate = Date().currentDate
 
                     if exchangeRates.date == currentDate {
-                        return Just(false).setFailureType(to: Never.self).eraseToAnyPublisher()
+                        return Just(false).eraseToAnyPublisher()
                     }
                 }
 
-                return self.getDataFromServer().map { _ in true }.catch { _ in Just(false) }.setFailureType(to: Never.self).eraseToAnyPublisher()
+                return self.getDataFromServer().map { _ in true }.catch { _ in Just(false) }.eraseToAnyPublisher()
         }
         .handleEvents(receiveSubscription: { _ in NSLog("Refreshing data...") })
         .eraseToAnyPublisher()

@@ -57,12 +57,12 @@ class ConverterViewController: UIViewController {
 
     private func setupObservables() {
         observations = [
-            viewModel.bind(\.baseCurrency, to: baseSymbolTextField, at: \.text),
-            viewModel.bind(\.targetCurrency, to: targetSymbolTextField, at: \.text),
+            viewModel.bind(\.baseCurrencyOld, to: baseSymbolTextField, at: \.text),
+            viewModel.bind(\.targetCurrencyOld, to: targetSymbolTextField, at: \.text),
             viewModel.bind(\.showSpinner, to: spinner, at: \.animating),
-            viewModel.bind(\.baseAmount, to: baseAmountTextField, at: \.text),
-            viewModel.bind(\.targetAmount, to: targetAmountTextField, at: \.text),
-            viewModel.bind(\.latestUpdateDate, to: lastUpdateDateLabel, at: \.text),
+            viewModel.bind(\.baseAmountOld, to: baseAmountTextField, at: \.text),
+            viewModel.bind(\.targetAmountOld, to: targetAmountTextField, at: \.text),
+            viewModel.bind(\.latestUpdateDateOld, to: lastUpdateDateLabel, at: \.text),
             viewModel.observe(\.alert, options: [.new]) { [weak self] _, change in self?.showAlert(change.newValue!) }
         ]
     }
@@ -74,7 +74,7 @@ class ConverterViewController: UIViewController {
 
         let alert = UIAlertController(title: alertOptions.alertTitle, message: alertOptions.alertText, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] _ in self?.viewModel.fetchData() }))
+        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] _ in self?.viewModel.fetchDataOld() }))
 
         present(alert, animated: true, completion: nil)
     }
@@ -84,18 +84,18 @@ class ConverterViewController: UIViewController {
     }
 
     private func fetchData() {
-        viewModel.fetchData()
+        viewModel.fetchDataOld()
     }
 }
 
 extension ConverterViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        let value = viewModel.exchangeRates[row].code
+        let value = viewModel.exchangeRatesOld[row].code
 
         if pickerView == baseSymbolTextField.symbolPickerView {
-            viewModel.baseCurrency = value
+            viewModel.baseCurrencyOld = value
         } else {
-            viewModel.targetCurrency = value
+            viewModel.targetCurrencyOld = value
         }
     }
 }
@@ -106,11 +106,11 @@ extension ConverterViewController: UIPickerViewDataSource {
     }
 
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return viewModel.exchangeRates.count
+        return viewModel.exchangeRatesOld.count
     }
 
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return viewModel.exchangeRates[row].name
+        return viewModel.exchangeRatesOld[row].name
     }
 }
 
