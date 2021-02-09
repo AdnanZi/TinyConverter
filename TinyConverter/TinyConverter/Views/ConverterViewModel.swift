@@ -163,7 +163,7 @@ class ConverterViewModel: NSObject {
 }
 
 extension ConverterViewModel {
-    func fetchData() {
+    func fetchData() -> AnyPublisher<Void, Never> {
         store.fetchData(configuration.updateOnStart)
             .handleEvents(receiveSubscription: { [weak self] _ in
                 self?.spinnerPublisher.send(true)
@@ -172,16 +172,18 @@ extension ConverterViewModel {
             }, receiveCancel: { [weak self] in
                 self?.spinnerPublisher.send(false)
             })
-            .map { $0 as ExchangeRates? }
             .mapError { [weak self] error -> ApiError in
                 if error == .noConnection {
                     self?.alertPublisher.send(Alert(alertTitle: .noConnectionAlertTitle, alertText: .noConnectionAlertText))
                 }
                 return error
             }
-            .replaceError(with: nil)
-            .assign(to: \.storedExchangeRates, on: self)
-            .store(in: &cancellable)
+            .map { [weak self] exchageRates in
+                self?.storedExchangeRates = exchageRates
+                return ()
+            }
+            .replaceError(with: ())
+            .eraseToAnyPublisher()
     }
 
     func fetchDataOld() {
