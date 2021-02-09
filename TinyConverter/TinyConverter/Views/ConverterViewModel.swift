@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-class ConverterViewModel: NSObject {
+class ConverterViewModel {
     private var cancellable = Set<AnyCancellable>()
 
     @Published private var storedExchangeRates: ExchangeRates?
@@ -24,57 +24,12 @@ class ConverterViewModel: NSObject {
     let spinnerPublisher = PassthroughSubject<Bool, Never>()
     let alertPublisher = PassthroughSubject<Alert, Never>()
 
-    // MARK: Obsolete
-    private(set) var exchangeRatesOld = [ExchangeRate]()
-    @objc dynamic var latestUpdateDateOld: String? = ""
-
-    @objc dynamic var baseCurrencyOld: String? = .eur {
-        didSet {
-            if (oldValue == baseCurrencyOld) {
-                return
-            }
-
-            baseAmountOld = calcuateBaseAmount()
-            baseAmountEntered = baseAmountOld!
-        }
-    }
-
-    @objc dynamic var targetCurrencyOld: String? = .usd {
-        didSet {
-            if (oldValue == targetCurrencyOld) {
-                return
-            }
-
-            targetAmountOld = calculateTargetAmount()
-            targetAmountEntered = targetAmountOld!
-        }
-    }
-
-    @objc dynamic var baseAmountOld: String? = ""
-    var baseAmountEntered: String = "" {
-        didSet {
-            targetAmountOld = calculateTargetAmount()
-        }
-    }
-
-    @objc dynamic var targetAmountOld: String? = ""
-    var targetAmountEntered: String = "" {
-        didSet {
-            baseAmountOld = calcuateBaseAmount()
-        }
-    }
-
-    @objc dynamic var showSpinner = false
-    @objc dynamic var alert: Alert?
-
     private let store: Store
     private let configuration: Configuration
 
     init(store: Store, configuration: Configuration) {
         self.store = store
         self.configuration = configuration
-
-        super.init() // Needed for NSObject - remove
 
         setupSubscriptions()
     }
@@ -144,7 +99,7 @@ class ConverterViewModel: NSObject {
     private func calculateTargetValue(baseValue: String?, baseCurrency: String?, targetCurrency: String?) -> String {
         guard let baseValue = baseValue, let multiplier = Double(baseValue),
             let baseCurrency = baseCurrency, let targetCurrency = targetCurrency,
-            let baseCurrencyValue = exchangeRatesOld.first(where: { $0.code == baseCurrency })?.value, let targetCurrencyValue = exchangeRatesOld.first(where: { $0.code == targetCurrency })?.value else {
+            let baseCurrencyValue = exchangeRates.first(where: { $0.code == baseCurrency })?.value, let targetCurrencyValue = exchangeRates.first(where: { $0.code == targetCurrency })?.value else {
             return ""
         }
 
@@ -154,11 +109,11 @@ class ConverterViewModel: NSObject {
     }
 
     private func calculateTargetAmount() -> String {
-        return calculateTargetValue(baseValue: baseAmountEntered, baseCurrency: baseCurrencyOld, targetCurrency: targetCurrencyOld)
+        return calculateTargetValue(baseValue: baseAmount, baseCurrency: baseCurrency, targetCurrency: targetCurrency)
     }
 
     private func calcuateBaseAmount() -> String {
-        return calculateTargetValue(baseValue: targetAmountEntered, baseCurrency: targetCurrencyOld, targetCurrency: baseCurrencyOld)
+        return calculateTargetValue(baseValue: targetAmount, baseCurrency: targetCurrency, targetCurrency: baseCurrency)
     }
 }
 
@@ -184,35 +139,6 @@ extension ConverterViewModel {
             }
             .replaceError(with: ())
             .eraseToAnyPublisher()
-    }
-
-    func fetchDataOld() {
-        store.fetchData(configuration.updateOnStart, dataFetchedHandler)
-
-        showSpinner = true
-    }
-
-    private func dataFetchedHandler(_ result: Result<ExchangeRates, ApiError>) {
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            self.showSpinner = false
-
-            switch result {
-            case .success(let storedExchangeRates):
-                self.exchangeRatesOld = storedExchangeRates.rates.sorted { $0.code < $1.code }
-                self.latestUpdateDateOld = storedExchangeRates.date.dateString
-
-                self.baseCurrencyOld = self.exchangeRatesOld.first { $0.code == .eur }?.code ?? self.exchangeRatesOld.first!.code
-                self.targetCurrencyOld = self.exchangeRatesOld.first { $0.code == .usd }?.code ?? self.exchangeRatesOld.first!.code
-            case .failure(let error):
-                if error == .noConnection {
-                    self.alert = Alert(alertTitle: .noConnectionAlertTitle, alertText: .noConnectionAlertText)
-                }
-            }
-        }
     }
 }
 

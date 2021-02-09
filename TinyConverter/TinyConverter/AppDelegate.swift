@@ -35,9 +35,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return
         }
 
-        store.refreshData() { refreshed in
-            completionHandler(refreshed ? .newData : .noData)
-        }
+        store.refreshData()
+            .receive(on: RunLoop.main)
+            .sink {
+                completionHandler($0 ? .newData : .noData)
+            }
     }
 
     @objc func toggleMinimumBackgroundFetchInterval() {

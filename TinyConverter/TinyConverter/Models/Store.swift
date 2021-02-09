@@ -11,9 +11,6 @@ import Combine
 protocol Store {
     func fetchData(_ forceUpdate: Bool) -> AnyPublisher<ExchangeRates, ApiError>
     func refreshData() -> AnyPublisher<Bool, Never>
-    // MARK: Obsolete
-    func fetchData(_ forceUpdate: Bool, _ completionHandler: @escaping (Result<ExchangeRates, ApiError>) -> Void)
-    func refreshData(_ completionHandler: @escaping (Bool) -> Void)
 }
 
 class ConverterStore: Store {
@@ -66,54 +63,6 @@ class ConverterStore: Store {
         .eraseToAnyPublisher()
     }
 
-    // MARK: Obsolete
-    func fetchData(_ forceUpdate: Bool, _ completionHandler: @escaping (Result<ExchangeRates, ApiError>) -> Void) {
-        NSLog("Fetching data...")
-
-        let exchangeRates: ExchangeRates? = cacheService.getData1(from: ratesFileName)
-
-        if let exchangeRates = exchangeRates {
-            let currentDate = Date().currentDate
-
-            if exchangeRates.date == currentDate && !forceUpdate {
-                NSLog("Data retrieved from cache.")
-                completionHandler(.success(exchangeRates))
-                return
-            }
-        }
-
-        getDataFromServer { result in
-            switch result {
-            case .success(let data):
-                completionHandler(.success(data))
-            case .failure(let error):
-                completionHandler(.failure(error))
-            }
-        }
-    }
-
-    // MARK: Obsolete
-    func refreshData(_ completionHandler: @escaping (Bool) -> Void) {
-        NSLog("Refreshing data...")
-
-        if let exchangeRates: ExchangeRates = cacheService.getData1(from: ratesFileName) {
-            let currentDate = Date().currentDate
-
-            if exchangeRates.date == currentDate {
-                completionHandler(false)
-            } else {
-                getDataFromServer { result in
-                    switch result {
-                    case .success(_):
-                        completionHandler(true)
-                    case .failure(_):
-                        completionHandler(false)
-                    }
-                }
-            }
-        }
-    }
-
     private func getDataFromServer() -> AnyPublisher<ExchangeRates, ApiError> {
         let symbols = getSymbolsFromServer()
         let rates = getExchangeRatesFromServer()
@@ -134,50 +83,6 @@ class ConverterStore: Store {
             .combineLatest(ratesToReturn)
             .map { _, rates in rates }
             .eraseToAnyPublisher()
-    }
-
-    //  MARK: Obsolete
-    private func getDataFromServer(_ completionHandler: @escaping (Result<ExchangeRates, ApiError>) -> Void) {
-        apiService.getSymbols { [weak self] result in
-            guard let self = self else {
-                completionHandler(.failure(.other))
-                return
-            }
-
-            switch result {
-            case .failure(let error):
-                completionHandler(.failure(error))
-            case .success(let symbolsResponse):
-                self.getExchangeRates(symbolsResponse, completionHandler: completionHandler)
-            }
-        }
-    }
-
-    private func getExchangeRates(_ symbolsResponse: SymbolsResponse, completionHandler: @escaping (Result<ExchangeRates, ApiError>) -> Void) {
-        apiService.getLatestExchangeRates { [weak self] result in
-            guard let self = self else {
-                completionHandler(.failure(.other))
-                return
-            }
-
-            switch result {
-            case .failure(let error):
-                completionHandler(.failure(error))
-            case .success(let ratesResponse):
-                guard let exchangeRates = self.parseRates(ratesResponse: ratesResponse, symbolsResponse: symbolsResponse) else {
-                    completionHandler(.failure(.other))
-                    return
-                }
-
-                if let exchangeRatesJson = try? JSONEncoder().encode(exchangeRates) {
-                    self.cacheService.cacheData1(exchangeRatesJson, to: self.ratesFileName)
-                } else {
-                    NSLog("Error while deserializing json form ExchangeRates. Data not saved to cache.")
-                }
-
-                completionHandler(.success(exchangeRates))
-            }
-        }
     }
 
     private func getSymbolsFromServer() -> AnyPublisher<SymbolsResponse, ApiError> {

@@ -11,10 +11,6 @@ import Combine
 protocol ApiService {
     func getSymbols() -> AnyPublisher<SymbolsResponse, ApiError>
     func getLatestExchangeRates() -> AnyPublisher<LatestRatesResponse, ApiError>
-
-    // MARK: Obsolete
-    func getSymbols(completionHandler: @escaping (Result<SymbolsResponse, ApiError>) -> Void)
-    func getLatestExchangeRates(completionHandler: @escaping (Result<LatestRatesResponse, ApiError>) -> Void)
 }
 
 class FixerApiService: ApiService {
@@ -66,52 +62,5 @@ class FixerApiService: ApiService {
     private func getUrl(for endpoint: String) -> URL {
         let urlString = "\(serverHost)\(endpoint)?access_key=\(apiKey)"
         return URL(string: urlString)!
-    }
-
-    // MARK: Obsolete
-
-    func getSymbols(completionHandler: @escaping (Result<SymbolsResponse, ApiError>) -> Void) {
-        request(for: symbolsEndpoint, completionHandler: completionHandler)
-    }
-
-    func getLatestExchangeRates(completionHandler: @escaping (Result<LatestRatesResponse, ApiError>) -> Void) {
-        request(for: latestEndpoint, completionHandler: completionHandler)
-    }
-
-    private func request<T: Decodable>(for endpoint: String, completionHandler: @escaping (Result<T, ApiError>) -> Void) {
-        let url = getUrl(for: endpoint)
-
-        let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-            guard let self = self else {
-                completionHandler(.failure(.other))
-                return
-            }
-
-            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200, let jsonData = data else {
-                if let error = error {
-                    NSLog("Network data fetch done with error: \(error.localizedDescription).")
-
-                    if self.connectionErrorCodes.contains(error._code) {
-                        completionHandler(.failure(.noConnection))
-                        return
-                    }
-                }
-
-                completionHandler(.failure(.other))
-                return
-            }
-
-            guard let response = try? JSONDecoder().decode(T.self, from: jsonData) else {
-                NSLog("Error while deserializing json to \(T.self)")
-                completionHandler(.failure(.other))
-                return
-            }
-
-            NSLog("Network data fetch done with success, endpoint: \(endpoint).")
-            completionHandler(.success(response))
-        }
-
-        NSLog("Started data fetch from endpoint: \(endpoint)")
-        task.resume()
     }
 }

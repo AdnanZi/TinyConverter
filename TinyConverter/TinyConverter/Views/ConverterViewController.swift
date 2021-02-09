@@ -6,6 +6,7 @@
 //  Copyright © 2019 Adnan Zildzic. All rights reserved.
 //
 import UIKit
+import Combine
 
 @objc protocol ConverterViewControllerDelegate: class {
     func navigateToSettings()
@@ -25,7 +26,8 @@ class ConverterViewController: UIViewController {
     weak var delegate: ConverterViewControllerDelegate!
 
     var viewModel: ConverterViewModel!
-    var observations = [NSKeyValueObservation]()
+
+    private var cancellable = Set<AnyCancellable>()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,15 +58,44 @@ class ConverterViewController: UIViewController {
     }
 
     private func setupObservables() {
-        observations = [
-            viewModel.bind(\.baseCurrencyOld, to: baseSymbolTextField, at: \.text),
-            viewModel.bind(\.targetCurrencyOld, to: targetSymbolTextField, at: \.text),
-            viewModel.bind(\.showSpinner, to: spinner, at: \.animating),
-            viewModel.bind(\.baseAmountOld, to: baseAmountTextField, at: \.text),
-            viewModel.bind(\.targetAmountOld, to: targetAmountTextField, at: \.text),
-            viewModel.bind(\.latestUpdateDateOld, to: lastUpdateDateLabel, at: \.text),
-            viewModel.observe(\.alert, options: [.new]) { [weak self] _, change in self?.showAlert(change.newValue!) }
-        ]
+        viewModel.$baseCurrency
+            .receive(on: RunLoop.main)
+            .assign(to: \.text, on: baseSymbolTextField)
+            .store(in: &cancellable)
+
+        viewModel.$targetCurrency
+            .receive(on: RunLoop.main)
+            .assign(to: \.text, on: targetSymbolTextField)
+            .store(in: &cancellable)
+
+        viewModel.$baseAmount
+            .receive(on: RunLoop.main)
+            .assign(to: \.text, on: baseAmountTextField)
+            .store(in: &cancellable)
+
+        viewModel.$targetAmount
+            .receive(on: RunLoop.main)
+            .assign(to: \.text, on: targetAmountTextField)
+            .store(in: &cancellable)
+
+        viewModel.$latestUpdateDate
+            .receive(on: RunLoop.main)
+            .assign(to: \.text, on: lastUpdateDateLabel)
+            .store(in: &cancellable)
+
+        viewModel.spinnerPublisher
+            .receive(on: RunLoop.main)
+            .sink { [weak self] in
+                $0 ? self?.spinner.startAnimating() : self?.spinner.stopAnimating()
+            }
+            .store(in: &cancellable)
+
+        viewModel.alertPublisher
+            .receive(on: RunLoop.main)
+            .sink { [weak self] in
+                self?.showAlert($0)
+            }
+            .store(in: &cancellable)
     }
 
     private func showAlert(_ alertOptions: Alert?) {
@@ -74,7 +105,7 @@ class ConverterViewController: UIViewController {
 
         let alert = UIAlertController(title: alertOptions.alertTitle, message: alertOptions.alertText, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] _ in self?.viewModel.fetchDataOld() }))
+        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] _ in self?.fetchData() }))
 
         present(alert, animated: true, completion: nil)
     }
@@ -84,18 +115,18 @@ class ConverterViewController: UIViewController {
     }
 
     private func fetchData() {
-        viewModel.fetchDataOld()
+        viewModel.fetchData().ignoreOutput()
     }
 }
 
 extension ConverterViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        let value = viewModel.exchangeRatesOld[row].code
+        let value = viewModel.exchangeRates[row].code
 
         if pickerView == baseSymbolTextField.symbolPickerView {
-            viewModel.baseCurrencyOld = value
+            viewModel.baseCurrency = value
         } else {
-            viewModel.targetCurrencyOld = value
+            viewModel.targetCurrency = value
         }
     }
 }
@@ -106,11 +137,11 @@ extension ConverterViewController: UIPickerViewDataSource {
     }
 
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return viewModel.exchangeRatesOld.count
+        return viewModel.exchangeRates.count
     }
 
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return viewModel.exchangeRatesOld[row].name
+        return viewModel.exchangeRates[row].name
     }
 }
 
@@ -128,9 +159,9 @@ extension ConverterViewController: UITextFieldDelegate {
         }
 
         if textField == baseAmountTextField {
-            viewModel.baseAmountEntered = text
+            viewModel.baseAmount = text
         } else {
-            viewModel.targetAmountEntered = text
+            viewModel.targetAmount = text
         }
 
         return true

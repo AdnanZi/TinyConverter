@@ -7,27 +7,13 @@
 //
 import UIKit
 
+// MARK: Obsolete
 extension NSObjectProtocol where Self: NSObject {
     func bind<Value, View>(_ keyPath: KeyPath<Self, Value>, to view: View, at property: ReferenceWritableKeyPath<View, Value>) -> NSKeyValueObservation {
         return observe(keyPath, options: [.initial, .new]) { _, change in
             guard let value = change.newValue else { return }
 
             view[keyPath: property] = value
-        }
-    }
-}
-
-extension UIActivityIndicatorView {
-    var animating: Bool {
-        get {
-            return isAnimating
-        }
-        set {
-            if newValue {
-                startAnimating()
-            } else {
-                stopAnimating()
-            }
         }
     }
 }
