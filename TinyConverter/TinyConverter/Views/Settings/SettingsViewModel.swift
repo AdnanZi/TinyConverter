@@ -6,36 +6,46 @@
 //  Copyright © 2020 Adnan Zildzic. All rights reserved.
 //
 import Foundation
+import Combine
 
-class SettingsViewModel: NSObject {
-    @objc dynamic var updateOnStart: Bool = false {
-        didSet {
-            configuration.updateOnStart = updateOnStart
-        }
-    }
+class SettingsViewModel {
+    private var cancellable = Set<AnyCancellable>()
 
-    @objc dynamic var automaticUpdates: Bool = false {
-        didSet {
-            configuration.automaticUpdates = automaticUpdates
-        }
-    }
-
-    @objc dynamic var updateInterval: String? = ""
+    @Published var updateOnStart: Bool = false
+    @Published var automaticUpdates: Bool = false
+    @Published var updateInterval: String?
 
     private var configuration: Configuration
 
     init(configuration: Configuration) {
         self.configuration = configuration
 
-        super.init()
-
         fetchValues()
+        setupSubscriptions()
     }
 
     func fetchValues() {
         updateOnStart = configuration.updateOnStart
         automaticUpdates = configuration.automaticUpdates
         updateInterval = String(configuration.updateInterval)
+    }
+
+    func setupSubscriptions() {
+        $updateOnStart
+            .dropFirst()
+            .removeDuplicates()
+            .sink { [weak self] in
+                self?.configuration.updateOnStart = $0
+            }
+            .store(in: &cancellable)
+
+        $automaticUpdates
+            .dropFirst()
+            .removeDuplicates()
+            .sink { [weak self] in
+                self?.configuration.automaticUpdates = $0
+            }
+            .store(in: &cancellable)
     }
 
     func refreshUpdateInterval() {

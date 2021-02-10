@@ -6,6 +6,7 @@
 //  Copyright © 2020 Adnan Zildzic. All rights reserved.
 //
 import UIKit
+import Combine
 
 protocol SettingsViewControllerDelegate: class {
     func selectUpdateInterval()
@@ -20,22 +21,36 @@ class SettingsViewController: UITableViewController {
     weak var delegate: SettingsViewControllerDelegate!
 
     var viewModel: SettingsViewModel!
-    var observations = [NSKeyValueObservation]()
+
+    private var cancellable = Set<AnyCancellable>()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        observations = [
-            viewModel.bind(\.updateOnStart, to: updateOnStartSwitch, at: \.isOn),
-            viewModel.bind(\.automaticUpdates, to: autoUpdatesSwitch, at: \.isOn),
-            viewModel.bind(\.updateInterval, to: updateIntervalValueLabel, at: \.text),
-            viewModel.observe(\.automaticUpdates, options: [.initial, .new]) { [weak self] _, _ in
+        viewModel.$updateOnStart
+            .receive(on: RunLoop.main)
+            .assign(to: \.isOn, on: updateOnStartSwitch)
+            .store(in: &cancellable)
+
+        viewModel.$automaticUpdates
+            .receive(on: RunLoop.main)
+            .assign(to: \.isOn, on: autoUpdatesSwitch)
+            .store(in: &cancellable)
+
+        viewModel.$updateInterval
+            .receive(on: RunLoop.main)
+            .assign(to: \.text, on: updateIntervalValueLabel)
+            .store(in: &cancellable)
+
+        viewModel.$automaticUpdates
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
                 guard let self = self else { return }
 
                 self.updateIntervalCell.isUserInteractionEnabled = self.autoUpdatesSwitch.isOn
                 self.updateIntervalCell.accessoryType = self.autoUpdatesSwitch.isOn ? .disclosureIndicator : .none
             }
-        ]
+            .store(in: &cancellable)
     }
 
     override func viewWillAppear(_ animated: Bool) {
