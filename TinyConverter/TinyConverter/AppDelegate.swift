@@ -6,10 +6,13 @@
 //  Copyright © 2019 Adnan Zildzic. All rights reserved.
 //
 import UIKit
+import Combine
 import SwinjectStoryboard
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
+    var cancallable = Set<AnyCancellable>()
+
     var window: UIWindow?
     var coordinator: Coordinator?
 
@@ -40,6 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             .sink {
                 completionHandler($0 ? .newData : .noData)
             }
+            .store(in: &cancallable)
     }
 
     @objc func toggleMinimumBackgroundFetchInterval() {

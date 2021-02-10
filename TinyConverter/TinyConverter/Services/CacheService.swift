@@ -15,18 +15,34 @@ protocol CacheService {
 
 class FileCacheService: CacheService {
     func getData<T:Decodable>(from fileName: String) -> AnyPublisher<T?, Never> {
-        return Just(try! Data(contentsOf: storeLocation(fileName)))
-            .decode(type: T.self, decoder: JSONDecoder())
-            .map { $0 as T? }
-            .replaceError(with: nil)
-            .eraseToAnyPublisher()
+        Deferred {
+            return Future<Data?, Never> { [unowned self] promise in
+                return promise(.success(try? Data(contentsOf: self.storeLocation(fileName))))
+            }
+        }
+        .flatMap { data -> AnyPublisher<T? , Never> in
+            guard let data = data else {
+                return Just(nil)
+                    .eraseToAnyPublisher()
+            }
+
+            return Just(data)
+                .decode(type: T.self, decoder: JSONDecoder())
+                .map { $0 as T? }
+                .replaceError(with: nil)
+                .eraseToAnyPublisher()
+        }
+        .eraseToAnyPublisher()
     }
 
     func cacheData(_ jsonData: Data, to fileName: String) -> AnyPublisher<Void, Never> {
-        Just(try! jsonData.write(to: storeLocation(fileName)))
-            .replaceError(with: ())
-            .ignoreOutput()
-            .eraseToAnyPublisher()
+        return Deferred {
+            return Future<Void?, Never> { [unowned self] promise in
+                return promise(.success(try? jsonData.write(to: self.storeLocation(fileName))))
+            }
+        }
+        .replaceNil(with: ())
+        .eraseToAnyPublisher()
     }
 
     private func storeLocation(_ fileName: String) -> URL {

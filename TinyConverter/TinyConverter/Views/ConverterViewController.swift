@@ -115,7 +115,9 @@ class ConverterViewController: UIViewController {
     }
 
     private func fetchData() {
-        viewModel.fetchData().ignoreOutput()
+        viewModel.fetchData()
+            .sink { _ in }
+            .store(in: &cancellable)
     }
 }
 
