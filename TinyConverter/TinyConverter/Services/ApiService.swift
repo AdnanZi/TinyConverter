@@ -19,8 +19,6 @@ class FixerApiService: ApiService {
     private let latestEndpoint = "latest"
     private let symbolsEndpoint = "symbols"
 
-    private let connectionErrorCodes = [NSURLErrorNotConnectedToInternet, NSURLErrorDataNotAllowed, NSURLErrorNetworkConnectionLost]
-
     func getSymbols() -> AnyPublisher<SymbolsResponse, ApiError> {
         return request(for: symbolsEndpoint)
     }
@@ -39,8 +37,10 @@ class FixerApiService: ApiService {
                 return data
             }
             .decode(type: T.self, decoder: JSONDecoder())
-            .mapError { [weak self] error in
-                if let self = self, self.connectionErrorCodes.contains(error._code) {
+            .mapError { error in
+                let connectionErrorCodes = [NSURLErrorNotConnectedToInternet, NSURLErrorDataNotAllowed, NSURLErrorNetworkConnectionLost]
+
+                if connectionErrorCodes.contains(error._code) {
                     return .noConnection
                 }
 

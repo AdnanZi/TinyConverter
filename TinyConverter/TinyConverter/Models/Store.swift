@@ -28,7 +28,7 @@ class ConverterStore: Store {
 
         return getData(ratesFileName)
             .setFailureType(to: ApiError.self)
-            .flatMap { exchangeRates -> AnyPublisher<ExchangeRates, ApiError> in
+            .flatMap { [unowned self] exchangeRates -> AnyPublisher<ExchangeRates, ApiError> in
                 if let exchangeRates = exchangeRates {
                     let currentDate = Date().currentDate
 
@@ -38,7 +38,7 @@ class ConverterStore: Store {
                     }
                 }
 
-                return self.getDataFromServer()
+                return getDataFromServer()
         }
         .handleEvents(receiveSubscription: { _ in NSLog("Fetching data...") })
         .eraseToAnyPublisher()
@@ -48,7 +48,7 @@ class ConverterStore: Store {
         let getData: (String) -> AnyPublisher<ExchangeRates?, Never> = cacheService.getData
 
         return getData(ratesFileName)
-            .flatMap { exchangeRates -> AnyPublisher<Bool, Never> in
+            .flatMap { [unowned self] exchangeRates -> AnyPublisher<Bool, Never> in
                 if let exchangeRates = exchangeRates {
                     let currentDate = Date().currentDate
 
@@ -57,7 +57,7 @@ class ConverterStore: Store {
                     }
                 }
 
-                return self.getDataFromServer().map { _ in true }.catch { _ in Just(false) }.eraseToAnyPublisher()
+                return getDataFromServer().map { _ in true }.catch { _ in Just(false) }.eraseToAnyPublisher()
         }
         .handleEvents(receiveSubscription: { _ in NSLog("Refreshing data...") })
         .eraseToAnyPublisher()
@@ -68,13 +68,17 @@ class ConverterStore: Store {
         let rates = getExchangeRatesFromServer()
 
         let exchangeRates = rates.combineLatest(symbols)
-            .tryMap { self.parseRates(ratesResponse: $0, symbolsResponse: $1)! }
+            .map(parseRates)
+            .tryMap { $0! }
             .mapError { _ in ApiError.other }
             .share()
 
         let ratesToCache = exchangeRates
             .encode(encoder: JSONEncoder())
-            .flatMap { self.cacheService.cacheData($0, to: self.ratesFileName).setFailureType(to: Error.self) }
+            .flatMap { [unowned self] in
+                cacheService.cacheData($0, to: ratesFileName)
+                    .setFailureType(to: Error.self)
+            }
             .mapError { _ in ApiError.other }
 
         let ratesToReturn = exchangeRates.map { $0 }
@@ -87,13 +91,13 @@ class ConverterStore: Store {
 
     private func getSymbolsFromServer() -> AnyPublisher<SymbolsResponse, ApiError> {
         return apiService.getSymbols()
-            .flatMap { self.validateResponse($0) }
+            .flatMap(validateResponse)
             .eraseToAnyPublisher()
     }
 
     private func getExchangeRatesFromServer() -> AnyPublisher<LatestRatesResponse, ApiError> {
         return apiService.getLatestExchangeRates()
-            .flatMap { self.validateResponse($0) }
+            .flatMap(validateResponse)
             .eraseToAnyPublisher()
     }
 

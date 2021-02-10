@@ -17,7 +17,7 @@ class FileCacheService: CacheService {
     func getData<T:Decodable>(from fileName: String) -> AnyPublisher<T?, Never> {
         Deferred {
             return Future<Data?, Never> { [unowned self] promise in
-                return promise(.success(try? Data(contentsOf: self.storeLocation(fileName))))
+                return promise(.success(try? Data(contentsOf: storeLocation(fileName))))
             }
         }
         .flatMap { data -> AnyPublisher<T? , Never> in
@@ -38,7 +38,7 @@ class FileCacheService: CacheService {
     func cacheData(_ jsonData: Data, to fileName: String) -> AnyPublisher<Void, Never> {
         return Deferred {
             return Future<Void?, Never> { [unowned self] promise in
-                return promise(.success(try? jsonData.write(to: self.storeLocation(fileName))))
+                return promise(.success(try? jsonData.write(to: storeLocation(fileName))))
             }
         }
         .replaceNil(with: ())
