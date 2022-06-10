@@ -67,10 +67,10 @@ class SettingsViewController: UITableViewController {
     }
 
     @IBAction func updateOnStartToggled(_ sender: UISwitch) {
-        viewModel.updateOnStart = sender.isOn
+        viewModel.updateOnStartSubject.send(sender.isOn)
     }
 
     @IBAction func autoUpdatesToggled(_ sender: UISwitch) {
-        viewModel.automaticUpdates = sender.isOn
+        viewModel.automaticUpdatesSubject.send(sender.isOn)
     }
 }

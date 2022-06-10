@@ -15,6 +15,9 @@ class SettingsViewModel {
     @Published var automaticUpdates: Bool = false
     @Published var updateInterval: String?
 
+    let updateOnStartSubject = PassthroughSubject<Bool, Never>()
+    let automaticUpdatesSubject = PassthroughSubject<Bool, Never>()
+
     private var configuration: Configuration
 
     init(configuration: Configuration) {
@@ -31,17 +34,13 @@ class SettingsViewModel {
     }
 
     func setupSubscriptions() {
-        $updateOnStart
-            .dropFirst()
-            .removeDuplicates()
+        updateOnStartSubject
             .sink { [weak self] in
                 self?.configuration.updateOnStart = $0
             }
             .store(in: &cancellable)
 
-        $automaticUpdates
-            .dropFirst()
-            .removeDuplicates()
+        automaticUpdatesSubject
             .sink { [weak self] in
                 self?.configuration.automaticUpdates = $0
             }
