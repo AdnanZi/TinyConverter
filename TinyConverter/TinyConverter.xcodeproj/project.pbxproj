@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -32,8 +32,8 @@
 		84D4D2BC2323DF5500773306 /* CacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D4D2BB2323DF5500773306 /* CacheService.swift */; };
 		84D4D2BE2323F50700773306 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D4D2BD2323F50700773306 /* Response.swift */; };
 		84D4D2C12324371600773306 /* ExchangeRates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D4D2C02324371600773306 /* ExchangeRates.swift */; };
-		BC1EDF90AEA4D7EC548AEDDC /* Pods_TinyConverter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F264C08CBA0A798CAF878074 /* Pods_TinyConverter.framework */; };
-		C3BE31E36D91A81049D73122 /* Pods_TinyConverterTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AC1944A33D9D53B4E3BF8CF /* Pods_TinyConverterTests.framework */; };
+		CD26D41429B2452400E1E22F /* Swinject in Frameworks */ = {isa = PBXBuildFile; productRef = CD26D41329B2452400E1E22F /* Swinject */; };
+		CD26D41729B245D300E1E22F /* SwinjectStoryboard in Frameworks */ = {isa = PBXBuildFile; productRef = CD26D41629B245D300E1E22F /* SwinjectStoryboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,10 +47,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		43EC2D984DCE3E31B43C0E72 /* Pods-TinyConverterTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TinyConverterTests.release.xcconfig"; path = "Target Support Files/Pods-TinyConverterTests/Pods-TinyConverterTests.release.xcconfig"; sourceTree = "<group>"; };
-		4AC1944A33D9D53B4E3BF8CF /* Pods_TinyConverterTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TinyConverterTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		56845B6E1DE8C47F4BD424FC /* Pods-TinyConverter.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TinyConverter.release.xcconfig"; path = "Target Support Files/Pods-TinyConverter/Pods-TinyConverter.release.xcconfig"; sourceTree = "<group>"; };
-		713C2271E83BCA6BE9CCFA96 /* Pods-TinyConverterTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TinyConverterTests.debug.xcconfig"; path = "Target Support Files/Pods-TinyConverterTests/Pods-TinyConverterTests.debug.xcconfig"; sourceTree = "<group>"; };
 		8407D25823882EEA006E9274 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		8409170D240E6F4E0064B80F /* IoCConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoCConfigurator.swift; sourceTree = "<group>"; };
 		8445BA1B22E2296F00CA0A29 /* SymbolTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolTextField.swift; sourceTree = "<group>"; };
@@ -80,8 +76,6 @@
 		84D4D2BB2323DF5500773306 /* CacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheService.swift; sourceTree = "<group>"; };
 		84D4D2BD2323F50700773306 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
 		84D4D2C02324371600773306 /* ExchangeRates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeRates.swift; sourceTree = "<group>"; };
-		E02D8D40CCCC9CCCAD652E62 /* Pods-TinyConverter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TinyConverter.debug.xcconfig"; path = "Target Support Files/Pods-TinyConverter/Pods-TinyConverter.debug.xcconfig"; sourceTree = "<group>"; };
-		F264C08CBA0A798CAF878074 /* Pods_TinyConverter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TinyConverter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,7 +83,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BC1EDF90AEA4D7EC548AEDDC /* Pods_TinyConverter.framework in Frameworks */,
+				CD26D41729B245D300E1E22F /* SwinjectStoryboard in Frameworks */,
+				CD26D41429B2452400E1E22F /* Swinject in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -97,29 +92,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C3BE31E36D91A81049D73122 /* Pods_TinyConverterTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		06FFA6D8802E8C238FAE0CC3 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				E02D8D40CCCC9CCCAD652E62 /* Pods-TinyConverter.debug.xcconfig */,
-				56845B6E1DE8C47F4BD424FC /* Pods-TinyConverter.release.xcconfig */,
-				713C2271E83BCA6BE9CCFA96 /* Pods-TinyConverterTests.debug.xcconfig */,
-				43EC2D984DCE3E31B43C0E72 /* Pods-TinyConverterTests.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		4E71DC8DE366BAC6027D1B84 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				F264C08CBA0A798CAF878074 /* Pods_TinyConverter.framework */,
-				4AC1944A33D9D53B4E3BF8CF /* Pods_TinyConverterTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -138,7 +119,6 @@
 				84B0697922D633CA007F43D6 /* TinyConverter */,
 				84BAF97522DA4FB7003AAD74 /* TinyConverterTests */,
 				84B0697822D633CA007F43D6 /* Products */,
-				06FFA6D8802E8C238FAE0CC3 /* Pods */,
 				4E71DC8DE366BAC6027D1B84 /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -256,17 +236,19 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 84B0698922D633CC007F43D6 /* Build configuration list for PBXNativeTarget "TinyConverter" */;
 			buildPhases = (
-				85FCB9BF95DAC59626683D7E /* [CP] Check Pods Manifest.lock */,
 				84B0697322D633CA007F43D6 /* Sources */,
 				84B0697422D633CA007F43D6 /* Frameworks */,
 				84B0697522D633CA007F43D6 /* Resources */,
-				711719802D03EB045E41FE8F /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = TinyConverter;
+			packageProductDependencies = (
+				CD26D41329B2452400E1E22F /* Swinject */,
+				CD26D41629B245D300E1E22F /* SwinjectStoryboard */,
+			);
 			productName = TinyConverter;
 			productReference = 84B0697722D633CA007F43D6 /* TinyConverter.app */;
 			productType = "com.apple.product-type.application";
@@ -323,6 +305,10 @@
 				Base,
 			);
 			mainGroup = 84B0696E22D633CA007F43D6;
+			packageReferences = (
+				CD26D40F29B2427D00E1E22F /* XCRemoteSwiftPackageReference "Swinject" */,
+				CD26D41529B245D300E1E22F /* XCRemoteSwiftPackageReference "SwinjectStoryboard" */,
+			);
 			productRefGroup = 84B0697822D633CA007F43D6 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -354,23 +340,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		711719802D03EB045E41FE8F /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TinyConverter/Pods-TinyConverter-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TinyConverter/Pods-TinyConverter-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TinyConverter/Pods-TinyConverter-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		842B44B82B60E2BDE564186F /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -387,28 +356,6 @@
 			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-TinyConverterTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		85FCB9BF95DAC59626683D7E /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-TinyConverter-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -602,7 +549,6 @@
 		};
 		84B0698A22D633CC007F43D6 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E02D8D40CCCC9CCCAD652E62 /* Pods-TinyConverter.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -622,7 +568,6 @@
 		};
 		84B0698B22D633CC007F43D6 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 56845B6E1DE8C47F4BD424FC /* Pods-TinyConverter.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -642,7 +587,6 @@
 		};
 		84BAF97C22DA4FB7003AAD74 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 713C2271E83BCA6BE9CCFA96 /* Pods-TinyConverterTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -663,7 +607,6 @@
 		};
 		84BAF97D22DA4FB7003AAD74 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 43EC2D984DCE3E31B43C0E72 /* Pods-TinyConverterTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -713,6 +656,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		CD26D40F29B2427D00E1E22F /* XCRemoteSwiftPackageReference "Swinject" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Swinject/Swinject.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+		CD26D41529B245D300E1E22F /* XCRemoteSwiftPackageReference "SwinjectStoryboard" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Swinject/SwinjectStoryboard.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CD26D41329B2452400E1E22F /* Swinject */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CD26D40F29B2427D00E1E22F /* XCRemoteSwiftPackageReference "Swinject" */;
+			productName = Swinject;
+		};
+		CD26D41629B245D300E1E22F /* SwinjectStoryboard */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CD26D41529B245D300E1E22F /* XCRemoteSwiftPackageReference "SwinjectStoryboard" */;
+			productName = SwinjectStoryboard;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 84B0696F22D633CA007F43D6 /* Project object */;
 }
