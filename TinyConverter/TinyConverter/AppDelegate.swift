@@ -18,8 +18,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return container.configuration
     }
 
-    let queue = OperationQueue()
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         registerProviderFactories()
         container = RootComponent()
@@ -41,19 +39,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private func performFetch(task: BGAppRefreshTask) {
         scheduleAppRefresh()
 
-        queue.maxConcurrentOperationCount = 1
-
-        let operation = RefreshDataOperation(store: container.store)
+        let operationTask = Task {
+            self.container.store.refreshData {
+                task.setTaskCompleted(success: $0)
+            }
+        }
 
         task.expirationHandler = {
-            operation.cancel()
+            operationTask.cancel()
         }
-
-        operation.completionBlock = {
-            task.setTaskCompleted(success: !operation.isCancelled || operation.result)
-        }
-
-        queue.addOperation(operation)
     }
 
     private func scheduleAppRefresh() {
@@ -66,26 +60,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             try BGTaskScheduler.shared.submit(request)
         } catch {
             print("Scheduling failed.")
-        }
-    }
-}
-
-private class RefreshDataOperation: Operation {
-    let store: Store
-    var result = false
-
-    init(store: Store) {
-        self.store = store
-    }
-
-    override func main() {
-        if isCancelled { return }
-
-        store.refreshData { [weak self] in
-            guard let self, !self.isCancelled else { return }
-
-            self.result = $0
-            self.completionBlock?()
         }
     }
 }
