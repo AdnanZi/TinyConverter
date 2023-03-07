@@ -13,14 +13,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var coordinator: Coordinator?
 
-    let container = SwinjectStoryboard.container
+    var container: RootComponent!
     var configuration: Configuration {
-        return container.resolve(Configuration.self)!
+        return container.configuration
     }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        registerProviderFactories()
+        container = RootComponent()
         window = UIWindow(frame: UIScreen.main.bounds)
-        coordinator = Coordinator(window!)
+
+        coordinator = Coordinator(window!, container)
 
         toggleMinimumBackgroundFetchInterval()
 
@@ -30,12 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        guard let store = container.resolve(Store.self) else {
-            completionHandler(.noData)
-            return
-        }
-
-        store.refreshData() { refreshed in
+        container.store.refreshData() { refreshed in
             completionHandler(refreshed ? .newData : .noData)
         }
     }

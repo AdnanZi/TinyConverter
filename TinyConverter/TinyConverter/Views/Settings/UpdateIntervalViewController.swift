@@ -8,7 +8,18 @@
 import UIKit
 
 class UpdateIntervalViewController: UITableViewController {
-    var viewModel: UpdateIntervalViewModel!
+    let viewModel: UpdateIntervalViewModel
+
+    required init?(coder: NSCoder, viewModel: UpdateIntervalViewModel) {
+        self.viewModel = viewModel
+
+        super.init(coder: coder)
+    }
+
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     // MARK: - Table view data source
 

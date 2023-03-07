@@ -5,50 +5,63 @@
 //  Created by Adnan Zildzic on 03.03.20.
 //  Copyright © 2020 Adnan Zildzic. All rights reserved.
 //
-import UIKit
-import SwinjectStoryboard
 
-extension SwinjectStoryboard {
-    static let container = SwinjectStoryboard.defaultContainer
+import NeedleFoundation
 
-    @objc class func setup() {
-        // MARK: - Services
-        container.register(CacheService.self) { _ in FileCacheService() }
-        container.register(ApiService.self) { _ in FixerApiService() }
+class RootComponent: BootstrapComponent {
+    private var cacheService: CacheService {
+        FileCacheService()
+    }
 
-        // MARK: - Models
-        container.register(Configuration.self) { _ in
-            StandardConfiguration()
-        }.inObjectScope(.container)
+    private var apiService: ApiService {
+        FixerApiService()
+    }
 
-        container.register(Store.self) { resolver in
-            ConverterStore(apiService: resolver.resolve(ApiService.self)!, cacheService: resolver.resolve(CacheService.self)!)
-        }.inObjectScope(.container)
 
-        // MARK: - View Models
-        container.register(ConverterViewModel.self) { resolver in
-            ConverterViewModel(store: resolver.resolve(Store.self)!, configuration: resolver.resolve(Configuration.self)!)
-        }
+    var configuration: Configuration {
+        shared { StandardConfiguration() }
+    }
 
-        container.register(SettingsViewModel.self) { resolver in
-            SettingsViewModel(configuration: resolver.resolve(Configuration.self)!)
-        }
+    var store: Store {
+        shared { ConverterStore(apiService: apiService, cacheService: cacheService) }
+    }
 
-        container.register(UpdateIntervalViewModel.self) { resolver in
-            UpdateIntervalViewModel(configuration: resolver.resolve(Configuration.self)!)
-        }
+    var converterComponent: ConverterComponent {
+        ConverterComponent(parent: self)
+    }
 
-        // MARK: - Controllers
-        container.storyboardInitCompleted(ConverterViewController.self) { resolver, controller in
-            controller.viewModel = resolver.resolve(ConverterViewModel.self)
-        }
+    var settingsComponent: SettingsComponent {
+        SettingsComponent(parent: self)
+    }
 
-        container.storyboardInitCompleted(SettingsViewController.self) { resolver, controller in
-            controller.viewModel = resolver.resolve(SettingsViewModel.self)
-        }
+    var updateIntervalComponent: UpdateIntervalComponent {
+        UpdateIntervalComponent(parent: self)
+    }
+}
 
-        container.storyboardInitCompleted(UpdateIntervalViewController.self) { resolver, controller in
-            controller.viewModel = resolver.resolve(UpdateIntervalViewModel.self)
-        }
+protocol ConverterDependency: Dependency {
+    var configuration: Configuration { get }
+    var store: Store { get }
+}
+
+class ConverterComponent: Component<ConverterDependency> {
+    var converterViewModel: ConverterViewModel {
+        ConverterViewModel(store: dependency.store, configuration: dependency.configuration)
+    }
+}
+
+protocol SettingsDependency: Dependency {
+    var configuration: Configuration { get }
+}
+
+class SettingsComponent: Component<SettingsDependency> {
+    var settingsViewModel: SettingsViewModel {
+        SettingsViewModel(configuration: dependency.configuration)
+    }
+}
+
+class UpdateIntervalComponent: Component<SettingsDependency> {
+    var updateIntervalViewModel: UpdateIntervalViewModel {
+        UpdateIntervalViewModel(configuration: dependency.configuration)
     }
 }
