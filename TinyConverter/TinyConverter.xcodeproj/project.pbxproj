@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -33,8 +33,8 @@
 		84D4D2BC2323DF5500773306 /* CacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D4D2BB2323DF5500773306 /* CacheService.swift */; };
 		84D4D2BE2323F50700773306 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D4D2BD2323F50700773306 /* Response.swift */; };
 		84D4D2C12324371600773306 /* ExchangeRates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D4D2C02324371600773306 /* ExchangeRates.swift */; };
-		CD26D41429B2452400E1E22F /* Swinject in Frameworks */ = {isa = PBXBuildFile; productRef = CD26D41329B2452400E1E22F /* Swinject */; };
-		CD26D41729B245D300E1E22F /* SwinjectStoryboard in Frameworks */ = {isa = PBXBuildFile; productRef = CD26D41629B245D300E1E22F /* SwinjectStoryboard */; };
+		CD26D41A29B248E200E1E22F /* NeedleFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CD26D41929B248E200E1E22F /* NeedleFoundation */; };
+		CD26D41D29B24AE900E1E22F /* IoCConfiguratorGenerated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD26D41C29B24AE900E1E22F /* IoCConfiguratorGenerated.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,6 +78,7 @@
 		84D4D2BB2323DF5500773306 /* CacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheService.swift; sourceTree = "<group>"; };
 		84D4D2BD2323F50700773306 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
 		84D4D2C02324371600773306 /* ExchangeRates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeRates.swift; sourceTree = "<group>"; };
+		CD26D41C29B24AE900E1E22F /* IoCConfiguratorGenerated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoCConfiguratorGenerated.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,8 +86,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CD26D41729B245D300E1E22F /* SwinjectStoryboard in Frameworks */,
-				CD26D41429B2452400E1E22F /* Swinject in Frameworks */,
+				CD26D41A29B248E200E1E22F /* NeedleFoundation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -145,6 +145,7 @@
 				84B0697A22D633CA007F43D6 /* AppDelegate.swift */,
 				8407D25823882EEA006E9274 /* Coordinator.swift */,
 				8409170D240E6F4E0064B80F /* IoCConfigurator.swift */,
+				CD26D41C29B24AE900E1E22F /* IoCConfiguratorGenerated.swift */,
 				84B0697E22D633CA007F43D6 /* Main.storyboard */,
 				84B0698122D633CC007F43D6 /* Assets.xcassets */,
 				84B0698322D633CC007F43D6 /* LaunchScreen.storyboard */,
@@ -239,6 +240,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 84B0698922D633CC007F43D6 /* Build configuration list for PBXNativeTarget "TinyConverter" */;
 			buildPhases = (
+				CD26D41B29B249BB00E1E22F /* ShellScript */,
 				84B0697322D633CA007F43D6 /* Sources */,
 				84B0697422D633CA007F43D6 /* Frameworks */,
 				84B0697522D633CA007F43D6 /* Resources */,
@@ -249,8 +251,7 @@
 			);
 			name = TinyConverter;
 			packageProductDependencies = (
-				CD26D41329B2452400E1E22F /* Swinject */,
-				CD26D41629B245D300E1E22F /* SwinjectStoryboard */,
+				CD26D41929B248E200E1E22F /* NeedleFoundation */,
 			);
 			productName = TinyConverter;
 			productReference = 84B0697722D633CA007F43D6 /* TinyConverter.app */;
@@ -309,8 +310,7 @@
 			);
 			mainGroup = 84B0696E22D633CA007F43D6;
 			packageReferences = (
-				CD26D40F29B2427D00E1E22F /* XCRemoteSwiftPackageReference "Swinject" */,
-				CD26D41529B245D300E1E22F /* XCRemoteSwiftPackageReference "SwinjectStoryboard" */,
+				CD26D41829B248E200E1E22F /* XCRemoteSwiftPackageReference "needle" */,
 			);
 			productRefGroup = 84B0697822D633CA007F43D6 /* Products */;
 			projectDirPath = "";
@@ -365,6 +365,24 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		CD26D41B29B249BB00E1E22F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "SOURCEKIT_LOGGING=0 && needle generate TinyConverter/IoCConfiguratorGenerated.swift TinyConverter/\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -380,6 +398,7 @@
 				8445BA1C22E2296F00CA0A29 /* SymbolTextField.swift in Sources */,
 				84CAC66223F56BC200102AD7 /* UpdateIntervalViewController.swift in Sources */,
 				84CB6FA723F6CDCE004115E3 /* Configuration.swift in Sources */,
+				CD26D41D29B24AE900E1E22F /* IoCConfiguratorGenerated.swift in Sources */,
 				84B0699922D718A3007F43D6 /* ViewBinder.swift in Sources */,
 				84CAC66023F56BAC00102AD7 /* SettingsViewController.swift in Sources */,
 				84B0697D22D633CA007F43D6 /* ConverterViewController.swift in Sources */,
@@ -556,9 +575,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = BDZYLC5NBU;
+				DEVELOPMENT_TEAM = NXWZVJM8HY;
 				INFOPLIST_FILE = TinyConverter/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -574,16 +593,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = BDZYLC5NBU;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = TinyConverter/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.company.adnan.TinyConverter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -662,34 +682,21 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		CD26D40F29B2427D00E1E22F /* XCRemoteSwiftPackageReference "Swinject" */ = {
+		CD26D41829B248E200E1E22F /* XCRemoteSwiftPackageReference "needle" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Swinject/Swinject.git";
+			repositoryURL = "https://github.com/uber/needle.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
-			};
-		};
-		CD26D41529B245D300E1E22F /* XCRemoteSwiftPackageReference "SwinjectStoryboard" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Swinject/SwinjectStoryboard.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
+				minimumVersion = 0.22.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		CD26D41329B2452400E1E22F /* Swinject */ = {
+		CD26D41929B248E200E1E22F /* NeedleFoundation */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CD26D40F29B2427D00E1E22F /* XCRemoteSwiftPackageReference "Swinject" */;
-			productName = Swinject;
-		};
-		CD26D41629B245D300E1E22F /* SwinjectStoryboard */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CD26D41529B245D300E1E22F /* XCRemoteSwiftPackageReference "SwinjectStoryboard" */;
-			productName = SwinjectStoryboard;
+			package = CD26D41829B248E200E1E22F /* XCRemoteSwiftPackageReference "needle" */;
+			productName = NeedleFoundation;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

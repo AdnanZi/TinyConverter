@@ -6,14 +6,18 @@
 //  Copyright © 2019 Adnan Zildzic. All rights reserved.
 //
 import UIKit
-import SwinjectStoryboard
 
 final class Coordinator {
-    let rootViewController: UINavigationController
-    let storyboard = SwinjectStoryboard.create(name: "Main", bundle: nil)
+    var rootViewController: UINavigationController!
+    let container: RootComponent
+    let storyboard = UIStoryboard(name: "Main", bundle: nil)
 
-    init(_ window: UIWindow) {
-        let converterVC = storyboard.instantiateViewController(withIdentifier: "converterViewController") as! ConverterViewController
+    init(_ window: UIWindow, _ container: RootComponent) {
+        self.container = container
+
+        let converterVC = storyboard.instantiateViewController(identifier: "converterViewController") { [unowned self] coder in
+            ConverterViewController(coder: coder, viewModel: self.container.converterComponent.converterViewModel)
+        }
         rootViewController = UINavigationController(rootViewController: converterVC)
 
         window.rootViewController = rootViewController
@@ -30,7 +34,9 @@ final class Coordinator {
 
 extension Coordinator: ConverterViewControllerDelegate {
     func navigateToSettings() {
-        let settingsVC = storyboard.instantiateViewController(withIdentifier: "settingsViewController") as! SettingsViewController
+        let settingsVC = storyboard.instantiateViewController(identifier: "settingsViewController") { [unowned self] coder in
+            SettingsViewController(coder: coder, viewModel: self.container.settingsComponent.settingsViewModel)
+        }
         settingsVC.delegate = self
 
         rootViewController.pushViewController(settingsVC, animated: true)
@@ -39,7 +45,9 @@ extension Coordinator: ConverterViewControllerDelegate {
 
 extension Coordinator: SettingsViewControllerDelegate {
     func selectUpdateInterval() {
-        let updateIntervalVC = storyboard.instantiateViewController(withIdentifier: "updateIntervalViewController") as! UpdateIntervalViewController
+        let updateIntervalVC = storyboard.instantiateViewController(identifier: "updateIntervalViewController")  { [unowned self] coder in
+            UpdateIntervalViewController(coder: coder, viewModel: self.container.updateIntervalComponent.updateIntervalViewModel)
+        }
         rootViewController.pushViewController(updateIntervalVC, animated: true)
     }
 }

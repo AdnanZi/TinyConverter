@@ -7,7 +7,7 @@
 //
 import UIKit
 
-@objc protocol ConverterViewControllerDelegate: class {
+@objc protocol ConverterViewControllerDelegate: AnyObject {
     func navigateToSettings()
 }
 
@@ -24,8 +24,19 @@ class ConverterViewController: UIViewController {
 
     weak var delegate: ConverterViewControllerDelegate!
 
-    var viewModel: ConverterViewModel!
+    let viewModel: ConverterViewModel
     var observations = [NSKeyValueObservation]()
+
+    required init?(coder: NSCoder, viewModel: ConverterViewModel) {
+        self.viewModel = viewModel
+
+        super.init(coder: coder)
+    }
+
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()

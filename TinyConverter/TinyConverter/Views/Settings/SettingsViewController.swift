@@ -7,7 +7,7 @@
 //
 import UIKit
 
-protocol SettingsViewControllerDelegate: class {
+protocol SettingsViewControllerDelegate: AnyObject {
     func selectUpdateInterval()
 }
 
@@ -19,8 +19,19 @@ class SettingsViewController: UITableViewController {
 
     weak var delegate: SettingsViewControllerDelegate!
 
-    var viewModel: SettingsViewModel!
+    let viewModel: SettingsViewModel
     var observations = [NSKeyValueObservation]()
+
+    required init?(coder: NSCoder, viewModel: SettingsViewModel) {
+        self.viewModel = viewModel
+
+        super.init(coder: coder)
+    }
+
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
