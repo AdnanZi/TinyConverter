@@ -15,9 +15,20 @@ final class UISnapshotTests: FBSnapshotTestCase {
         recordMode = false
     }
 
-    @MainActor
     func testConverterViewControllerContents() async throws {
-        let viewController = getConverterController()
+        try await testViewControllerContents(viewController: getConverterController())
+    }
+
+    func testSettingsViewControllerContents() async throws {
+        try await testViewControllerContents(viewController: getSettingsController())
+    }
+
+    func testUpdateIntervalViewControllerContents() async throws {
+        try await testViewControllerContents(viewController: getUpdateIntervalController())
+    }
+
+    @MainActor
+    private func testViewControllerContents(viewController: UIViewController) async throws {
         viewController.loadView()
         viewController.viewDidLoad()
         viewController.viewWillAppear(false)
@@ -33,6 +44,20 @@ final class UISnapshotTests: FBSnapshotTestCase {
         let store = ConverterStore(apiService: MockApiService(TestData.symbolsResponse, TestData.exchangeRatesResponse, nil), cacheService: MockCacheService(cachedItem: TestData.exchangeRates))
         return storyboard.instantiateViewController(identifier: "converterViewController") { coder in
             ConverterViewController(coder: coder, viewModel: ConverterViewModel(store: store, configuration: StandardConfiguration()))
+        }
+    }
+
+    private func getSettingsController() -> SettingsViewController {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        return storyboard.instantiateViewController(identifier: "settingsViewController") { coder in
+            SettingsViewController(coder: coder, viewModel: SettingsViewModel(configuration: StandardConfiguration()))
+        }
+    }
+
+    private func getUpdateIntervalController() -> UpdateIntervalViewController {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        return storyboard.instantiateViewController(identifier: "updateIntervalViewController") { coder in
+            UpdateIntervalViewController(coder: coder, viewModel: UpdateIntervalViewModel(configuration: StandardConfiguration()))
         }
     }
 }
