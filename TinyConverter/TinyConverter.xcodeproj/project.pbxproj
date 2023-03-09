@@ -38,6 +38,9 @@
 		CD4A13A629B9EFBE0021D87C /* iOSSnapshotTestCase in Frameworks */ = {isa = PBXBuildFile; productRef = CD4A13A529B9EFBE0021D87C /* iOSSnapshotTestCase */; };
 		CD4A13A829B9EFE40021D87C /* UISnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4A13A729B9EFE40021D87C /* UISnapshotTests.swift */; };
 		CD4A13AA29B9F2AF0021D87C /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4A13A929B9F2AF0021D87C /* TestData.swift */; };
+		CD4A13AD29B9FE9B0021D87C /* Mocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4A13AC29B9FE9B0021D87C /* Mocks.swift */; };
+		CD4A13AF29BA06A70021D87C /* iOSSnapshotTestCase in Frameworks */ = {isa = PBXBuildFile; productRef = CD4A13AE29BA06A70021D87C /* iOSSnapshotTestCase */; };
+		CD4A13B129BA06A70021D87C /* iOSSnapshotTestCase in Embed Frameworks */ = {isa = PBXBuildFile; productRef = CD4A13AE29BA06A70021D87C /* iOSSnapshotTestCase */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +52,20 @@
 			remoteInfo = TinyConverter;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		CD4A13B029BA06A70021D87C /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				CD4A13B129BA06A70021D87C /* iOSSnapshotTestCase in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		8407D25823882EEA006E9274 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
@@ -84,6 +101,7 @@
 		CD26D41C29B24AE900E1E22F /* IoCConfiguratorGenerated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoCConfiguratorGenerated.swift; sourceTree = "<group>"; };
 		CD4A13A729B9EFE40021D87C /* UISnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISnapshotTests.swift; sourceTree = "<group>"; };
 		CD4A13A929B9F2AF0021D87C /* TestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestData.swift; sourceTree = "<group>"; };
+		CD4A13AC29B9FE9B0021D87C /* Mocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mocks.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +118,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD4A13AF29BA06A70021D87C /* iOSSnapshotTestCase in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -213,6 +232,7 @@
 			isa = PBXGroup;
 			children = (
 				CD4A13A929B9F2AF0021D87C /* TestData.swift */,
+				CD4A13AC29B9FE9B0021D87C /* Mocks.swift */,
 				84BAF97622DA4FB7003AAD74 /* StoreTests.swift */,
 				CD4A13A729B9EFE40021D87C /* UISnapshotTests.swift */,
 				84BAF97822DA4FB7003AAD74 /* Info.plist */,
@@ -273,6 +293,7 @@
 				84BAF97022DA4FB6003AAD74 /* Sources */,
 				84BAF97122DA4FB6003AAD74 /* Frameworks */,
 				84BAF97222DA4FB6003AAD74 /* Resources */,
+				CD4A13B029BA06A70021D87C /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -280,6 +301,9 @@
 				84BAF97A22DA4FB7003AAD74 /* PBXTargetDependency */,
 			);
 			name = TinyConverterTests;
+			packageProductDependencies = (
+				CD4A13AE29BA06A70021D87C /* iOSSnapshotTestCase */,
+			);
 			productName = TinyConverterTests;
 			productReference = 84BAF97422DA4FB6003AAD74 /* TinyConverterTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -410,6 +434,7 @@
 				CD4A13AA29B9F2AF0021D87C /* TestData.swift in Sources */,
 				84BAF97722DA4FB7003AAD74 /* StoreTests.swift in Sources */,
 				CD4A13A829B9EFE40021D87C /* UISnapshotTests.swift in Sources */,
+				CD4A13AD29B9FE9B0021D87C /* Mocks.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -698,6 +723,11 @@
 			productName = NeedleFoundation;
 		};
 		CD4A13A529B9EFBE0021D87C /* iOSSnapshotTestCase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CD4A13A429B9EFBE0021D87C /* XCRemoteSwiftPackageReference "ios-snapshot-test-case" */;
+			productName = iOSSnapshotTestCase;
+		};
+		CD4A13AE29BA06A70021D87C /* iOSSnapshotTestCase */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = CD4A13A429B9EFBE0021D87C /* XCRemoteSwiftPackageReference "ios-snapshot-test-case" */;
 			productName = iOSSnapshotTestCase;

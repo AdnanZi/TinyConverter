@@ -1,24 +1,38 @@
-////
-////  UISnapshotTests.swift
-////  TinyConverterTests
-////
-////  Created by Zildzic, Adnan on 09.03.23.
-////  Copyright © 2023 Adnan Zildzic. All rights reserved.
-////
 //
-//import iOSSnapshotTestCaseCore
-//@testable import TinyConverter
+//  UISnapshotTests.swift
+//  TinyConverterTests
 //
-//final class UISnapshotTests: FBSnapshotTestCase {
-//    func testConverterViewControllerContents() {
-//        let viewController = getConverterController()
-//    }
+//  Created by Zildzic, Adnan on 09.03.23.
+//  Copyright © 2023 Adnan Zildzic. All rights reserved.
 //
-//    private func getConverterController() -> ConverterViewController {
-//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//        let container = RootComponent()
-//        return storyboard.instantiateViewController(identifier: "converterViewController") { coder in
-//            ConverterViewController(coder: coder, viewModel: container.converterComponent.converterViewModel)
-//        }
-//    }
-//}
+
+import iOSSnapshotTestCase
+@testable import TinyConverter
+
+final class UISnapshotTests: FBSnapshotTestCase {
+    override func setUp() {
+        super.setUp()
+        recordMode = false
+    }
+
+    @MainActor
+    func testConverterViewControllerContents() async throws {
+        let viewController = getConverterController()
+        viewController.loadView()
+        viewController.viewDidLoad()
+        viewController.viewWillAppear(false)
+
+        // Wait until the view gets populated
+        try await Task.sleep(nanoseconds: 2000000000)
+
+        FBSnapshotVerifyView(viewController.view)
+    }
+
+    private func getConverterController() -> ConverterViewController {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let store = ConverterStore(apiService: MockApiService(TestData.symbolsResponse, TestData.exchangeRatesResponse, nil), cacheService: MockCacheService(cachedItem: TestData.exchangeRates))
+        return storyboard.instantiateViewController(identifier: "converterViewController") { coder in
+            ConverterViewController(coder: coder, viewModel: ConverterViewModel(store: store, configuration: StandardConfiguration()))
+        }
+    }
+}
