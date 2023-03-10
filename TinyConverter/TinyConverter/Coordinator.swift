@@ -34,9 +34,7 @@ final class Coordinator {
 
 extension Coordinator: ConverterViewControllerDelegate {
     func navigateToSettings() {
-        let settingsVC = storyboard.instantiateViewController(identifier: "settingsViewController") { [unowned self] coder in
-            SettingsViewController(coder: coder, viewModel: self.container.settingsComponent.settingsViewModel)
-        }
+        let settingsVC = SettingsViewController(viewModel: self.container.settingsComponent.settingsViewModel)
         settingsVC.delegate = self
 
         rootViewController.pushViewController(settingsVC, animated: true)
@@ -45,9 +43,7 @@ extension Coordinator: ConverterViewControllerDelegate {
 
 extension Coordinator: SettingsViewControllerDelegate {
     func selectUpdateInterval() {
-        let updateIntervalVC = storyboard.instantiateViewController(identifier: "updateIntervalViewController")  { [unowned self] coder in
-            UpdateIntervalViewController(coder: coder, viewModel: self.container.updateIntervalComponent.updateIntervalViewModel)
-        }
+        let updateIntervalVC = UpdateIntervalViewController(viewModel: self.container.updateIntervalComponent.updateIntervalViewModel)
         rootViewController.pushViewController(updateIntervalVC, animated: true)
     }
 }

@@ -10,10 +10,10 @@ import UIKit
 class UpdateIntervalViewController: UITableViewController {
     let viewModel: UpdateIntervalViewModel
 
-    required init?(coder: NSCoder, viewModel: UpdateIntervalViewModel) {
+    init(viewModel: UpdateIntervalViewModel) {
         self.viewModel = viewModel
 
-        super.init(coder: coder)
+        super.init(nibName: nil, bundle: nil)
     }
 
     @available(*, unavailable)
@@ -32,7 +32,8 @@ class UpdateIntervalViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "intervalCell", for: indexPath)
+        let identifier = "intervalCell"
+        let cell = tableView.dequeueReusableCell(withIdentifier: identifier) ?? UITableViewCell(style: .value1, reuseIdentifier: identifier)
 
         let cellValue = viewModel.updateIntervals[indexPath.row]
         cell.textLabel?.text = "\(String(cellValue)) hours"

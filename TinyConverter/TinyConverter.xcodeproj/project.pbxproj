@@ -35,7 +35,6 @@
 		84D4D2C12324371600773306 /* ExchangeRates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D4D2C02324371600773306 /* ExchangeRates.swift */; };
 		CD26D41A29B248E200E1E22F /* NeedleFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CD26D41929B248E200E1E22F /* NeedleFoundation */; };
 		CD26D41D29B24AE900E1E22F /* IoCConfiguratorGenerated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD26D41C29B24AE900E1E22F /* IoCConfiguratorGenerated.swift */; };
-		CD4A13A629B9EFBE0021D87C /* iOSSnapshotTestCase in Frameworks */ = {isa = PBXBuildFile; productRef = CD4A13A529B9EFBE0021D87C /* iOSSnapshotTestCase */; };
 		CD4A13A829B9EFE40021D87C /* UISnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4A13A729B9EFE40021D87C /* UISnapshotTests.swift */; };
 		CD4A13AA29B9F2AF0021D87C /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4A13A929B9F2AF0021D87C /* TestData.swift */; };
 		CD4A13AD29B9FE9B0021D87C /* Mocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4A13AC29B9FE9B0021D87C /* Mocks.swift */; };
@@ -109,7 +108,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CD4A13A629B9EFBE0021D87C /* iOSSnapshotTestCase in Frameworks */,
 				CD26D41A29B248E200E1E22F /* NeedleFoundation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -280,7 +278,6 @@
 			name = TinyConverter;
 			packageProductDependencies = (
 				CD26D41929B248E200E1E22F /* NeedleFoundation */,
-				CD4A13A529B9EFBE0021D87C /* iOSSnapshotTestCase */,
 			);
 			productName = TinyConverter;
 			productReference = 84B0697722D633CA007F43D6 /* TinyConverter.app */;
@@ -721,11 +718,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CD26D41829B248E200E1E22F /* XCRemoteSwiftPackageReference "needle" */;
 			productName = NeedleFoundation;
-		};
-		CD4A13A529B9EFBE0021D87C /* iOSSnapshotTestCase */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CD4A13A429B9EFBE0021D87C /* XCRemoteSwiftPackageReference "ios-snapshot-test-case" */;
-			productName = iOSSnapshotTestCase;
 		};
 		CD4A13AE29BA06A70021D87C /* iOSSnapshotTestCase */ = {
 			isa = XCSwiftPackageProductDependency;
