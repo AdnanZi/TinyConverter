@@ -12,9 +12,7 @@
 		8445BA1C22E2296F00CA0A29 /* SymbolTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8445BA1B22E2296F00CA0A29 /* SymbolTextField.swift */; };
 		84B0697B22D633CA007F43D6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B0697A22D633CA007F43D6 /* AppDelegate.swift */; };
 		84B0697D22D633CA007F43D6 /* ConverterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B0697C22D633CA007F43D6 /* ConverterViewController.swift */; };
-		84B0698022D633CA007F43D6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84B0697E22D633CA007F43D6 /* Main.storyboard */; };
 		84B0698222D633CC007F43D6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84B0698122D633CC007F43D6 /* Assets.xcassets */; };
-		84B0698522D633CC007F43D6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84B0698322D633CC007F43D6 /* LaunchScreen.storyboard */; };
 		84B0699422D648FF007F43D6 /* ConverterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B0699322D648FF007F43D6 /* ConverterViewModel.swift */; };
 		84B0699922D718A3007F43D6 /* ViewBinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B0699822D718A3007F43D6 /* ViewBinder.swift */; };
 		84B0699B22D72EDC007F43D6 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B0699A22D72EDC007F43D6 /* Store.swift */; };
@@ -73,9 +71,7 @@
 		84B0697722D633CA007F43D6 /* TinyConverter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TinyConverter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84B0697A22D633CA007F43D6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		84B0697C22D633CA007F43D6 /* ConverterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConverterViewController.swift; sourceTree = "<group>"; };
-		84B0697F22D633CA007F43D6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		84B0698122D633CC007F43D6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		84B0698422D633CC007F43D6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		84B0698622D633CC007F43D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		84B0699322D648FF007F43D6 /* ConverterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConverterViewModel.swift; sourceTree = "<group>"; };
 		84B0699822D718A3007F43D6 /* ViewBinder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewBinder.swift; sourceTree = "<group>"; };
@@ -169,9 +165,7 @@
 				8407D25823882EEA006E9274 /* Coordinator.swift */,
 				8409170D240E6F4E0064B80F /* IoCConfigurator.swift */,
 				CD26D41C29B24AE900E1E22F /* IoCConfiguratorGenerated.swift */,
-				84B0697E22D633CA007F43D6 /* Main.storyboard */,
 				84B0698122D633CC007F43D6 /* Assets.xcassets */,
-				84B0698322D633CC007F43D6 /* LaunchScreen.storyboard */,
 				84B0698622D633CC007F43D6 /* Info.plist */,
 			);
 			path = TinyConverter;
@@ -312,7 +306,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1020;
-				LastUpgradeCheck = 1020;
+				LastUpgradeCheck = 1420;
 				ORGANIZATIONNAME = "Adnan Zildzic";
 				TargetAttributes = {
 					84B0697622D633CA007F43D6 = {
@@ -357,9 +351,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				84B0698522D633CC007F43D6 /* LaunchScreen.storyboard in Resources */,
 				84B0698222D633CC007F43D6 /* Assets.xcassets in Resources */,
-				84B0698022D633CA007F43D6 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -445,25 +437,6 @@
 		};
 /* End PBXTargetDependency section */
 
-/* Begin PBXVariantGroup section */
-		84B0697E22D633CA007F43D6 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				84B0697F22D633CA007F43D6 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		84B0698322D633CC007F43D6 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				84B0698422D633CC007F43D6 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
-
 /* Begin XCBuildConfiguration section */
 		84B0698722D633CC007F43D6 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -491,6 +464,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -516,7 +490,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -552,6 +526,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -571,7 +546,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;

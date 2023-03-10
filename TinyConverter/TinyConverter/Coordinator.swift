@@ -10,14 +10,11 @@ import UIKit
 final class Coordinator {
     var rootViewController: UINavigationController!
     let container: RootComponent
-    let storyboard = UIStoryboard(name: "Main", bundle: nil)
 
     init(_ window: UIWindow, _ container: RootComponent) {
         self.container = container
 
-        let converterVC = storyboard.instantiateViewController(identifier: "converterViewController") { [unowned self] coder in
-            ConverterViewController(coder: coder, viewModel: self.container.converterComponent.converterViewModel)
-        }
+        let converterVC = ConverterViewController(viewModel: self.container.converterComponent.converterViewModel)
         rootViewController = UINavigationController(rootViewController: converterVC)
 
         window.rootViewController = rootViewController

@@ -29,10 +29,7 @@ final class UISnapshotTests: FBSnapshotTestCase {
     }
 
     private func getConverterController() -> ConverterViewController {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let store = ConverterStore(apiService: MockApiService(TestData.symbolsResponse, TestData.exchangeRatesResponse, nil), cacheService: MockCacheService(cachedItem: TestData.exchangeRates))
-        return storyboard.instantiateViewController(identifier: "converterViewController") { coder in
-            ConverterViewController(coder: coder, viewModel: ConverterViewModel(store: store, configuration: StandardConfiguration()))
-        }
+        return ConverterViewController(viewModel: ConverterViewModel(store: store, configuration: StandardConfiguration()))
     }
 }
