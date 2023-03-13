@@ -21,11 +21,15 @@ final class Coordinator {
         window.makeKeyAndVisible()
 
         converterVC.delegate = self
+        converterVC.navigationItem.title = "Tiny Converter"
+        converterVC.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "\u{2699}", style: .plain, target: self, action: #selector(converterVC.delegate.navigateToSettings))
 
-        guard let rightBarButton = converterVC.navigationItem.rightBarButtonItem else { return }
-        rightBarButton.title = "\u{2699}"
-        rightBarButton.action = #selector(converterVC.delegate.navigateToSettings)
-        rightBarButton.target = self
+        let appearance = UINavigationBarAppearance()
+
+        guard let navbar = converterVC.navigationController?.navigationBar else { return }
+        navbar.standardAppearance = appearance
+        navbar.compactAppearance = appearance
+        navbar.scrollEdgeAppearance = appearance
     }
 }
 
