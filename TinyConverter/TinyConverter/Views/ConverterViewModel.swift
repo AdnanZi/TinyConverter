@@ -128,6 +128,8 @@ extension ConverterViewModel {
                 self?.spinnerPublisher.send(false)
             })
             .mapError { [weak self] error -> ApiError in
+                self?.spinnerPublisher.send(false)
+
                 if error == .noConnection {
                     self?.alertPublisher.send(Alert(alertTitle: .noConnectionAlertTitle, alertText: .noConnectionAlertText))
                 }
