@@ -7,52 +7,70 @@
 //
 import UIKit
 import Combine
-import SwinjectStoryboard
+import BackgroundTasks
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    var cancallable = Set<AnyCancellable>()
+    var cancellable = Set<AnyCancellable>()
 
     var window: UIWindow?
     var coordinator: Coordinator?
 
-    let container = SwinjectStoryboard.container
+    var container: RootComponent!
     var configuration: Configuration {
-        return container.resolve(Configuration.self)!
+        return container.configuration
     }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        registerProviderFactories()
+        container = RootComponent()
         window = UIWindow(frame: UIScreen.main.bounds)
-        coordinator = Coordinator(window!)
 
-        toggleMinimumBackgroundFetchInterval()
+        coordinator = Coordinator(window!, container)
 
-        NotificationCenter.default.addObserver(self, selector: #selector(toggleMinimumBackgroundFetchInterval), name: Notification.automaticUpdatesToggledNotification, object: nil)
+        BGTaskScheduler.shared.register(forTaskWithIdentifier: .refreshTaskId, using: nil) { task in
+            self.performFetch(task: task as! BGAppRefreshTask)
+        }
 
         return true
     }
 
-    func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        guard let store = container.resolve(Store.self) else {
-            completionHandler(.noData)
-            return
-        }
-
-        store.refreshData()
-            .receive(on: RunLoop.main)
-            .sink {
-                completionHandler($0 ? .newData : .noData)
-            }
-            .store(in: &cancallable)
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        scheduleAppRefresh()
     }
 
-    @objc func toggleMinimumBackgroundFetchInterval() {
-        if configuration.automaticUpdates {
-            let updateInterval = TimeInterval(configuration.updateInterval * 3600)
-            UIApplication.shared.setMinimumBackgroundFetchInterval(updateInterval)
-        } else {
-            UIApplication.shared.setMinimumBackgroundFetchInterval(UIApplication.backgroundFetchIntervalNever)
+    private func performFetch(task: BGAppRefreshTask) {
+        scheduleAppRefresh()
+
+        let operationTask = Task {
+            self.container.store.refreshData()
+                .receive(on: RunLoop.main)
+                .sink {
+                    task.setTaskCompleted(success: $0)
+                }
+                .store(in: &cancellable)
+        }
+
+        task.expirationHandler = {
+            operationTask.cancel()
         }
     }
+
+    private func scheduleAppRefresh() {
+        let updateInterval = container.configuration.automaticUpdates ? TimeInterval(container.configuration.updateInterval) : TimeInterval.infinity
+
+        let request = BGAppRefreshTaskRequest(identifier: .refreshTaskId)
+        request.earliestBeginDate = Date(timeIntervalSinceNow: updateInterval)
+
+        do {
+            try BGTaskScheduler.shared.submit(request)
+        } catch {
+            print("Scheduling failed.")
+        }
+    }
+}
+
+fileprivate extension String {
+    static let refreshTaskId = "com.company.adnan.TinyConverter.refresh"
 }
 

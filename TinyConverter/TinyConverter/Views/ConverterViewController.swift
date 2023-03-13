@@ -8,26 +8,37 @@
 import UIKit
 import Combine
 
-@objc protocol ConverterViewControllerDelegate: class {
+@objc protocol ConverterViewControllerDelegate: AnyObject {
     func navigateToSettings()
 }
 
 class ConverterViewController: UIViewController {
-    @IBOutlet weak var baseSymbolTextField: SymbolTextField!
-    @IBOutlet weak var baseAmountTextField: UITextField!
+    let baseSymbolTextField = SymbolTextField()
+    let baseAmountTextField = UITextField()
 
-    @IBOutlet weak var targetSymbolTextField: SymbolTextField!
-    @IBOutlet weak var targetAmountTextField: UITextField!
+    let targetSymbolTextField = SymbolTextField()
+    var targetAmountTextField = UITextField()
 
-    @IBOutlet weak var spinner: UIActivityIndicatorView!
+    let spinner = UIActivityIndicatorView()
 
-    @IBOutlet weak var lastUpdateDateLabel: UILabel!
+    let lastUpdateDateLabel = UILabel()
 
     weak var delegate: ConverterViewControllerDelegate!
 
-    var viewModel: ConverterViewModel!
+    let viewModel: ConverterViewModel
 
     private var cancellable = Set<AnyCancellable>()
+
+    init(viewModel: ConverterViewModel) {
+        self.viewModel = viewModel
+
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,6 +56,73 @@ class ConverterViewController: UIViewController {
     }
 
     private func setupViews() {
+        view.backgroundColor = .systemBackground
+
+        let baseStackView = UIStackView()
+        baseStackView.axis = .vertical
+        baseStackView.spacing = 16
+        baseStackView.translatesAutoresizingMaskIntoConstraints = false
+
+        let baseCurrencyLabel = UILabel()
+        baseCurrencyLabel.text = "Base Currency"
+        baseStackView.addArrangedSubview(baseCurrencyLabel)
+
+        baseSymbolTextField.textColor = .systemBlue
+        baseStackView.addArrangedSubview(baseSymbolTextField)
+
+        baseAmountTextField.placeholder = "Amount"
+        baseAmountTextField.keyboardType = .numbersAndPunctuation
+        baseAmountTextField.borderStyle = .roundedRect
+        baseAmountTextField.font = .systemFont(ofSize: 20)
+        baseStackView.addArrangedSubview(baseAmountTextField)
+
+        let targetStackView = UIStackView()
+        targetStackView.axis = .vertical
+        targetStackView.spacing = 16
+        targetStackView.translatesAutoresizingMaskIntoConstraints = false
+
+        let targetCurrencyLabel = UILabel()
+        targetCurrencyLabel.text = "Target Currency"
+        targetStackView.addArrangedSubview(targetCurrencyLabel)
+
+        targetSymbolTextField.textColor = .systemBlue
+        targetStackView.addArrangedSubview(targetSymbolTextField)
+
+        targetAmountTextField.placeholder = "Amount"
+        targetAmountTextField.keyboardType = .numbersAndPunctuation
+        targetAmountTextField.borderStyle = .roundedRect
+        targetAmountTextField.font = .systemFont(ofSize: 20)
+        targetStackView.addArrangedSubview(targetAmountTextField)
+
+        let updateDateStackView = UIStackView()
+        updateDateStackView.translatesAutoresizingMaskIntoConstraints = false
+
+        let updateDateTitleLabel = UILabel()
+        updateDateTitleLabel.text = "Last Update: "
+        updateDateStackView.addArrangedSubview(updateDateTitleLabel)
+        updateDateStackView.addArrangedSubview(lastUpdateDateLabel)
+
+        spinner.translatesAutoresizingMaskIntoConstraints = false
+
+        view.addSubview(baseStackView)
+        view.addSubview(targetStackView)
+        view.addSubview(updateDateStackView)
+        view.addSubview(spinner)
+
+        NSLayoutConstraint.activate([
+            view.safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: baseStackView.trailingAnchor, constant: 16),
+            view.safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: targetStackView.trailingAnchor, constant: 16),
+            baseStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            baseStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32),
+            baseStackView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            targetStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            targetStackView.topAnchor.constraint(equalTo: baseStackView.bottomAnchor, constant: 32),
+            updateDateStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            updateDateStackView.topAnchor.constraint(equalTo: targetStackView.bottomAnchor, constant: 70),
+            spinner.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            spinner.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
+
         let basePicker = baseSymbolTextField.symbolPickerView!
         basePicker.dataSource = self
         basePicker.delegate = self

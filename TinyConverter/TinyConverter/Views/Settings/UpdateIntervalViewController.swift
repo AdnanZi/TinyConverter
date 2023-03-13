@@ -8,7 +8,18 @@
 import UIKit
 
 class UpdateIntervalViewController: UITableViewController {
-    var viewModel: UpdateIntervalViewModel!
+    let viewModel: UpdateIntervalViewModel
+
+    init(viewModel: UpdateIntervalViewModel) {
+        self.viewModel = viewModel
+
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     // MARK: - Table view data source
 
@@ -21,7 +32,8 @@ class UpdateIntervalViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "intervalCell", for: indexPath)
+        let identifier = "intervalCell"
+        let cell = tableView.dequeueReusableCell(withIdentifier: identifier) ?? UITableViewCell(style: .value1, reuseIdentifier: identifier)
 
         let cellValue = viewModel.updateIntervals[indexPath.row]
         cell.textLabel?.text = "\(String(cellValue)) hours"
