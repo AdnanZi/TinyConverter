@@ -67,25 +67,10 @@ class ConverterStore: Store {
         let symbols = getSymbolsFromServer()
         let rates = getExchangeRatesFromServer()
 
-        let exchangeRates = rates.combineLatest(symbols)
-            .map(parseRates)
-            .tryMap { $0! }
-            .mapError { _ in ApiError.other }
-            .share()
-
-        let ratesToCache = exchangeRates
-            .encode(encoder: JSONEncoder())
-            .flatMap { [unowned self] in
-                cacheService.cacheData($0, to: ratesFileName)
-                    .setFailureType(to: Error.self)
-            }
-            .mapError { _ in ApiError.other }
-
-        let ratesToReturn = exchangeRates.map { $0 }
-
-        return ratesToCache
-            .combineLatest(ratesToReturn)
-            .map { _, rates in rates }
+        return rates.combineLatest(symbols)
+            .tryMap(parseRates)
+            .mapError { ($0 as? ApiError) ?? ApiError.other }
+            .flatMap(cacheRates)
             .eraseToAnyPublisher()
     }
 
@@ -115,19 +100,30 @@ class ConverterStore: Store {
             .eraseToAnyPublisher()
     }
 
-    private func parseRates(ratesResponse: LatestRatesResponse, symbolsResponse: SymbolsResponse) -> ExchangeRates? {
+    private func parseRates(ratesResponse: LatestRatesResponse, symbolsResponse: SymbolsResponse) throws -> ExchangeRates {
         guard let baseCurrency = ratesResponse.base, let dateString = ratesResponse.date, let rates = ratesResponse.rates, let symbols = symbolsResponse.symbols else {
             NSLog("Rates object missing required fields.")
-            return nil
+            throw ApiError.other
         }
 
         guard let date = Date.dateFromApiString(dateString) else {
             NSLog("Couldn't convert provided date: \(dateString)")
-            return nil
+            throw ApiError.other
         }
 
         let fullRates = rates.map { key, value in ExchangeRate(code: key, name: symbols[key]!, value: value) }
 
         return ExchangeRates(baseCurrency: baseCurrency, date: date, rates: fullRates)
+    }
+
+    private func cacheRates(_ exchangeRates: ExchangeRates) -> AnyPublisher<ExchangeRates, ApiError> {
+        Just(exchangeRates)
+            .encode(encoder: JSONEncoder())
+            .map { [unowned self] in
+                _ = self.cacheService.cacheData($0, to: self.ratesFileName)
+            }
+            .mapError { ($0 as? ApiError) ?? ApiError.other }
+            .map { exchangeRates }
+            .eraseToAnyPublisher()
     }
 }

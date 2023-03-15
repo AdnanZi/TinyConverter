@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import Combine
 @testable import TinyConverter
 
 class StoreTests: XCTestCase {
@@ -19,16 +20,18 @@ class StoreTests: XCTestCase {
         let store = ConverterStore(apiService: apiService, cacheService: MockCacheService<ExchangeRates>())
 
         let expectation = self.expectation(description: "NoError")
-        var resultError: Error?
+        var resultError: ApiError?
 
         // Act
-        store.fetchData(false) { result in
-            if case .failure(let error) = result {
-                resultError = error
-            }
+        _ = store.fetchData(false)
+            .sink(receiveCompletion: {
+                if case .failure(let error) = $0 {
+                    resultError = error
+                }
 
-            expectation.fulfill()
-        }
+                expectation.fulfill()
+            }, receiveValue: { _ in })
+
 
         waitForExpectations(timeout: 2, handler: nil)
 
@@ -47,16 +50,16 @@ class StoreTests: XCTestCase {
         var resultData: ExchangeRates?
 
         // Act
-        store.fetchData(false) { result in
-            switch result {
-            case .success(let result):
-                resultData = result
-            case .failure:
-                XCTFail(.errorOnSuccess)
-            }
+        _ = store.fetchData(false)
+            .sink(receiveCompletion: { result in
+                if case .failure = result {
+                    XCTFail(.errorOnSuccess)
+                }
 
-            expectation.fulfill()
-        }
+                expectation.fulfill()
+            }, receiveValue: {
+                resultData = $0
+            })
 
         waitForExpectations(timeout: 2, handler: nil)
 
@@ -74,24 +77,25 @@ class StoreTests: XCTestCase {
         let store = ConverterStore(apiService: apiService, cacheService: MockCacheService<ExchangeRates>())
 
         let expectation = self.expectation(description: "ConnError")
-        var resultError: Error?
+        var resultError: ApiError?
 
         // Act
-        store.fetchData(false) { result in
-            switch result {
-            case .success:
-                XCTFail(.successOnError)
-            case .failure(let error):
-                resultError = error
-            }
+        _ = store.fetchData(false)
+            .sink(receiveCompletion: { result in
+                switch result {
+                case .finished:
+                    XCTFail(.successOnError)
+                case .failure(let error):
+                    resultError = error
+                }
 
-            expectation.fulfill()
-        }
+                expectation.fulfill()
+            }, receiveValue: { _ in })
 
         waitForExpectations(timeout: 2, handler: nil)
 
         // Assert
-        XCTAssert(resultError! == .noConnection)
+        XCTAssertTrue(resultError! == .noConnection)
     }
 
     func testFetchDataFromServer_ApiError() {
@@ -103,19 +107,20 @@ class StoreTests: XCTestCase {
         let store = ConverterStore(apiService: apiService, cacheService: MockCacheService<ExchangeRates>())
 
         let expectation = self.expectation(description: "ApiError")
-        var resultError: Error?
+        var resultError: ApiError?
 
         // Act
-        store.fetchData(false) { result in
-            switch result {
-            case .success:
-                XCTFail(.successOnError)
-            case .failure(let error):
-                resultError = error
-            }
+        _ = store.fetchData(false)
+            .sink(receiveCompletion: { result in
+                switch result {
+                case .finished:
+                    XCTFail(.successOnError)
+                case .failure(let error):
+                    resultError = error
+                }
 
-            expectation.fulfill()
-        }
+                expectation.fulfill()
+            }, receiveValue: { _ in })
 
         waitForExpectations(timeout: 2, handler: nil)
 
@@ -135,16 +140,16 @@ class StoreTests: XCTestCase {
         var resultData: ExchangeRates?
 
         // Act
-        store.fetchData(false) { result in
-            switch result {
-            case .success(let result):
-                resultData = result
-            case .failure:
-                XCTFail(.errorOnSuccess)
-            }
+        _ = store.fetchData(false)
+            .sink(receiveCompletion: {
+                if case .failure = $0 {
+                    XCTFail(.errorOnSuccess)
+                }
 
-            expectation.fulfill()
-        }
+                expectation.fulfill()
+            }, receiveValue: {
+                resultData = $0
+            })
 
         waitForExpectations(timeout: 2, handler: nil)
 
@@ -169,16 +174,16 @@ class StoreTests: XCTestCase {
         var resultData: ExchangeRates?
 
         // Act
-        store.fetchData(true) { result in
-            switch result {
-            case .success(let result):
-                resultData = result
-            case .failure:
-                XCTFail(.errorOnSuccess)
-            }
+        _ = store.fetchData(true)
+            .sink(receiveCompletion: {
+                if case .failure = $0 {
+                    XCTFail(.errorOnSuccess)
+                }
 
-            expectation.fulfill()
-        }
+                expectation.fulfill()
+            }, receiveValue: {
+                resultData = $0
+            })
 
         waitForExpectations(timeout: 2, handler: nil)
 
@@ -200,11 +205,16 @@ class StoreTests: XCTestCase {
         var refreshedResult: Bool?
 
         // Act
-        store.refreshData { refreshed in
-            refreshedResult = refreshed
+        _ = store.refreshData()
+            .sink(receiveCompletion: {
+                if case .failure = $0 {
+                    XCTFail(.errorOnSuccess)
+                }
 
-            expectation.fulfill()
-        }
+                expectation.fulfill()
+            }, receiveValue: {
+                refreshedResult = $0
+            })
 
         waitForExpectations(timeout: 2, handler: nil)
 
@@ -223,11 +233,16 @@ class StoreTests: XCTestCase {
         var refreshedResult: Bool?
 
         // Act
-        store.refreshData { refreshed in
-            refreshedResult = refreshed
+        _ = store.refreshData()
+            .sink(receiveCompletion: {
+                if case .failure = $0 {
+                    XCTFail(.errorOnSuccess)
+                }
 
-            expectation.fulfill()
-        }
+                expectation.fulfill()
+            }, receiveValue: {
+                refreshedResult = $0
+            })
 
         waitForExpectations(timeout: 2, handler: nil)
 

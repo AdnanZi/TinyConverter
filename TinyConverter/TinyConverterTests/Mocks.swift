@@ -7,25 +7,34 @@
 //
 
 import Foundation
+import Combine
 @testable import TinyConverter
 
 class MockApiService: ApiService {
     let symbolsResponse: SymbolsResponse?
     let ratesResponse: LatestRatesResponse?
-    let error: Error?
+    let error: ApiError?
 
-    init(_ symbolsResponse: SymbolsResponse?, _ ratesResponse: LatestRatesResponse?, _ error: Error?) {
+    init(_ symbolsResponse: SymbolsResponse?, _ ratesResponse: LatestRatesResponse?, _ error: ApiError?) {
         self.symbolsResponse = symbolsResponse
         self.ratesResponse = ratesResponse
         self.error = error
     }
 
-    func getSymbols(completionHandler: @escaping (Result<SymbolsResponse, Error>) -> Void) {
-        completionHandler(error != nil ? .failure(error!) : .success(symbolsResponse!))
+    func getSymbols() -> AnyPublisher<SymbolsResponse, ApiError> {
+        if error != nil {
+            return Fail(error: error!).eraseToAnyPublisher()
+        }
+
+        return Just(symbolsResponse!).setFailureType(to: ApiError.self).eraseToAnyPublisher()
     }
 
-    func getLatestExchangeRates(completionHandler: @escaping (Result<LatestRatesResponse, Error>) -> Void) {
-        completionHandler(error != nil ? .failure(error!) : .success(ratesResponse!))
+    func getLatestExchangeRates() -> AnyPublisher<LatestRatesResponse, ApiError> {
+        if error != nil {
+            return Fail(error: error!).eraseToAnyPublisher()
+        }
+
+        return Just(ratesResponse!).setFailureType(to: ApiError.self).eraseToAnyPublisher()
     }
 }
 
@@ -36,9 +45,11 @@ class MockCacheService<T: Decodable>: CacheService {
         self.cachedItem = cachedItem
     }
 
-    func getData<T>(from fileName: String) -> T? where T : Decodable {
-        return cachedItem as! T?
+    func getData<T>(from fileName: String) -> AnyPublisher<T?, Never> where T : Decodable {
+        Just(cachedItem as! T?).eraseToAnyPublisher()
     }
 
-    func cacheData(_ jsonData: Data, to fileName: String) { }
+    func cacheData(_ jsonData: Data, to fileName: String) -> AnyPublisher<Void, Never> {
+        Just(()).eraseToAnyPublisher()
+    }
 }
