@@ -30,6 +30,7 @@
 		84D4D2BC2323DF5500773306 /* CacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D4D2BB2323DF5500773306 /* CacheService.swift */; };
 		84D4D2BE2323F50700773306 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D4D2BD2323F50700773306 /* Response.swift */; };
 		84D4D2C12324371600773306 /* ExchangeRates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D4D2C02324371600773306 /* ExchangeRates.swift */; };
+		CD13355729C1DAFD005896EB /* ProcessInfo+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD13355629C1DAFD005896EB /* ProcessInfo+.swift */; };
 		CD26D41A29B248E200E1E22F /* NeedleFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CD26D41929B248E200E1E22F /* NeedleFoundation */; };
 		CD26D41D29B24AE900E1E22F /* IoCConfiguratorGenerated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD26D41C29B24AE900E1E22F /* IoCConfiguratorGenerated.swift */; };
 		CD4A13A829B9EFE40021D87C /* UISnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4A13A729B9EFE40021D87C /* UISnapshotTests.swift */; };
@@ -91,6 +92,7 @@
 		84D4D2BB2323DF5500773306 /* CacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheService.swift; sourceTree = "<group>"; };
 		84D4D2BD2323F50700773306 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
 		84D4D2C02324371600773306 /* ExchangeRates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeRates.swift; sourceTree = "<group>"; };
+		CD13355629C1DAFD005896EB /* ProcessInfo+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProcessInfo+.swift"; sourceTree = "<group>"; };
 		CD26D41C29B24AE900E1E22F /* IoCConfiguratorGenerated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoCConfiguratorGenerated.swift; sourceTree = "<group>"; };
 		CD4A13A729B9EFE40021D87C /* UISnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISnapshotTests.swift; sourceTree = "<group>"; };
 		CD4A13A929B9F2AF0021D87C /* TestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestData.swift; sourceTree = "<group>"; };
@@ -194,6 +196,7 @@
 			isa = PBXGroup;
 			children = (
 				84D4D2B52322A3FF00773306 /* Date+.swift */,
+				CD13355629C1DAFD005896EB /* ProcessInfo+.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -405,6 +408,7 @@
 				84BAF96622DA087B003AAD74 /* Error.swift in Sources */,
 				84D4D2BA2323DAEF00773306 /* SymbolsResponse.swift in Sources */,
 				84BAF96822DA10DE003AAD74 /* Alert.swift in Sources */,
+				CD13355729C1DAFD005896EB /* ProcessInfo+.swift in Sources */,
 				84D4D2C12324371600773306 /* ExchangeRates.swift in Sources */,
 				84B0699422D648FF007F43D6 /* ConverterViewModel.swift in Sources */,
 				8409170E240E6F4E0064B80F /* IoCConfigurator.swift in Sources */,

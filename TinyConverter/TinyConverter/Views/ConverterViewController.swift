@@ -49,12 +49,6 @@ class ConverterViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        fetchData()
-    }
-
     private func setupViews() {
         view.backgroundColor = .systemBackground
 

@@ -22,6 +22,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        if ProcessInfo.processInfo.runningTests { // Skip loading view controllers when running unit tests
+            return true
+        }
+
         registerProviderFactories()
         container = RootComponent()
         window = UIWindow(frame: UIScreen.main.bounds)
