@@ -59,8 +59,8 @@ class ConverterViewModel: NSObject {
     }
 
     private func calculateTargetValue(baseValue: String?, baseCurrency: String?, targetCurrency: String?) -> String {
-        guard let baseValue = baseValue, let multiplier = Double(baseValue),
-            let baseCurrency = baseCurrency, let targetCurrency = targetCurrency,
+        guard let baseValue, let multiplier = Double(baseValue),
+            let baseCurrency, let targetCurrency,
             let baseCurrencyValue = exchangeRates.first(where: { $0.code == baseCurrency })?.value, let targetCurrencyValue = exchangeRates.first(where: { $0.code == targetCurrency })?.value else {
             return ""
         }
@@ -71,11 +71,11 @@ class ConverterViewModel: NSObject {
     }
 
     private func calculateTargetAmount() -> String {
-        return calculateTargetValue(baseValue: baseAmountEntered, baseCurrency: baseCurrency, targetCurrency: targetCurrency)
+        calculateTargetValue(baseValue: baseAmountEntered, baseCurrency: baseCurrency, targetCurrency: targetCurrency)
     }
 
     private func calcuateBaseAmount() -> String {
-        return calculateTargetValue(baseValue: targetAmountEntered, baseCurrency: targetCurrency, targetCurrency: baseCurrency)
+        calculateTargetValue(baseValue: targetAmountEntered, baseCurrency: targetCurrency, targetCurrency: baseCurrency)
     }
 }
 
@@ -88,7 +88,7 @@ extension ConverterViewModel {
 
     private func dataFetchedHandler(_ result: Result<ExchangeRates, Error>) {
         DispatchQueue.main.async { [weak self] in
-            guard let self = self else {
+            guard let self else {
                 return
             }
 
