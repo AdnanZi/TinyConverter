@@ -33,7 +33,7 @@ class StandardConfiguration: Configuration {
     }
 
     var updateIntervals: [Int] {
-        return Self.updateIntervals
+        Self.updateIntervals
     }
 
     private static let updateIntervals = [2, 6, 24, 48]

@@ -171,7 +171,7 @@ class ConverterViewController: UIViewController {
     }
 
     private func showAlert(_ alertOptions: Alert?) {
-        guard let alertOptions = alertOptions else {
+        guard let alertOptions else {
             return
         }
 
