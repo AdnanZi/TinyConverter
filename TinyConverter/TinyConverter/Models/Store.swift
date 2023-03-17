@@ -27,7 +27,7 @@ class ConverterStore: Store {
 
         let exchangeRates: ExchangeRates? = cacheService.getData(from: ratesFileName)
 
-        if let exchangeRates = exchangeRates {
+        if let exchangeRates {
             let currentDate = Date().currentDate
 
             if exchangeRates.date == currentDate && !forceUpdate {
@@ -69,12 +69,7 @@ class ConverterStore: Store {
     }
 
     private func getDataFromServer(_ completionHandler: @escaping (Result<ExchangeRates, Error>) -> Void) {
-        apiService.getSymbols { [weak self] result in
-            guard let self = self else {
-                completionHandler(.failure(.other))
-                return
-            }
-
+        apiService.getSymbols { [unowned self] result in
             switch result {
             case .failure(let error):
                 completionHandler(.failure(error))
@@ -85,12 +80,7 @@ class ConverterStore: Store {
     }
 
     private func getExchangeRates(_ symbolsResponse: SymbolsResponse, completionHandler: @escaping (Result<ExchangeRates, Error>) -> Void) {
-        apiService.getLatestExchangeRates { [weak self] result in
-            guard let self = self else {
-                completionHandler(.failure(.other))
-                return
-            }
-
+        apiService.getLatestExchangeRates { [unowned self] result in
             switch result {
             case .failure(let error):
                 completionHandler(.failure(error))

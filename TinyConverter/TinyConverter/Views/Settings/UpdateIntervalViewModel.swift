@@ -11,11 +11,11 @@ class UpdateIntervalViewModel {
     private var configuration: Configuration
 
     var updateIntervals: [Int] {
-        return configuration.updateIntervals
+        configuration.updateIntervals
     }
 
     var selectedInterval: Int {
-        return configuration.updateInterval
+        configuration.updateInterval
     }
 
     init(configuration: Configuration) {

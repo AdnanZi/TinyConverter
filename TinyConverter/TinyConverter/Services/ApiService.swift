@@ -31,15 +31,15 @@ class FixerApiService: ApiService {
     private func request<T: Decodable>(for endpoint: String, completionHandler: @escaping (Result<T, Error>) -> Void) {
         let url = getUrl(for: endpoint)
 
-        let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-            guard let self = self else {
-                completionHandler(.failure(.other))
-                return
-            }
-
+        let task = URLSession.shared.dataTask(with: url) { [weak  self] data, response, error in
             guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200, let jsonData = data else {
-                if let error = error {
+                if let error {
                     NSLog("Network data fetch done with error: \(error.localizedDescription).")
+
+                    guard let self else {
+                        completionHandler(.failure(.other))
+                        return
+                    }
 
                     if self.connectionErrorCodes.contains(error._code) {
                         completionHandler(.failure(.noConnection))

@@ -40,7 +40,7 @@ class SettingsViewController: UITableViewController {
         observations = [
             viewModel.bind(\.updateOnStart, to: updateOnStartSwitch, at: \.isOn),
             viewModel.observe(\.automaticUpdates, options: [.initial, .new]) { [weak self] _, value in
-                guard let self = self else {
+                guard let self else {
                     return
                 }
                 self.autoUpdatesSwitch.isOn = value.newValue!
@@ -53,7 +53,7 @@ class SettingsViewController: UITableViewController {
                 cell.detailTextLabel?.text = value.newValue!
             },
             viewModel.observe(\.automaticUpdates, options: [.initial, .new]) { [weak self] _, _ in
-                guard let self = self, let cell = self.updateIntervalCell else { return }
+                guard let self, let cell = self.updateIntervalCell else { return }
 
                 cell.isUserInteractionEnabled = self.autoUpdatesSwitch.isOn
                 cell.accessoryType = self.autoUpdatesSwitch.isOn ? .disclosureIndicator : .none
@@ -70,11 +70,11 @@ class SettingsViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        3
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
