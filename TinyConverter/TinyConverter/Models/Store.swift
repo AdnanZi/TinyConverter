@@ -29,7 +29,7 @@ class ConverterStore: Store {
         return getData(ratesFileName)
             .setFailureType(to: ApiError.self)
             .flatMap { [unowned self] exchangeRates -> AnyPublisher<ExchangeRates, ApiError> in
-                if let exchangeRates = exchangeRates {
+                if let exchangeRates {
                     let currentDate = Date().currentDate
 
                     if exchangeRates.date == currentDate && !forceUpdate {
@@ -38,7 +38,7 @@ class ConverterStore: Store {
                     }
                 }
 
-                return getDataFromServer()
+                return self.getDataFromServer()
         }
         .handleEvents(receiveSubscription: { _ in NSLog("Fetching data...") })
         .eraseToAnyPublisher()
@@ -49,7 +49,7 @@ class ConverterStore: Store {
 
         return getData(ratesFileName)
             .flatMap { [unowned self] exchangeRates -> AnyPublisher<Bool, Never> in
-                if let exchangeRates = exchangeRates {
+                if let exchangeRates {
                     let currentDate = Date().currentDate
 
                     if exchangeRates.date == currentDate {
@@ -57,7 +57,7 @@ class ConverterStore: Store {
                     }
                 }
 
-                return getDataFromServer().map { _ in true }.catch { _ in Just(false) }.eraseToAnyPublisher()
+                return self.getDataFromServer().map { _ in true }.catch { _ in Just(false) }.eraseToAnyPublisher()
         }
         .handleEvents(receiveSubscription: { _ in NSLog("Refreshing data...") })
         .eraseToAnyPublisher()

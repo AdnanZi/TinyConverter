@@ -97,8 +97,8 @@ class ConverterViewModel {
     }
 
     private func calculateTargetValue(baseValue: String?, baseCurrency: String?, targetCurrency: String?) -> String {
-        guard let baseValue = baseValue, let multiplier = Double(baseValue),
-            let baseCurrency = baseCurrency, let targetCurrency = targetCurrency,
+        guard let baseValue, let multiplier = Double(baseValue),
+            let baseCurrency, let targetCurrency,
             let baseCurrencyValue = exchangeRates.first(where: { $0.code == baseCurrency })?.value, let targetCurrencyValue = exchangeRates.first(where: { $0.code == targetCurrency })?.value else {
             return ""
         }
@@ -109,11 +109,11 @@ class ConverterViewModel {
     }
 
     private func calculateTargetAmount() -> String {
-        return calculateTargetValue(baseValue: baseAmount, baseCurrency: baseCurrency, targetCurrency: targetCurrency)
+        calculateTargetValue(baseValue: baseAmount, baseCurrency: baseCurrency, targetCurrency: targetCurrency)
     }
 
     private func calcuateBaseAmount() -> String {
-        return calculateTargetValue(baseValue: targetAmount, baseCurrency: targetCurrency, targetCurrency: baseCurrency)
+        calculateTargetValue(baseValue: targetAmount, baseCurrency: targetCurrency, targetCurrency: baseCurrency)
     }
 }
 

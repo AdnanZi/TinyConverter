@@ -47,7 +47,7 @@ class SettingsViewController: UITableViewController {
         viewModel.$automaticUpdates
             .receive(on: RunLoop.main)
             .sink { [weak self] in
-                guard let self = self else { return }
+                guard let self else { return }
                 self.autoUpdatesSwitch.isOn = $0
                 self.updateIntervalCell?.accessoryType = self.autoUpdatesSwitch.isOn ? .disclosureIndicator : .none
             }
@@ -63,7 +63,7 @@ class SettingsViewController: UITableViewController {
         viewModel.$automaticUpdates
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
-                guard let self = self, let cell = self.updateIntervalCell else { return }
+                guard let self, let cell = self.updateIntervalCell else { return }
 
                 cell.isUserInteractionEnabled = self.autoUpdatesSwitch.isOn
                 cell.accessoryType = self.autoUpdatesSwitch.isOn ? .disclosureIndicator : .none
@@ -80,11 +80,11 @@ class SettingsViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        3
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

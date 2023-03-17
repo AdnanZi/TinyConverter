@@ -207,15 +207,15 @@ extension ConverterViewController: UIPickerViewDelegate {
 
 extension ConverterViewController: UIPickerViewDataSource {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
+        1
     }
 
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return viewModel.exchangeRates.count
+        viewModel.exchangeRates.count
     }
 
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return viewModel.exchangeRates[row].name
+        viewModel.exchangeRates[row].name
     }
 }
 
